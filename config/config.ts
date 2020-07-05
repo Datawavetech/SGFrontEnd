@@ -43,36 +43,105 @@ export default defineConfig({
       ],
     },
 
+    // {
+    //   path: '/welcome',
+    //   name: 'welcome',
+    //   icon: 'smile',
+    //   component: './Welcome',
+    // },
+    // {
+    //   path: '/admin',
+    //   name: 'admin',
+    //   icon: 'crown',
+    //   access: 'canAdmin',
+    //   component: './Admin',
+    //   routes: [
+    //     {
+    //       path: '/admin/sub-page',
+    //       name: 'sub-page',
+    //       icon: 'smile',
+    //       component: './Welcome',
+    //     },
+    //   ],
+    // },
     {
-      path: '/welcome',
-      name: 'welcome',
+      path: '/data-confirm',
+      name: 'data-confirm',
       icon: 'smile',
       component: './Welcome',
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      icon: 'crown',
-      access: 'canAdmin',
-      component: './Admin',
       routes: [
         {
-          path: '/admin/sub-page',
-          name: 'sub-page',
+          path: '/data-confirm/proof',
+          name: 'proof',
+          icon: 'smile',
+          component: './Welcome',
+        },
+        {
+          path: '/data-confirm/management',
+          name: 'management',
           icon: 'smile',
           component: './Welcome',
         },
       ],
     },
+
     {
-      name: 'list.table-list',
-      icon: 'table',
-      path: '/list',
-      component: './ListTableList',
+      path: '/data-plus',
+      name: 'data-plus',
+      icon: 'smile',
+      component: './Welcome',
+      routes: [
+        {
+          path: '/data-plus/onchain',
+          name: 'onchain',
+          icon: 'smile',
+          component: './Welcome',
+        },
+        {
+          path: '/data-plus/evaluation',
+          name: 'evaluation',
+          icon: 'smile',
+          component: './Welcome',
+        },
+        {
+          path: '/data-plus/lifecycle',
+          name: 'lifecycle',
+          icon: 'smile',
+          component: './Welcome',
+        },
+      ],
     },
+
+    {
+      path: '/blockchain',
+      name: 'blockchain',
+      icon: 'smile',
+      component: './Welcome',
+      routes: [
+        {
+          path: '/blockchain/key',
+          name: 'key',
+          icon: 'smile',
+          component: './Welcome',
+        },
+        {
+          path: '/blockchain/running',
+          name: 'running',
+          icon: 'smile',
+          component: './Welcome',
+        },
+      ],
+    },
+
+    // {
+    //   name: 'list.table-list',
+    //   icon: 'table',
+    //   path: '/list',
+    //   component: './ListTableList',
+    // },
     {
       path: '/',
-      redirect: '/welcome',
+      redirect: '/data-confirm',
     },
     {
       component: './404',
