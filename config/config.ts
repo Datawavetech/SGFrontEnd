@@ -2,9 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-
 const { REACT_APP_ENV } = process.env;
-
 export default defineConfig({
   hash: true,
   antd: {},
@@ -41,9 +39,7 @@ export default defineConfig({
           component: './user/login',
         },
       ],
-    },
-
-    // {
+    }, // {
     //   path: '/welcome',
     //   name: 'welcome',
     //   icon: 'smile',
@@ -68,34 +64,33 @@ export default defineConfig({
       path: '/data-confirm',
       name: 'data-confirm',
       icon: 'smile',
-      component: './Welcome',
+      // component: './Welcome',
       routes: [
         {
           path: '/data-confirm/proof',
           name: 'proof',
           icon: 'smile',
-          component: './Welcome',
+          component: './data-confirm/proof',
         },
         {
           path: '/data-confirm/management',
           name: 'management',
           icon: 'smile',
-          component: './Welcome',
+          component: './data-confirm/management',
         },
       ],
     },
-
     {
       path: '/data-plus',
       name: 'data-plus',
       icon: 'smile',
-      component: './Welcome',
+      // component: './Welcome',
       routes: [
         {
           path: '/data-plus/onchain',
           name: 'onchain',
           icon: 'smile',
-          component: './Welcome',
+          component: './data-plus/onchain',
         },
         {
           path: '/data-plus/evaluation',
@@ -111,7 +106,6 @@ export default defineConfig({
         },
       ],
     },
-
     {
       path: '/blockchain',
       name: 'blockchain',
@@ -131,9 +125,7 @@ export default defineConfig({
           component: './Welcome',
         },
       ],
-    },
-
-    // {
+    }, // {
     //   name: 'list.table-list',
     //   icon: 'table',
     //   path: '/list',
@@ -141,7 +133,7 @@ export default defineConfig({
     // },
     {
       path: '/',
-      redirect: '/data-confirm',
+      redirect: '/data-confirm/proof',
     },
     {
       component: './404',
