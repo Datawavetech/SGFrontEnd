@@ -102,7 +102,7 @@ export default defineConfig({
           path: '/data-plus/lifecycle',
           name: 'lifecycle',
           icon: 'smile',
-          component: './Welcome',
+          component: './data-plus/lifecycle',
         },
       ],
     },
