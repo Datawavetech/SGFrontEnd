@@ -151,11 +151,7 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <Card
-        hoverable
-        // style={{ width: 1200 }}
-        cover={<img alt="example" src={demo} />}
-      />
+      <Card hoverable style={{ width: 500 }} cover={<img alt="example" src={demo} />} />
       <br />
       <ProTable<TableListItem>
         headerTitle="查询表格"
