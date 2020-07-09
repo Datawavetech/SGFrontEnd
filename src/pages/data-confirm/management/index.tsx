@@ -96,6 +96,24 @@ const TableList: React.FC<{}> = () => {
       ],
     },
     {
+      title: '所有者ID',
+      dataIndex: 'ownNo',
+      sorter: true,
+      hideInForm: true,
+      // renderText: (val: string) => `${val} 万`,
+    },
+    {
+      title: '所有者',
+      dataIndex: 'owner',
+      hideInForm: true,
+      rules: [
+        {
+          required: true,
+          message: '规则名称为必填项',
+        },
+      ],
+    },
+    {
       title: '申请数据ID',
       dataIndex: 'callNo',
       sorter: true,
@@ -112,7 +130,7 @@ const TableList: React.FC<{}> = () => {
       valueEnum: {
         0: { text: '查看', status: 'Default' },
         1: { text: '查看和修改', status: 'Processing' },
-        2: { text: '删除', status: 'Success' },
+        2: { text: '撤销', status: 'Success' },
         3: { text: '校对', status: 'Error' },
       },
     },

@@ -165,24 +165,6 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <Card title="数据证书" bordered={false}>
-        <Carousel className={styles.customCarousel} autoplay>
-          <div>
-            <h3 className={styles.fontColor}>证书图片1</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片2</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片3</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片4</h3>
-          </div>
-        </Carousel>
-      </Card>
-
-      <br />
       <ProTable<TableListItem>
         headerTitle="查询表格"
         actionRef={actionRef}
@@ -261,6 +243,23 @@ const TableList: React.FC<{}> = () => {
           values={stepFormValues}
         />
       ) : null}
+      <br />
+      <Card title="数据证书范例" bordered={false}>
+        <Carousel className={styles.customCarousel} autoplay>
+          <div>
+            <h3 className={styles.fontColor}>证书图片1</h3>
+          </div>
+          <div>
+            <h3 className={styles.fontColor}>证书图片2</h3>
+          </div>
+          <div>
+            <h3 className={styles.fontColor}>证书图片3</h3>
+          </div>
+          <div>
+            <h3 className={styles.fontColor}>证书图片4</h3>
+          </div>
+        </Carousel>
+      </Card>
     </PageHeaderWrapper>
   );
 };
