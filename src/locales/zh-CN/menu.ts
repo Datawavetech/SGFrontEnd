@@ -6,17 +6,18 @@ export default {
 
   'menu.dataOnChain': '数据增值服务',
   'menu.dataOnChain.onChainRequests': '上链申请查看',
-  'menu.dataOnChain.onChainApprove': '上链审批',
+  'menu.dataOnChain.onChainApproval': '上链审批',
 
   'menu.dataShareComment': '数据共享评价管理',
   'menu.dataShareComment.model': '模型管理',
   'menu.dataShareComment.token': '积分管理',
 
+  'menu.dataLifeCycle': '数据共享全生命周期管理',
   'menu.dataLifeCycle.duringChain': '数据全链路',
   'menu.dataLifeCycle.analysis': '统计分析',
 
   'menu.chainMng': '区块链管理',
-  'menu.chainMng.key': '密钥管理',
+  'menu.chainMng.keyMng': '密钥管理',
   'menu.chainMng.explorer': '区块链运行信息',
 
   'menu.welcome': '欢迎',

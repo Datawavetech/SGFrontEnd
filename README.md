@@ -28,7 +28,7 @@
 	- 上链申请查看 /onChainRequests - 普通用户查看自己的上链申请
 		- 创建按钮
 			- 表单 - 传文件、设置共享过期时间、设置数据使用约定（列表）
-	- 上链审批 /onChainApprove - 仅管理员可见
+	- 上链审批 /onChainApproval - 仅管理员可见
 - 数据共享评价管理 /dataShareComment
 	- 模型管理 /model - 两个列表（正在跑的、已创建的）
 		- 创建按钮
