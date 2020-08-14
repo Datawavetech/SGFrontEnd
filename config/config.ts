@@ -39,7 +39,9 @@ export default defineConfig({
           component: './user/login',
         },
       ],
-    }, // {
+    },
+
+    // {
     //   path: '/welcome',
     //   name: 'welcome',
     //   icon: 'smile',
@@ -63,25 +65,22 @@ export default defineConfig({
     {
       path: '/dataConfirm',
       name: 'dataConfirm',
-      icon: 'smile',
+      icon: 'save',
       // component: './Welcome',
       routes: [
         {
           path: '/dataConfirm/assetIdentifier',
           name: 'assetIdentifier',
-          icon: 'smile',
           component: './dataConfirm/assetIdentifier',
         },
         {
           path: '/dataConfirm/assetProof',
           name: 'assetProof',
-          icon: 'smile',
           component: './dataConfirm/assetProof',
         },
         {
           path: '/dataConfirm/dataUsage',
           name: 'dataUsage',
-          icon: 'smile',
           component: './dataConfirm/dataUsage',
         },
       ],
@@ -89,19 +88,17 @@ export default defineConfig({
     {
       path: '/dataOnChain',
       name: 'dataOnChain',
-      icon: 'smile',
+      icon: 'inbox',
       // component: './Welcome',
       routes: [
         {
           path: '/dataOnChain/onChainRequests',
           name: 'onChainRequests',
-          icon: 'smile',
           component: './dataOnChain/onChainRequests',
         },
         {
           path: '/dataOnChain/onChainApproval',
           name: 'onChainApproval',
-          icon: 'smile',
           component: './dataOnChain/onChainApproval',
         },
       ],
@@ -109,19 +106,17 @@ export default defineConfig({
     {
       path: '/dataShareComment',
       name: 'dataShareComment',
-      icon: 'smile',
+      icon: 'cloud',
       // component: './Welcome',
       routes: [
         {
           path: '/dataShareComment/model',
           name: 'model',
-          icon: 'smile',
           component: './dataShareComment/model',
         },
         {
           path: '/dataShareComment/token',
           name: 'token',
-          icon: 'smile',
           component: './dataShareComment/token',
         },
       ],
@@ -129,19 +124,17 @@ export default defineConfig({
     {
       path: '/dataLifeCycle',
       name: 'dataLifeCycle',
-      icon: 'smile',
+      icon: 'appstore',
       // component: './Welcome',
       routes: [
         {
           path: '/dataLifeCycle/duringChain',
           name: 'duringChain',
-          icon: 'smile',
           component: './dataLifeCycle/duringChain',
         },
         {
           path: '/dataLifeCycle/analysis',
           name: 'analysis',
-          icon: 'smile',
           component: './dataLifeCycle/analysis',
         },
       ],
@@ -149,19 +142,17 @@ export default defineConfig({
     {
       path: '/chainMng',
       name: 'chainMng',
-      icon: 'smile',
+      icon: 'link',
       // component: './Welcome',
       routes: [
         {
           path: '/chainMng/keyMng',
           name: 'keyMng',
-          icon: 'smile',
           component: './chainMng/keyMng',
         },
         {
           path: '/chainMng/explorer',
           name: 'explorer',
-          icon: 'smile',
           component: './chainMng/explorer',
         },
       ],

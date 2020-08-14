@@ -1,18 +1,18 @@
 export default {
   'menu.dataConfirm': '数据确权',
-  'menu.dataConfirm.assetProof': '数据资产属权证明',
-  'menu.dataConfirm.assetIdentifier': '数据资产权属标识',
+  'menu.dataConfirm.assetProof': '资产属权证明',
+  'menu.dataConfirm.assetIdentifier': '资产权属标识',
   'menu.dataConfirm.dataUsage': '使用约定',
 
-  'menu.dataOnChain': '数据增值服务',
+  'menu.dataOnChain': '数据上链',
   'menu.dataOnChain.onChainRequests': '上链申请查看',
   'menu.dataOnChain.onChainApproval': '上链审批',
 
-  'menu.dataShareComment': '数据共享评价管理',
+  'menu.dataShareComment': '共享评价管理',
   'menu.dataShareComment.model': '模型管理',
   'menu.dataShareComment.token': '积分管理',
 
-  'menu.dataLifeCycle': '数据共享全生命周期管理',
+  'menu.dataLifeCycle': '全生命周期管理',
   'menu.dataLifeCycle.duringChain': '数据全链路',
   'menu.dataLifeCycle.analysis': '统计分析',
 
