@@ -1,240 +1,227 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Card, Button, Dropdown, Menu, message } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import { EllipsisOutlined } from '@ant-design/icons';
+import { Col, Dropdown, Menu, Row } from 'antd';
+import React, { Component, Suspense } from 'react';
+import { GridContent } from '@ant-design/pro-layout';
+import { RadioChangeEvent } from 'antd/es/radio';
+import { RangePickerProps } from 'antd/es/date-picker/generatePicker';
+import moment from 'moment';
+import { connect, Dispatch } from 'umi';
 
-import demo from '@/assets/demo.png';
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import PageLoading from './components/PageLoading';
+import { getTimeDistance } from './utils/utils';
+import { AnalysisData } from './data';
+import styles from './style.less';
 
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: TableListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
+const IntroduceRow = React.lazy(() => import('./components/IntroduceRow'));
+const SalesCard = React.lazy(() => import('./components/SalesCard'));
+const TopSearch = React.lazy(() => import('./components/TopSearch'));
+const ProportionSales = React.lazy(() => import('./components/ProportionSales'));
+const OfflineData = React.lazy(() => import('./components/OfflineData'));
 
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+type RangePickerValue = RangePickerProps<moment.Moment>['value'];
+
+interface AnalysisProps {
+  dashboardAndanalysis: AnalysisData;
+  dispatch: Dispatch;
+  loading: boolean;
+}
+
+interface AnalysisState {
+  salesType: 'all' | 'online' | 'stores';
+  currentTabKey: string;
+  rangePickerValue: RangePickerValue;
+}
+
+class Analysis extends Component<AnalysisProps, AnalysisState> {
+  state: AnalysisState = {
+    salesType: 'all',
+    currentTabKey: '',
+    rangePickerValue: getTimeDistance('year'),
+  };
+
+  reqRef: number = 0;
+
+  timeoutId: number = 0;
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    this.reqRef = requestAnimationFrame(() => {
+      dispatch({
+        type: 'dashboardAndanalysis/fetch',
+      });
     });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
   }
-};
 
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'dashboardAndanalysis/clear',
     });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
+    cancelAnimationFrame(this.reqRef);
+    clearTimeout(this.timeoutId);
   }
-};
 
-const TableList: React.FC<{}> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
-  const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
-    {
-      title: '数据需求方',
-      dataIndex: 'name',
-      rules: [
-        {
-          required: true,
-          message: '规则名称为必填项',
-        },
-      ],
-    },
-    {
-      title: '数据供给方',
-      dataIndex: 'desc',
-      valueType: 'textarea',
-    },
-    {
-      title: '数据标识',
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      // renderText: (val: string) => `${val} 万`,
-    },
-    {
-      title: '操作类型',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: { text: '数据请求', status: 'Processing' },
-        1: { text: '数据批注', status: 'Success' },
-        // 2: { text: '已上线', status: 'Success' },
-        // 3: { text: '异常', status: 'Error' },
-      },
-    },
-    // {
-    //   title: '上次调度时间',
-    //   dataIndex: 'updatedAt',
-    //   sorter: true,
-    //   valueType: 'dateTime',
-    //   hideInForm: true,
-    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
-    //     const status = form.getFieldValue('status');
-    //     if (`${status}` === '0') {
-    //       return false;
-    //     }
-    //     if (`${status}` === '3') {
-    //       return <Input {...rest} placeholder="请输入异常原因！" />;
-    //     }
-    //     return defaultRender(item);
-    //   },
-    // },
-    // {
-    //   title: '操作',
-    //   dataIndex: 'option',
-    //   valueType: 'option',
-    //   render: (_, record) => (
-    //     <>
-    //       <a
-    //         onClick={() => {
-    //           handleUpdateModalVisible(true);
-    //           setStepFormValues(record);
-    //         }}
-    //       >
-    //         配置
-    //       </a>
-    //       <Divider type="vertical" />
-    //       <a href="">订阅警报</a>
-    //     </>
-    //   ),
-    // },
-  ];
+  handleChangeSalesType = (e: RadioChangeEvent) => {
+    this.setState({
+      salesType: e.target.value,
+    });
+  };
 
-  return (
-    <PageHeaderWrapper>
-      <Card hoverable style={{ width: 500 }} cover={<img alt="example" src={demo} />} />
-      <br />
-      <ProTable<TableListItem>
-        headerTitle="查询表格"
-        actionRef={actionRef}
-        rowKey="key"
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
-        ]}
-        // tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-        //   <div>
-        //     已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-        //     <span>
-        //       服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-        //     </span>
-        //   </div>
-        // )}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
-        columns={columns}
-        // rowSelection={{}}
-      />
-      <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<TableListItem, TableListItem>
-          onSubmit={async (value) => {
-            const success = await handleAdd(value);
-            if (success) {
-              handleModalVisible(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          rowKey="key"
-          type="form"
-          columns={columns}
-          rowSelection={{}}
-        />
-      </CreateForm>
-      {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
-          onSubmit={async (value) => {
-            const success = await handleUpdate(value);
-            if (success) {
-              handleUpdateModalVisible(false);
-              setStepFormValues({});
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
-          values={stepFormValues}
-        />
-      ) : null}
-    </PageHeaderWrapper>
-  );
-};
+  handleTabChange = (key: string) => {
+    this.setState({
+      currentTabKey: key,
+    });
+  };
 
-export default TableList;
+  handleRangePickerChange = (rangePickerValue: RangePickerValue) => {
+    const { dispatch } = this.props;
+    this.setState({
+      rangePickerValue,
+    });
+
+    dispatch({
+      type: 'dashboardAndanalysis/fetchSalesData',
+    });
+  };
+
+  selectDate = (type: 'today' | 'week' | 'month' | 'year') => {
+    const { dispatch } = this.props;
+    this.setState({
+      rangePickerValue: getTimeDistance(type),
+    });
+
+    dispatch({
+      type: 'dashboardAndanalysis/fetchSalesData',
+    });
+  };
+
+  isActive = (type: 'today' | 'week' | 'month' | 'year') => {
+    const { rangePickerValue } = this.state;
+    if (!rangePickerValue) {
+      return '';
+    }
+    const value = getTimeDistance(type);
+    if (!value) {
+      return '';
+    }
+    if (!rangePickerValue[0] || !rangePickerValue[1]) {
+      return '';
+    }
+    if (
+      rangePickerValue[0].isSame(value[0] as moment.Moment, 'day') &&
+      rangePickerValue[1].isSame(value[1] as moment.Moment, 'day')
+    ) {
+      return styles.currentDate;
+    }
+    return '';
+  };
+
+  render() {
+    const { rangePickerValue, salesType, currentTabKey } = this.state;
+    const { dashboardAndanalysis, loading } = this.props;
+    const {
+      visitData,
+      visitData2,
+      salesData,
+      searchData,
+      offlineData,
+      offlineChartData,
+      salesTypeData,
+      salesTypeDataOnline,
+      salesTypeDataOffline,
+    } = dashboardAndanalysis;
+    let salesPieData;
+    if (salesType === 'all') {
+      salesPieData = salesTypeData;
+    } else {
+      salesPieData = salesType === 'online' ? salesTypeDataOnline : salesTypeDataOffline;
+    }
+    const menu = (
+      <Menu>
+        <Menu.Item>操作一</Menu.Item>
+        <Menu.Item>操作二</Menu.Item>
+      </Menu>
+    );
+
+    const dropdownGroup = (
+      <span className={styles.iconGroup}>
+        <Dropdown overlay={menu} placement="bottomRight">
+          <EllipsisOutlined />
+        </Dropdown>
+      </span>
+    );
+
+    const activeKey = currentTabKey || (offlineData[0] && offlineData[0].name);
+    return (
+      <GridContent>
+        <React.Fragment>
+          <Suspense fallback={<PageLoading />}>
+            <IntroduceRow loading={loading} visitData={visitData} />
+          </Suspense>
+          <Suspense fallback={null}>
+            <SalesCard
+              rangePickerValue={rangePickerValue}
+              salesData={salesData}
+              isActive={this.isActive}
+              handleRangePickerChange={this.handleRangePickerChange}
+              loading={loading}
+              selectDate={this.selectDate}
+            />
+          </Suspense>
+          <Row
+            gutter={24}
+            style={{
+              marginTop: 24,
+            }}
+          >
+            <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+              <Suspense fallback={null}>
+                <TopSearch
+                  loading={loading}
+                  visitData2={visitData2}
+                  searchData={searchData}
+                  dropdownGroup={dropdownGroup}
+                />
+              </Suspense>
+            </Col>
+            <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+              <Suspense fallback={null}>
+                <ProportionSales
+                  dropdownGroup={dropdownGroup}
+                  salesType={salesType}
+                  loading={loading}
+                  salesPieData={salesPieData}
+                  handleChangeSalesType={this.handleChangeSalesType}
+                />
+              </Suspense>
+            </Col>
+          </Row>
+          <Suspense fallback={null}>
+            <OfflineData
+              activeKey={activeKey}
+              loading={loading}
+              offlineData={offlineData}
+              offlineChartData={offlineChartData}
+              handleTabChange={this.handleTabChange}
+            />
+          </Suspense>
+        </React.Fragment>
+      </GridContent>
+    );
+  }
+}
+
+export default connect(
+  ({
+    dashboardAndanalysis,
+    loading,
+  }: {
+    dashboardAndanalysis: any;
+    loading: {
+      effects: { [key: string]: boolean };
+    };
+  }) => ({
+    dashboardAndanalysis,
+    loading: loading.effects['dashboardAndanalysis/fetch'],
+  }),
+)(Analysis);

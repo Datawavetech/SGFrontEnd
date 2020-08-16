@@ -1,10 +1,9 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Card, Button, Dropdown, Menu, message } from 'antd';
+import { Button, Dropdown, Menu, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
-import demo from '@/assets/demo.png';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
@@ -89,14 +88,13 @@ const TableList: React.FC<{}> = () => {
       ],
     },
     {
-      title: '数据供给方',
+      title: '数据供给',
       dataIndex: 'desc',
       valueType: 'textarea',
     },
     {
       title: '数据标识',
       dataIndex: 'callNo',
-      sorter: true,
       hideInForm: true,
       // renderText: (val: string) => `${val} 万`,
     },
@@ -151,14 +149,12 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <Card hoverable style={{ width: 500 }} cover={<img alt="example" src={demo} />} />
-      <br />
       <ProTable<TableListItem>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
+          <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -184,14 +180,14 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        // tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-        //   <div>
-        //     已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-        //     <span>
-        //       服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-        //     </span>
-        //   </div>
-        // )}
+        tableAlertRender={({ selectedRowKeys, selectedRows }) => (
+          <div>
+            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
+            <span>
+              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
+            </span>
+          </div>
+        )}
         request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
         columns={columns}
         // rowSelection={{}}
