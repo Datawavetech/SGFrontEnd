@@ -1,144 +1,37 @@
-import React, { Component, Suspense } from 'react';
-import { GridContent } from '@ant-design/pro-layout';
-import { RangePickerProps } from 'antd/es/date-picker/generatePicker';
+import React, { useState, useEffect } from 'react';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import IntroduceRow from './components/IntroduceRow';
+import { getBlockHeightData } from './service';
+import { VisitDataType } from './data'
 import moment from 'moment';
-import { connect, Dispatch } from 'umi';
 
-import PageLoading from './components/PageLoading';
-import { getTimeDistance } from './utils/utils';
-import { AnalysisData } from './data';
-import styles from './style.less';
-
-const IntroduceRow = React.lazy(() => import('./components/IntroduceRow'));
-const SalesCard = React.lazy(() => import('./components/SalesCard'));
-
-type RangePickerValue = RangePickerProps<moment.Moment>['value'];
-
-interface AnalysisProps {
-  dashboardAndanalysis: AnalysisData;
-  dispatch: Dispatch;
-  loading: boolean;
+const beginDay = 0
+const fakeY = [2, 5, 14, 15, 17, 23, 25, 26, 35, 39, 46, 53, 61, 65, 73, 76, 85];
+const visitData: VisitDataType[] = [];
+for (let i = 0; i < fakeY.length; i += 1) {
+  visitData.push({
+    x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
+    y: fakeY[i],
+  });
 }
+const TableList: React.FC<{}> = () => {
+  const [blockHeightData, setBlockHeightData] = useState({});
+  useEffect(()=>{
+    
+    setBlockHeightData(visitData)
+    console.log(blockHeightData)
+  })
 
-interface AnalysisState {
-  salesType: 'all' | 'online' | 'stores';
-  currentTabKey: string;
-  rangePickerValue: RangePickerValue;
-}
+  return (
+    <PageHeaderWrapper>
+      
+      <IntroduceRow visitData={blockHeightData} />
+      <div>
+        abc
+      </div>
+     
+    </PageHeaderWrapper>
+  );
+};
 
-class Analysis extends Component<AnalysisProps, AnalysisState> {
-  state: AnalysisState = {
-    // eslint-disable-next-line react/no-unused-state
-    salesType: 'all',
-    // eslint-disable-next-line react/no-unused-state
-    currentTabKey: '',
-    rangePickerValue: getTimeDistance('year'),
-  };
-
-  reqRef: number = 0;
-
-  timeoutId: number = 0;
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-    this.reqRef = requestAnimationFrame(() => {
-      dispatch({
-        type: 'dashboardAndanalysis/fetch',
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'dashboardAndanalysis/clear',
-    });
-    cancelAnimationFrame(this.reqRef);
-    clearTimeout(this.timeoutId);
-  }
-
-  handleRangePickerChange = (rangePickerValue: RangePickerValue) => {
-    const { dispatch } = this.props;
-    this.setState({
-      rangePickerValue,
-    });
-
-    dispatch({
-      type: 'dashboardAndanalysis/fetchSalesData',
-    });
-  };
-
-  selectDate = (type: 'today' | 'week' | 'month' | 'year') => {
-    const { dispatch } = this.props;
-    this.setState({
-      rangePickerValue: getTimeDistance(type),
-    });
-
-    dispatch({
-      type: 'dashboardAndanalysis/fetchSalesData',
-    });
-  };
-
-  isActive = (type: 'today' | 'week' | 'month' | 'year') => {
-    const { rangePickerValue } = this.state;
-    if (!rangePickerValue) {
-      return '';
-    }
-    const value = getTimeDistance(type);
-    if (!value) {
-      return '';
-    }
-    if (!rangePickerValue[0] || !rangePickerValue[1]) {
-      return '';
-    }
-    if (
-      rangePickerValue[0].isSame(value[0] as moment.Moment, 'day') &&
-      rangePickerValue[1].isSame(value[1] as moment.Moment, 'day')
-    ) {
-      return styles.currentDate;
-    }
-    return '';
-  };
-
-  render() {
-    const { rangePickerValue } = this.state;
-    const { dashboardAndanalysis, loading } = this.props;
-    const { visitData, salesData } = dashboardAndanalysis;
-
-    return (
-      <GridContent>
-        <React.Fragment>
-          <Suspense fallback={<PageLoading />}>
-            <IntroduceRow loading={loading} visitData={visitData} />
-          </Suspense>
-
-          <Suspense fallback={null}>
-            <SalesCard
-              rangePickerValue={rangePickerValue}
-              salesData={salesData}
-              isActive={this.isActive}
-              handleRangePickerChange={this.handleRangePickerChange}
-              loading={loading}
-              selectDate={this.selectDate}
-            />
-          </Suspense>
-        </React.Fragment>
-      </GridContent>
-    );
-  }
-}
-
-export default connect(
-  ({
-    dashboardAndanalysis,
-    loading,
-  }: {
-    dashboardAndanalysis: any;
-    loading: {
-      effects: { [key: string]: boolean };
-    };
-  }) => ({
-    dashboardAndanalysis,
-    loading: loading.effects['dashboardAndanalysis/fetch'],
-  }),
-)(Analysis);
+export default TableList;

@@ -3,7 +3,7 @@ import { Alert, Checkbox, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, SelectLang, history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/State_Grid.svg';
 import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 import LoginFrom from './components/Login';
 import styles from './style.less';
