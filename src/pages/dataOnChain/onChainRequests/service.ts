@@ -2,7 +2,7 @@ import request from 'umi-request';
 import { TableListParams, TableListItem } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
+  return request('/api', {
     params,
   }).then(resp => {
     const tableListDataSource: TableListItem[] = [];

@@ -5,9 +5,9 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
  * 添加节点
@@ -78,87 +78,63 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '申请用户ID',
-      dataIndex: 'callNo',
+      title: '权属标识',
+      dataIndex: 'dataHash',
       sorter: true,
       hideInForm: true,
-      // renderText: (val: string) => `${val} 万`,
+      hideInSearch: true,
     },
     {
-      title: '申请用户',
-      dataIndex: 'name',
-      hideInForm: true,
-      rules: [
-        {
-          required: true,
-          message: '规则名称为必填项',
-        },
-      ],
-    },
-    {
-      title: '申请数据ID',
-      dataIndex: 'callNo',
+      title: '用户',
+      dataIndex: 'user',
       sorter: true,
-      // renderText: (val: string) => `${val} 万`,
-    },
-    {
-      title: '数据描述',
-      dataIndex: 'desc',
-      valueType: 'textarea',
-    },
-    // {
-    //   title: '服务调用次数',
-    //   dataIndex: 'callNo',
-    //   sorter: true,
-    //   hideInForm: true,
-    //   renderText: (val: string) => `${val} 万`,
-    // },
-    {
-      title: '状态',
-      dataIndex: 'status',
       hideInForm: true,
-      valueEnum: {
-        0: { text: '未审核', status: 'Error' },
-        1: { text: '已审核', status: 'Processing' },
-        2: { text: '已上链', status: 'Success' },
-        // 3: { text: '异常', status: 'Error' },
-      },
+      hideInSearch: true,
     },
-    // {
-    //   title: '上次调度时间',
-    //   dataIndex: 'updatedAt',
-    //   sorter: true,
-    //   valueType: 'dateTime',
-    //   hideInForm: true,
-    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
-    //     const status = form.getFieldValue('status');
-    //     if (`${status}` === '0') {
-    //       return false;
-    //     }
-    //     if (`${status}` === '3') {
-    //       return <Input {...rest} placeholder="请输入异常原因！" />;
-    //     }
-    //     return defaultRender(item);
-    //   },
-    // },
+    {
+      title: '所属部门',
+      dataIndex: 'department',
+      sorter: true,
+      hideInForm: true,
+      hideInSearch: true,
+    },
+    {
+      title: '资产名称',
+      dataIndex: 'assetName',
+      hideInForm: true,
+    },
+    {
+      title: '使用约定列表',
+      dataIndex: 'usages',
+      sorter: true,
+      hideInForm: true,
+      hideInSearch: true,
+    },
+    {
+      title: '数据类型列表',
+      dataIndex: 'dataTypes',
+      sorter: true,
+      hideInForm: true,
+      hideInSearch: true,
+    },
+    {
+      title: '有效期截止',
+      dataIndex: 'expireAt',
+      sorter: true,
+      hideInForm: true,
+      hideInSearch: true,
+    },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            审核
-          </a>
-          <Divider type="vertical" />
-          <a href="">查看</a>
-          <Divider type="vertical" />
-          <a href="">查看上链</a>
+          <ButtonGroup>
+            <Button type="primary">通过</Button>
+            <Divider type="vertical"></Divider>
+            <Button danger>拒绝</Button>
+          </ButtonGroup>
         </>
       ),
     },

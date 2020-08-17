@@ -1,9 +1,21 @@
 import request from 'umi-request';
-import { TableListParams } from './data.d';
+import { TableListParams, TableListItem } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
+  return request('/api', {
     params,
+  }).then(resp => {
+    const tableListDataSource: TableListItem[] = [];
+    tableListDataSource.push({
+      dataHash: '0x5dcccccdaa9237504',
+      user: '章明',
+      department: "业务部",
+      assetName: 'TJ_OBJ_ONE',
+      usages: '报表生成、数据集成、业务数据',
+      dataTypes: '测序数据',
+      expireAt: '2020-08-18 00:00:01',
+    });
+    return { 'data': tableListDataSource }
   });
 }
 
