@@ -3,11 +3,7 @@ import { Alert, Checkbox, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, SelectLang, history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
-<<<<<<< HEAD
-import logo from '@/assets/State_Grid.svg';
-=======
 import logo from '@/assets/sg_logo.svg';
->>>>>>> acbd57bd6645e29793eeef15011039fb526b17cd
 import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 import LoginFrom from './components/Login';
 import styles from './style.less';
