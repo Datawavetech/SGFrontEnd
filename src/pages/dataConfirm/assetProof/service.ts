@@ -1,6 +1,5 @@
 import request from 'umi-request';
 // import { TableListParams } from './data.d';
-
 // TODO params?: TableListParams
 export async function listAssetProof() {
   return request('/api/confirm/assetProof', {

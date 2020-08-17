@@ -1,8 +1,5 @@
 import request from 'umi-request';
 //  import { TableListParams } from './data.d';
-
-//  const assetIdentifierApi = url + '/api/confirm/assetIdentifier'
-
 //  TODO params?: TableListParams
 export async function listAssetIdentifier() {
   return request('/api/confirm/assetIdentifier', {

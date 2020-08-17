@@ -192,10 +192,6 @@ const getFakeChartData: AnalysisData = {
   radarData,
 };
 
-const getBlockHeightData: VisitDataType[] = visitData
-
-
 export default {
   'GET  /api/fake_chart_data': getFakeChartData,
-  'GET  /api/chainMng/BlockHeight': getBlockHeightData
 };
