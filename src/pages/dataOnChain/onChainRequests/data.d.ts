@@ -3,7 +3,8 @@ export interface TableListItem {
   assetName:string;
   usages:string;
   dataTypes:string;
-  expireAt:Date;
+  expireAt:string;
+  status:number;
 }
 
 export interface TableListPagination {

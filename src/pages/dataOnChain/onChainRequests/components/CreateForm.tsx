@@ -1,10 +1,53 @@
 import React from 'react';
-import { Modal } from 'antd';
+import { Form, Modal, Input, DatePicker, Upload, Button } from 'antd';
+import FormItem from 'antd/lib/form/FormItem';
+import { UploadOutlined } from '@ant-design/icons';
 
 interface CreateFormProps {
   modalVisible: boolean;
   onCancel: () => void;
 }
+
+const [form] = Form.useForm();
+
+const renderContent = () => {
+  return (
+    <>
+      <FormItem
+        name="usages"
+        label="数据使用约定"
+        rules={[{ required: true, message: '请输入使用约定！' }]}
+      >
+        <Input placeholder="请输入" />
+      </FormItem>
+      <FormItem
+        name="dataTypes"
+        label="数据类型列表"
+        rules={[{ required: true, message: '请输入数据类型列表！' }]}
+      >
+        <Input placeholder="请输入" />
+      </FormItem>
+      <FormItem
+        name="expireAt"
+        label="数据有效期"
+        rules={[{ required: true, }]}
+      >
+        <DatePicker />
+      </FormItem>
+      <FormItem
+        name="file"
+        label="文件"
+        rules={[{ required: true, }]}
+      >
+        <Upload>
+          <Button>
+            <UploadOutlined /> Upload
+          </Button>
+        </Upload>,
+      </FormItem>
+    </>
+  );
+};
 
 const CreateForm: React.FC<CreateFormProps> = (props) => {
   const { modalVisible, onCancel } = props;
@@ -12,12 +55,14 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
   return (
     <Modal
       destroyOnClose
-      title="新建规则"
+      title="数据上链申请"
       visible={modalVisible}
       onCancel={() => onCancel()}
       footer={null}
     >
-      {props.children}
+      <Form>
+        {renderContent()}
+      </Form>
     </Modal>
   );
 };
