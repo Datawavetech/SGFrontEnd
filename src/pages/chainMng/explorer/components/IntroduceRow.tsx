@@ -22,9 +22,30 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
       <ChartCard
         bordered={false}
         loading={loading}
-        title={
-          <FormattedMessage id="dashboardandanalysis.analysis.visits" defaultMessage="Visits" />
+        title={<FormattedMessage id="chainMng.explorer.blockheight" defaultMessage="Visits" />}
+        total={numeral(8846).format('0,0')}
+        footer={
+          <Field
+            label={
+              <FormattedMessage
+                id="dashboardandanalysis.analysis.day-visits"
+                defaultMessage="Daily Visits"
+              />
+            }
+            value={numeral(1234).format('0,0')}
+          />
         }
+        contentHeight={46}
+      >
+        <MiniArea color="#975FE4" data={visitData} />
+      </ChartCard>
+    </Col>
+
+    <Col {...topColResponsiveProps}>
+      <ChartCard
+        bordered={false}
+        loading={loading}
+        title={<FormattedMessage id="chainMng.explorer.txamount" defaultMessage="Visits" />}
         action={
           <Tooltip
             title={
@@ -58,9 +79,7 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
       <ChartCard
         bordered={false}
         loading={loading}
-        title={
-          <FormattedMessage id="dashboardandanalysis.analysis.visits" defaultMessage="Visits" />
-        }
+        title={<FormattedMessage id="chainMng.explorer.realtimetx" defaultMessage="Visits" />}
         action={
           <Tooltip
             title={
@@ -94,45 +113,7 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
       <ChartCard
         bordered={false}
         loading={loading}
-        title={
-          <FormattedMessage id="dashboardandanalysis.analysis.visits" defaultMessage="Visits" />
-        }
-        action={
-          <Tooltip
-            title={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.introduce"
-                defaultMessage="Introduce"
-              />
-            }
-          >
-            <InfoCircleOutlined />
-          </Tooltip>
-        }
-        total={numeral(8846).format('0,0')}
-        footer={
-          <Field
-            label={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
-              />
-            }
-            value={numeral(1234).format('0,0')}
-          />
-        }
-        contentHeight={46}
-      >
-        <MiniArea color="#975FE4" data={visitData} />
-      </ChartCard>
-    </Col>
-    <Col {...topColResponsiveProps}>
-      <ChartCard
-        bordered={false}
-        loading={loading}
-        title={
-          <FormattedMessage id="dashboardandanalysis.analysis.visits" defaultMessage="Visits" />
-        }
+        title={<FormattedMessage id="chainMng.explorer.latestblocks" defaultMessage="Visits" />}
         action={
           <Tooltip
             title={

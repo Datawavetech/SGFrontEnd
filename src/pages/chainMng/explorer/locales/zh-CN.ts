@@ -1,4 +1,9 @@
 export default {
+  'chainMng.explorer.blockheight': '区块高度',
+  'chainMng.explorer.txamount': '交易总数',
+  'chainMng.explorer.realtimetx': '实时交易',
+  'chainMng.explorer.latestblocks': '最新区块',
+
   'dashboardandanalysis.analysis.test': '工专路 {no} 号店',
   'dashboardandanalysis.analysis.introduce': '指标说明',
   'dashboardandanalysis.analysis.total-sales': '总销售额',
