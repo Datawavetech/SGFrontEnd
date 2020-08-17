@@ -12,30 +12,19 @@ const topColResponsiveProps = {
   sm: 12,
   md: 12,
   lg: 12,
-  xl: 6,
+  xl: 12,
   style: { marginBottom: 24 },
 };
 
-const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: VisitDataType[] }) => (
+const IntroduceRow = ({ loading, visitData, visitData2, visitData3, visitData4}: { loading: boolean; visitData: VisitDataType[]; visitData2: VisitDataType[]; visitData3: VisitDataType[]; visitData4: VisitDataType[] }) => (
   <Row gutter={24}>
     <Col {...topColResponsiveProps}>
       <ChartCard
         bordered={false}
         loading={loading}
         title={<FormattedMessage id="chainMng.explorer.blockheight" defaultMessage="Visits" />}
-        total={numeral(8846).format('0,0')}
-        footer={
-          <Field
-            label={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
-              />
-            }
-            value={numeral(1234).format('0,0')}
-          />
-        }
-        contentHeight={46}
+        total={numeral(85).format('0,0')}
+        contentHeight={80}
       >
         <MiniArea color="#975FE4" data={visitData} />
       </ChartCard>
@@ -58,21 +47,10 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
             <InfoCircleOutlined />
           </Tooltip>
         }
-        total={numeral(8846).format('0,0')}
-        footer={
-          <Field
-            label={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
-              />
-            }
-            value={numeral(1234).format('0,0')}
-          />
-        }
-        contentHeight={46}
+        total={numeral(31).format('0,0')}
+        contentHeight={80}
       >
-        <MiniArea color="#975FE4" data={visitData} />
+        <MiniArea color="#970325" data={visitData2} />
       </ChartCard>
     </Col>
     <Col {...topColResponsiveProps}>
@@ -92,21 +70,10 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
             <InfoCircleOutlined />
           </Tooltip>
         }
-        total={numeral(8846).format('0,0')}
-        footer={
-          <Field
-            label={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
-              />
-            }
-            value={numeral(1234).format('0,0')}
-          />
-        }
-        contentHeight={46}
+        total={numeral(2).format('0,0')}
+        contentHeight={80}
       >
-        <MiniArea color="#975FE4" data={visitData} />
+        <MiniArea color="#055336" data={visitData3} />
       </ChartCard>
     </Col>
     <Col {...topColResponsiveProps}>
@@ -126,21 +93,10 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
             <InfoCircleOutlined />
           </Tooltip>
         }
-        total={numeral(8846).format('0,0')}
-        footer={
-          <Field
-            label={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
-              />
-            }
-            value={numeral(1234).format('0,0')}
-          />
-        }
-        contentHeight={46}
+        total={numeral(85).format('0,0')}
+        contentHeight={80}
       >
-        <MiniArea color="#975FE4" data={visitData} />
+        <MiniArea color="#322554" data={visitData4} />
       </ChartCard>
     </Col>
   </Row>
