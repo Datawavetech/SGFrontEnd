@@ -1,5 +1,6 @@
 import { DownOutlined } from '@ant-design/icons';
-import { Carousel, Card, Button, Divider, Dropdown, Menu, message /* Input */ } from 'antd';
+import { Carousel, Card, Button, Divider, Dropdown, Menu, message, /* Input */ 
+Tag} from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -121,21 +122,12 @@ const TableList: React.FC<{}> = () => {
       // renderText: (val: string) => `${val} 万`,
     },
     {
-      title: '操作',
+      title: '验证结果',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            生成证明
-          </a>
-          <Divider type="vertical" />
-          <a href="">查看证明</a>
+          <Tag color="green">验证通过</Tag>
         </>
       ),
     },
@@ -224,23 +216,6 @@ const TableList: React.FC<{}> = () => {
           values={stepFormValues}
         />
       ) : null}
-      <br />
-      <Card title="数据证书范例" bordered={false}>
-        <Carousel className={styles.customCarousel} autoplay>
-          <div>
-            <h3 className={styles.fontColor}>证书图片1</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片2</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片3</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片4</h3>
-          </div>
-        </Carousel>
-      </Card>
     </PageHeaderWrapper>
   );
 };
