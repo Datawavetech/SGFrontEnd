@@ -1,19 +1,18 @@
 import request from 'umi-request';
-// import { TableListParams } from './data.d';
-import { Server_Url as url } from '../../../utils/const'
+//  import { TableListParams } from './data.d';
 
-// const assetIdentifierApi = url + '/api/confirm/assetIdentifier'
+//  const assetIdentifierApi = url + '/api/confirm/assetIdentifier'
 
-// TODO params?: TableListParams
+//  TODO params?: TableListParams
 export async function listAssetIdentifier() {
-  return request(url + '/api/confirm/assetIdentifier', {
+  return request('/api/confirm/assetIdentifier', {
     method: 'GET',
-  }).then(resp => {
+  }).then((resp) => {
     if (resp.status === 200) {
-      return resp
+      return resp;
     }
-    return ""
-  })
+    return '';
+  });
 }
 
 // TODO params?: TableListParams
@@ -46,7 +45,7 @@ export async function addRule() {
   });
 }
 
-//TODO params: TableListParams
+//  TODO params: TableListParams
 export async function updateRule() {
   return request('/api/rule', {
     method: 'POST',

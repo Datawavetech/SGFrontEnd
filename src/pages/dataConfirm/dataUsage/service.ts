@@ -1,15 +1,13 @@
 import request from 'umi-request';
 import { TableListParams } from './data.d';
-import { Server_Url as url } from '../../../utils/const'
 
-const dataUsageApi = url + '/api/confirm/dataUsage'
-
-export async function listDataUsage(params?: TableListParams) {
-  return request(dataUsageApi, {
+export async function listDataUsage() {
+  return request('/api/confirm/dataUsage', {
     method: 'GET',
-  }).then(resp => {
+    // eslint-disable-next-line consistent-return
+  }).then((resp) => {
     if (resp.status === 200) {
-      return resp
+      return resp;
     }
   });
 }
@@ -24,7 +22,7 @@ export async function removeRule(params: { key: string[] }) {
   });
 }
 
-//params: TableListParams
+//  params: TableListParams
 export async function addRule() {
   return request('/api/rule', {
     method: 'POST',
