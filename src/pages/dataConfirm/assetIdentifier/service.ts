@@ -1,37 +1,57 @@
 import request from 'umi-request';
-import { TableListParams } from './data.d';
+// import { TableListParams } from './data.d';
+import { Server_Url as url } from '../../../utils/const'
 
-export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
+// const assetIdentifierApi = url + '/api/confirm/assetIdentifier'
+
+// TODO params?: TableListParams
+export async function listAssetIdentifier() {
+  return request(url + '/api/confirm/assetIdentifier', {
+    method: 'GET',
+  }).then(resp => {
+    if (resp.status === 200) {
+      return resp
+    }
+    return ""
+  })
+}
+
+// TODO params?: TableListParams
+export async function createAssetIdentifier() {
+  return request('/api/confirm/assetIdentifier', {
+    method: 'POST',
+    // params,
   });
 }
 
-export async function removeRule(params: { key: number[] }) {
+// TODO params: { dataHashs: string[] }
+export async function deleteAssetIdentifier() {
   return request('/api/rule', {
     method: 'POST',
     data: {
-      ...params,
+      // ...params,
       method: 'delete',
     },
   });
 }
 
-export async function addRule(params: TableListParams) {
+// params: TableListParams
+export async function addRule() {
   return request('/api/rule', {
     method: 'POST',
     data: {
-      ...params,
+      // ...params,
       method: 'post',
     },
   });
 }
 
-export async function updateRule(params: TableListParams) {
+//TODO params: TableListParams
+export async function updateRule() {
   return request('/api/rule', {
     method: 'POST',
     data: {
-      ...params,
+      // ...params,
       method: 'update',
     },
   });

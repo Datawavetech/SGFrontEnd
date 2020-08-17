@@ -1,16 +1,10 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+export interface AssetProof {
+  dataHash: string;
+  assetName: string;
+  assetSys: string;
+  proof: string;
+  createAt: Date;
+  updateAt: Date;
 }
 
 export interface TableListPagination {

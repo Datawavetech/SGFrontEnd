@@ -1,16 +1,10 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
+export interface AssetIdentifier {
+  dataHash: string;
+  assetName: string;
+  assetSys: string;
+  token: number;
   createdAt: Date;
-  progress: number;
+  updatedAt: Date;
 }
 
 export interface TableListPagination {
@@ -20,15 +14,15 @@ export interface TableListPagination {
 }
 
 export interface TableListData {
-  list: TableListItem[];
+  list: AssetIdentifier[];
   pagination: Partial<TableListPagination>;
 }
 
 export interface TableListParams {
   status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  assetName?: string;
+  // desc?: string;
+  dataHash?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };
