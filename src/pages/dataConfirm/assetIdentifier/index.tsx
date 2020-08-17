@@ -1,19 +1,20 @@
 import { DownOutlined, /* PlusOutlined, */ FormOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, message } from 'antd';
+import { Button, Dropdown, Menu, message, Divider } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import { AssetIdentifier } from './data.d';
+import { listAssetIdentifier, updateRule, addRule, removeRule } from './service';
+import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: TableListItem) => {
+const handleAdd = async (fields: AssetIdentifier) => {
   const hide = message.loading('正在添加');
   try {
     await addRule({ ...fields });
@@ -35,9 +36,8 @@ const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在配置');
   try {
     await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+      dataHash: fields.dataHash,
+      assetName: fields.assetName,
     });
     hide();
 
@@ -54,12 +54,12 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleRemove = async (selectedRows: AssetIdentifier[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
     await removeRule({
-      key: selectedRows.map((row) => row.key),
+      dataHashs: selectedRows.map((row) => row.dataHash),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -76,109 +76,72 @@ const TableList: React.FC<{}> = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<AssetIdentifier>[] = [
     {
-      title: '申请者ID',
-      dataIndex: 'callNo',
-      sorter: true,
+      title: '权属标识',
+      dataIndex: 'dataHash',
       hideInForm: true,
+      ellipsis: true,
+      width: 300,
       // renderText: (val: string) => `${val} 万`,
     },
     {
-      title: '申请者',
-      dataIndex: 'name',
-      hideInForm: true,
+      title: '资产名称',
+      dataIndex: 'assetName',
       rules: [
         {
           required: true,
-          message: '规则名称为必填项',
+          message: '资产名称为必填项',
         },
       ],
-    },
-    {
-      title: '所有者ID',
-      dataIndex: 'ownNo',
-      sorter: true,
-      hideInForm: true,
-      // renderText: (val: string) => `${val} 万`,
     },
     {
       title: '所有者',
-      dataIndex: 'owner',
+      dataIndex: 'assetSys',
       hideInForm: true,
       rules: [
         {
           required: true,
-          message: '规则名称为必填项',
+          message: '所有者为必填项',
         },
       ],
     },
     {
-      title: '申请数据ID',
-      dataIndex: 'callNo',
+      title: '积分',
+      dataIndex: 'token',
+      hideInForm: true,
       sorter: true,
-      // renderText: (val: string) => `${val} 万`,
-    },
-    // {
-    //   title: '描述',
-    //   dataIndex: 'desc',
-    //   valueType: 'textarea',
-    // },
-    {
-      title: '申请权限',
-      dataIndex: 'status',
-      valueEnum: {
-        0: { text: '查看', status: 'Default' },
-        1: { text: '查看和修改', status: 'Processing' },
-        2: { text: '撤销', status: 'Success' },
-        3: { text: '校对', status: 'Error' },
-      },
-    },
-    {
-      title: '所属部门',
-      dataIndex: 'status',
-      hideInTable: true,
       hideInSearch: true,
-      valueEnum: {
-        0: { text: '部门A', status: 'Default' },
-        1: { text: '部门C', status: 'Processing' },
-        2: { text: '部门D', status: 'Success' },
-        3: { text: '部门E', status: 'Error' },
-      },
     },
-    // {
-    //   title: '上次调度时间',
-    //   dataIndex: 'updatedAt',
-    //   sorter: true,
-    //   valueType: 'dateTime',
-    //   hideInForm: true,
-    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
-    //     const status = form.getFieldValue('status');
-    //     if (`${status}` === '0') {
-    //       return false;
-    //     }
-    //     if (`${status}` === '3') {
-    //       return <Input {...rest} placeholder="请输入异常原因！" />;
-    //     }
-    //     return defaultRender(item);
-    //   },
-    // },
+    {
+      title: '创建时间',
+      dataIndex: 'createAt',
+      hideInForm: true,
+      sorter: true,
+      hideInSearch: true,
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateAt',
+      hideInForm: true,
+      sorter: true,
+      hideInSearch: true,
+    },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => (
+      hideInTable: false,
+      render: (_, record) => (
         <>
-          {/*  <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
+          <ButtonGroup>
+            <Button type="primary" onClick={() => {
+              handleUpdateModalVisible(true)
               setStepFormValues(record);
-            }}
-          >
-            配置
-          </a>
-          <Divider type="vertical" /> */}
-          <a href="">审核</a>
+            }}>更改</Button>
+            <Divider type="vertical" />
+            <Button danger>删除</Button>
+          </ButtonGroup>
         </>
       ),
     },
@@ -186,13 +149,13 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
-        headerTitle="查询表格"
+      <ProTable<AssetIdentifier>
+        headerTitle="权属信息"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <FormOutlined /> 申请使用权
+          <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
+            <FormOutlined /> 创建权属标识
           </Button>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
@@ -217,12 +180,13 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
-        // rowSelection={{}}
+      // rowSelection={{}}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<TableListItem, TableListItem>
+
+        <ProTable<AssetIdentifier, AssetIdentifier>
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {

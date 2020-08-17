@@ -1,13 +1,21 @@
 import request from 'umi-request';
-import { TableListParams } from './data.d';
+// import { TableListParams } from './data.d';
+import { Server_Url as url } from '../../../utils/const'
 
-export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
+const assetProofApi = url + '/api/confirm/assetProof'
+
+// TODO params?: TableListParams
+export async function listAssetProof() {
+  return request(assetProofApi, {
+    method: 'GET',
+  }).then(resp => {
+    if (resp.status === 200) {
+      return resp
+    }
   });
 }
 
-export async function removeRule(params: { key: number[] }) {
+export async function removeRule(params: { key: string[] }) {
   return request('/api/rule', {
     method: 'POST',
     data: {
@@ -17,21 +25,24 @@ export async function removeRule(params: { key: number[] }) {
   });
 }
 
-export async function addRule(params: TableListParams) {
+
+//params: TableListParams
+export async function addRule() {
   return request('/api/rule', {
     method: 'POST',
     data: {
-      ...params,
+      // ...params,
       method: 'post',
     },
   });
 }
 
-export async function updateRule(params: TableListParams) {
+// TODO params: TableListParam
+export async function updateRule(s) {
   return request('/api/rule', {
     method: 'POST',
     data: {
-      ...params,
+      // ...params,
       method: 'update',
     },
   });

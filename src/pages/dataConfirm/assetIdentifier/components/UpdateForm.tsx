@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Button, DatePicker, Input, Modal, Radio, Select, Steps } from 'antd';
 
-import { TableListItem } from '../data.d';
+import { AssetIdentifier } from '../data.d';
 
-export interface FormValueType extends Partial<TableListItem> {
+export interface FormValueType extends Partial<AssetIdentifier> {
   target?: string;
   template?: string;
   type?: string;
@@ -15,7 +15,7 @@ export interface UpdateFormProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
   onSubmit: (values: FormValueType) => void;
   updateModalVisible: boolean;
-  values: Partial<TableListItem>;
+  values: Partial<AssetIdentifier>;
 }
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -28,21 +28,17 @@ export interface UpdateFormState {
   currentStep: number;
 }
 
-const formLayout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 13 },
-};
+// const formLayout = {
+//   labelCol: { span: 7 },
+//   wrapperCol: { span: 13 },
+// };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const [formVals, setFormVals] = useState<FormValueType>({
-    name: props.values.name,
-    desc: props.values.desc,
-    key: props.values.key,
-    target: '0',
-    template: '0',
-    type: '1',
-    time: '',
-    frequency: 'month',
+    dataHash: props.values.dataHash,
+    assetName: props.values.assetName,
+    assetSys: props.values.assetSys,
+    token: props.values.token,
   });
 
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -193,18 +189,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         <Step title="配置规则属性" />
         <Step title="设定调度周期" />
       </Steps>
-      <Form
-        {...formLayout}
-        form={form}
-        initialValues={{
-          target: formVals.target,
-          template: formVals.template,
-          type: formVals.type,
-          frequency: formVals.frequency,
-          name: formVals.name,
-          desc: formVals.desc,
-        }}
-      >
+      <Form>
         {renderContent()}
       </Form>
     </Modal>
