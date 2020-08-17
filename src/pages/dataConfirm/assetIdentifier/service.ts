@@ -1,15 +1,16 @@
 import request from 'umi-request';
 // import { TableListParams } from './data.d';
-import { Server_Url as url } from '../../../utils/const'
+import { serverUrl as url } from '../../../utils/const'
 
-// const assetIdentifierApi = url + '/api/confirm/assetIdentifier'
+const assetIdentifierApi = url + '/api/confirm/assetIdentifier'
 
 // TODO params?: TableListParams
 export async function listAssetIdentifier() {
-  return request(url + '/api/confirm/assetIdentifier', {
+  return request(assetIdentifierApi, {
     method: 'GET',
   }).then(resp => {
     if (resp.status === 200) {
+      console.log(resp.data)
       return resp
     }
     return ""

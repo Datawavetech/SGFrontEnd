@@ -1,4 +1,4 @@
-import { DownOutlined, /* PlusOutlined, */ FormOutlined } from '@ant-design/icons';
+import { DownOutlined, /* PlusOutlined, */ FormOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, message, Divider } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -7,7 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { AssetIdentifier } from './data.d';
-import { listAssetIdentifier, updateRule, addRule, removeRule } from './service';
+import { listAssetIdentifier, updateRule, addRule } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
@@ -75,6 +75,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<AssetIdentifier>[] = [
     {
@@ -98,7 +99,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '所有者',
       dataIndex: 'assetSys',
-      hideInForm: true,
       rules: [
         {
           required: true,
@@ -153,39 +153,19 @@ const TableList: React.FC<{}> = () => {
         headerTitle="权属信息"
         actionRef={actionRef}
         rowKey="key"
-        toolBarRender={(action, { selectedRows }) => [
+        toolBarRender={() => [
           <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
-            <FormOutlined /> 创建权属标识
+            <PlusOutlined /> 创建权属标识
           </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
         ]}
-        request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
+        // { ...params, sorter, filter }
+        request={(params, sorter, filter) => listAssetIdentifier()}
         columns={columns}
-      // rowSelection={{}}
+        rowSelection={{
+          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+        }}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-
         <ProTable<AssetIdentifier, AssetIdentifier>
           onSubmit={async (value) => {
             const success = await handleAdd(value);

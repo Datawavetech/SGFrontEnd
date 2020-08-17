@@ -1,6 +1,6 @@
 import request from 'umi-request';
 import { TableListParams } from './data.d';
-import { Server_Url as url } from '../../../utils/const'
+import { serverUrl as url } from '../../../utils/const'
 
 const dataUsageApi = url + '/api/confirm/dataUsage'
 
