@@ -10,7 +10,7 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    name: 'Ant Design Pro',
+    name: '可信数据共享应用',
     locale: true,
     siderWidth: 208,
   },
