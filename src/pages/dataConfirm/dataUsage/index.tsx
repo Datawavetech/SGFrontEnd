@@ -86,6 +86,7 @@ const TableList: React.FC<{}> = () => {
       width: 200,
       ellipsis: true,
       hideInSearch: true,
+      hideInForm:true,
     },
     {
       title: '使用约定',
@@ -96,6 +97,7 @@ const TableList: React.FC<{}> = () => {
       title: '创建时间',
       dataIndex: 'createAt',
       hideInSearch: true,
+      hideInForm:true,
     },
     {
       title: '操作',
@@ -104,7 +106,10 @@ const TableList: React.FC<{}> = () => {
       render: (_, record) => (
         <>
           <ButtonGroup>
-            <Button type="primary">更改</Button>
+            <Button type="primary" onClick={() => {
+              handleUpdateModalVisible(true)
+              setStepFormValues(record);
+            }}>更改</Button>
             <Divider type="vertical" />
             <Button danger>删除</Button>
           </ButtonGroup>
@@ -120,7 +125,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
+          <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建使用约定
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -146,12 +151,6 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>积分总计 {selectedRows.reduce((pre, item) => pre, 0)}</span>
-          </div>
-        )}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={{}}
@@ -193,23 +192,6 @@ const TableList: React.FC<{}> = () => {
           values={stepFormValues}
         />
       ) : null}
-      <br />
-      <Card title="数据证书范例" bordered={false}>
-        <Carousel className={styles.customCarousel} autoplay>
-          <div>
-            <h3 className={styles.fontColor}>证书图片1</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片2</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片3</h3>
-          </div>
-          <div>
-            <h3 className={styles.fontColor}>证书图片4</h3>
-          </div>
-        </Carousel>
-      </Card>
     </PageHeaderWrapper>
   );
 };
