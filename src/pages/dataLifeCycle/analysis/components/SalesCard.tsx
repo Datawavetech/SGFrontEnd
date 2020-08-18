@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import React from 'react';
 import numeral from 'numeral';
-import { VisitDataType } from '../data';
+import { VisitDataType } from '../data.d';
 import { Bar } from './Charts';
 import styles from '../style.less';
 

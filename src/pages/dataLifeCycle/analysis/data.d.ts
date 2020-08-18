@@ -1,36 +1,42 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
+export interface VisitDataType {
+  x: string;
+  y: number;
+}
+
+export interface SearchDataType {
+  index: number;
+  keyword: string;
+  count: number;
+  range: number;
+  status: number;
+}
+
+export interface OfflineDataType {
   name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+  cvr: number;
 }
 
-export interface TableListPagination {
-  total: number;
-  pageSize: number;
-  current: number;
+export interface OfflineChartData {
+  x: any;
+  y1: number;
+  y2: number;
 }
 
-export interface TableListData {
-  list: TableListItem[];
-  pagination: Partial<TableListPagination>;
+export interface RadarData {
+  name: string;
+  label: string;
+  value: number;
 }
 
-export interface TableListParams {
-  status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
-  pageSize?: number;
-  currentPage?: number;
-  filter?: { [key: string]: any[] };
-  sorter?: { [key: string]: any };
+export interface AnalysisData {
+  visitData: VisitDataType[];
+  visitData2: VisitDataType[];
+  salesData: VisitDataType[];
+  searchData: SearchDataType[];
+  offlineData: OfflineDataType[];
+  offlineChartData: OfflineChartData[];
+  salesTypeData: VisitDataType[];
+  salesTypeDataOnline: VisitDataType[];
+  salesTypeDataOffline: VisitDataType[];
+  radarData: RadarData[];
 }
