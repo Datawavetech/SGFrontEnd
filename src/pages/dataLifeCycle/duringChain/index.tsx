@@ -7,7 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
-import { listDcmcRouter, queryRule, updateRule, addRule, removeRule } from './service';
+import { listDcmcDataRouter, queryRule, updateRule, addRule, removeRule } from './service';
 
 /**
  * 添加节点
@@ -141,7 +141,7 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        request={(params, sorter, filter) => listDcmcRouter()}
+        request={(params, sorter, filter) => listDcmcDataRouter()}
         columns={columns}
         rowSelection={{}}
       />
