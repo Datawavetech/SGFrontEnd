@@ -13,8 +13,6 @@ export async function listOnChainRequest() {
 }
 
 export async function createOnChainRequest(token: string, params?: OnChainRequest) {
-	console.log(token);
-	console.log(params);
 	return request('/api/onchain/upload', {
 		method: 'POST',
 		headers: {
@@ -25,6 +23,23 @@ export async function createOnChainRequest(token: string, params?: OnChainReques
 		}
 	}).then((resp) => {
 		console.log(resp);
+		return resp;
+	});
+}
+
+export async function updateOnChainRequest(token: string, reqId: string, status: int) {
+	return request('/api/onchain/update', {
+		method: 'POST',
+		headers: {
+			'Authorization': token,
+		},
+		data: {
+			'requestId': reqId,
+			'status': status,
+		}
+	}).then(resp => {
+		console.log(resp);
+		return resp;
 	});
 }
 
