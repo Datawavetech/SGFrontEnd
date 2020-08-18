@@ -8,8 +8,6 @@ interface CreateFormProps {
   onCancel: () => void;
 }
 
-const [form] = Form.useForm();
-
 const renderContent = () => {
   return (
     <>
@@ -51,6 +49,8 @@ const renderContent = () => {
 
 const CreateForm: React.FC<CreateFormProps> = (props) => {
   const { modalVisible, onCancel } = props;
+
+  const [form] = Form.useForm();
 
   return (
     <Modal

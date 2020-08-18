@@ -7,7 +7,6 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import { OnChainRequest } from './data.d';
 import { listOnChainRequest, updateRule, addRule } from './service';
-import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
  * 添加节点
@@ -127,22 +126,9 @@ const TableList: React.FC<{}> = () => {
       hideInSearch: true,
     },
     {
-      title: '操作',
+      title: '状态',
       dataIndex: 'option',
       valueType: 'option',
-      hideInTable: false,
-      render: (_, record) => (
-        <>
-          <ButtonGroup>
-            <Button type="primary" onClick={() => {
-              handleUpdateModalVisible(true)
-              setStepFormValues(record);
-            }}>更改</Button>
-            <Divider type="vertical" />
-            <Button danger>删除</Button>
-          </ButtonGroup>
-        </>
-      ),
     },
   ];
 
@@ -154,7 +140,7 @@ const TableList: React.FC<{}> = () => {
         rowKey="key"
         toolBarRender={() => [
           <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 创建权属标识
+            <PlusOutlined /> 上链申请
           </Button>,
         ]}
         // { ...params, sorter, filter }

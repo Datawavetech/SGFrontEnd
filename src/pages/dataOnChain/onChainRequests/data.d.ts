@@ -5,6 +5,7 @@ export interface OnChainRequest {
   token: number;
   createdAt: Date;
   updatedAt: Date;
+  status:number;
 }
 
 export interface TableListPagination {
