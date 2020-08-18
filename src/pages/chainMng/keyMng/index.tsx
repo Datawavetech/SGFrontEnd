@@ -112,7 +112,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
+          <Button type="primary" hidden onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -128,7 +128,6 @@ const TableList: React.FC<{}> = () => {
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
                 </Menu>
               }
             >
@@ -138,15 +137,7 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>
-              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-            </span>
-          </div>
-        )}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => listUserKeyInfo()}
         columns={columns}
         // rowSelection={{}}
       />
