@@ -41,7 +41,7 @@ const renderContent = () => {
           <Button>
             <UploadOutlined /> Upload
           </Button>
-        </Upload>,
+        </Upload>
       </FormItem>
     </>
   );
