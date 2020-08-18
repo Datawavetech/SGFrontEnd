@@ -126,9 +126,19 @@ export default defineConfig({
       // component: './Welcome',
       routes: [
         {
+          path: '/dataLifeCycle/dataTraceability',
+          name: 'dataTraceability',
+          component: './dataLifeCycle/dataTraceability',
+        },
+        {
           path: '/dataLifeCycle/duringChain',
           name: 'duringChain',
           component: './dataLifeCycle/duringChain',
+        },
+        {
+          path: '/dataLifeCycle/dataRouter',
+          name: 'dataRouter',
+          component: './dataLifeCycle/dataRouter',
         },
         {
           path: '/dataLifeCycle/analysis',
