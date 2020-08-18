@@ -4,7 +4,6 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './index.less';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 type totalType = () => React.ReactNode;
 
 const renderTotal = (total?: number | totalType | React.ReactNode) => {

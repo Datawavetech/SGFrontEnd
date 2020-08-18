@@ -4,8 +4,11 @@ import { Col, Row, Tooltip } from 'antd';
 import { FormattedMessage } from 'umi';
 import React from 'react';
 import numeral from 'numeral';
-import { ChartCard, MiniArea, Field } from './Charts';
+import { ChartCard, MiniArea, MiniBar, MiniProgress, Field } from './Charts';
 import { VisitDataType } from '../data';
+import Trend from './Trend';
+import Yuan from '../utils/Yuan';
+import styles from '../style.less';
 
 const topColResponsiveProps = {
   xs: 24,
@@ -21,23 +24,50 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
     <Col {...topColResponsiveProps}>
       <ChartCard
         bordered={false}
+        title={
+          <FormattedMessage
+            id="dashboardandanalysis.analysis.total-sales"
+            defaultMessage="Total Sales"
+          />
+        }
+        action={
+          <Tooltip
+            title={
+              <FormattedMessage
+                id="dashboardandanalysis.analysis.introduce"
+                defaultMessage="Introduce"
+              />
+            }
+          >
+            <InfoCircleOutlined />
+          </Tooltip>
+        }
         loading={loading}
-        title={<FormattedMessage id="chainMng.explorer.blockheight" defaultMessage="Visits" />}
-        total={numeral(8846).format('0,0')}
+        total={() => <Yuan>126560</Yuan>}
         footer={
           <Field
             label={
               <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
+                id="dashboardandanalysis.analysis.day-sales"
+                defaultMessage="Daily Sales"
               />
             }
-            value={numeral(1234).format('0,0')}
+            value={`￥${numeral(12423).format('0,0')}`}
           />
         }
         contentHeight={46}
       >
-        <MiniArea color="#975FE4" data={visitData} />
+        <Trend flag="up" style={{ marginRight: 16 }}>
+          <FormattedMessage
+            id="dashboardandanalysis.analysis.week"
+            defaultMessage="Weekly Changes"
+          />
+          <span className={styles.trendText}>12%</span>
+        </Trend>
+        <Trend flag="down">
+          <FormattedMessage id="dashboardandanalysis.analysis.day" defaultMessage="Daily Changes" />
+          <span className={styles.trendText}>11%</span>
+        </Trend>
       </ChartCard>
     </Col>
 
@@ -45,7 +75,9 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
       <ChartCard
         bordered={false}
         loading={loading}
-        title={<FormattedMessage id="chainMng.explorer.txamount" defaultMessage="Visits" />}
+        title={
+          <FormattedMessage id="dashboardandanalysis.analysis.visits" defaultMessage="Visits" />
+        }
         action={
           <Tooltip
             title={
@@ -79,7 +111,9 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
       <ChartCard
         bordered={false}
         loading={loading}
-        title={<FormattedMessage id="chainMng.explorer.realtimetx" defaultMessage="Visits" />}
+        title={
+          <FormattedMessage id="dashboardandanalysis.analysis.payments" defaultMessage="Payments" />
+        }
         action={
           <Tooltip
             title={
@@ -92,28 +126,33 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
             <InfoCircleOutlined />
           </Tooltip>
         }
-        total={numeral(8846).format('0,0')}
+        total={numeral(6560).format('0,0')}
         footer={
           <Field
             label={
               <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
+                id="dashboardandanalysis.analysis.conversion-rate"
+                defaultMessage="Conversion Rate"
               />
             }
-            value={numeral(1234).format('0,0')}
+            value="60%"
           />
         }
         contentHeight={46}
       >
-        <MiniArea color="#975FE4" data={visitData} />
+        <MiniBar data={visitData} />
       </ChartCard>
     </Col>
     <Col {...topColResponsiveProps}>
       <ChartCard
-        bordered={false}
         loading={loading}
-        title={<FormattedMessage id="chainMng.explorer.latestblocks" defaultMessage="Visits" />}
+        bordered={false}
+        title={
+          <FormattedMessage
+            id="dashboardandanalysis.analysis.operational-effect"
+            defaultMessage="Operational Effect"
+          />
+        }
         action={
           <Tooltip
             title={
@@ -126,21 +165,28 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Vis
             <InfoCircleOutlined />
           </Tooltip>
         }
-        total={numeral(8846).format('0,0')}
+        total="78%"
         footer={
-          <Field
-            label={
+          <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+            <Trend flag="up" style={{ marginRight: 16 }}>
               <FormattedMessage
-                id="dashboardandanalysis.analysis.day-visits"
-                defaultMessage="Daily Visits"
+                id="dashboardandanalysis.analysis.week"
+                defaultMessage="Weekly Changes"
               />
-            }
-            value={numeral(1234).format('0,0')}
-          />
+              <span className={styles.trendText}>12%</span>
+            </Trend>
+            <Trend flag="down">
+              <FormattedMessage
+                id="dashboardandanalysis.analysis.day"
+                defaultMessage="Weekly Changes"
+              />
+              <span className={styles.trendText}>11%</span>
+            </Trend>
+          </div>
         }
         contentHeight={46}
       >
-        <MiniArea color="#975FE4" data={visitData} />
+        <MiniProgress percent={78} strokeWidth={8} target={80} color="#13C2C2" />
       </ChartCard>
     </Col>
   </Row>

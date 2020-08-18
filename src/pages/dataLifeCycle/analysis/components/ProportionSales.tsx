@@ -3,7 +3,7 @@ import { Card, Radio } from 'antd';
 import { FormattedMessage } from 'umi';
 import { RadioChangeEvent } from 'antd/es/radio';
 import React from 'react';
-import { VisitDataType } from '../data.d';
+import { VisitDataType } from '../data';
 import { Pie } from './Charts';
 import Yuan from '../utils/Yuan';
 import styles from '../style.less';
@@ -62,9 +62,9 @@ const ProportionSales = ({
         subTitle={
           <FormattedMessage id="dashboardandanalysis.analysis.sales" defaultMessage="Sales" />
         }
-        total={() => <Yuan>{salesPieData.reduce((pre, now) => now.y + pre, 0)}</Yuan>}
+        total={() => <Yuan>{2}</Yuan>}
         data={salesPieData}
-        valueFormat={(value) => <Yuan>{value}</Yuan>}
+      valueFormat={(value) => <Yuan>{1}</Yuan>}
         height={248}
         lineWidth={4}
       />
