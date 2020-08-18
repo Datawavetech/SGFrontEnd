@@ -8,6 +8,14 @@ export interface OnChainRequest {
   dataTypes: string;
   expireAt: Date;
   status: number;
+  file: Object;
+}
+
+export interface OnChainRequestForm {
+	usages: string;
+	dataTypes: string;
+	expireAt: Date;
+	file: string;
 }
 
 export interface TableListPagination {

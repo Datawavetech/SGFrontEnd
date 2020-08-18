@@ -132,7 +132,6 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listUseRight()}
         columns={columns}
-        rowSelection={{}}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<TableListItem, TableListItem>
