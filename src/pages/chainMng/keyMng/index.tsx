@@ -81,6 +81,8 @@ const TableList: React.FC<{}> = () => {
       title: '用户ID',
       dataIndex: 'userId',
       valueType: 'textarea',
+	  ellipsis: true,
+	  width: 200,
     },
 	{
 	  title: '用户名',
@@ -89,15 +91,18 @@ const TableList: React.FC<{}> = () => {
     {
       title: '用户类型',
       dataIndex: 'userType',
-      hideInForm: true,
     },
     {
       title: '私钥',
       dataIndex: 'priKey',
+	  ellipsis: true,
+	  width: 200,
     },
 	{
       title: '公钥',
       dataIndex: 'pubKey',
+	  ellipsis: true,
+	  width: 200,
     },
 	{
 	  title: '创建时间',

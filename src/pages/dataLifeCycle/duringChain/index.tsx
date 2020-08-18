@@ -80,12 +80,8 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据哈希',
       dataIndex: 'dataHash',
-      rules: [
-        {
-          required: true,
-          message: '数据哈希为必填项',
-        },
-      ],
+	  ellipsis: true,
+	  width: 200,
     },
     {
       title: '数据名称',
@@ -94,10 +90,14 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据权属证明',
       dataIndex: 'proof',
+	  ellipsis: true,
+	  width: 200,
     },
 	{
       title: '授权用户列表',
       dataIndex: 'authorizedUsers',
+	  ellipsis: true,
+	  width: 250,
     },
     {
       title: '最新授权时间',
