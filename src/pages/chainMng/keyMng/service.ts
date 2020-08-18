@@ -3,12 +3,12 @@ import { TableListParams } from './data.d';
 
 export async function listUserKeyInfo() {
   return request('/api/user/listUserKeyInfo', {
-	  method: 'GET',
+    method: 'GET',
   }).then((resp) => {
-	if(resp.status === 200) {
-		return resp;
-	}
-	return '';
+    if (resp.status === 200) {
+      return resp;
+    }
+    return '';
   });
 }
 

@@ -161,9 +161,6 @@ const TableList: React.FC<{}> = () => {
         // { ...params, sorter, filter }
         request={(params, sorter, filter) => listAssetIdentifier()}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-        }}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<AssetIdentifier, AssetIdentifier>
@@ -179,7 +176,6 @@ const TableList: React.FC<{}> = () => {
           rowKey="key"
           type="form"
           columns={columns}
-          rowSelection={{}}
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (

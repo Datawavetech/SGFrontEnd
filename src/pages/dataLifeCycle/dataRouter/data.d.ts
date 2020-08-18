@@ -1,16 +1,14 @@
 export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: number;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+  dataIdentifier:string;
+  levelOneSysName:string;
+  levelOneSysDataHash:string;
+  levelOneSysCreateAt:string;
+  levelTwoSysName:string;
+  levelTwoSysDataHash:string;
+  levelTwoSysCreateAt:string;
+  levelThreeSysName:string;
+  levelThreeSysDataHash:string;
+  levelThreeSysCreateAt:string;
 }
 
 export interface TableListPagination {

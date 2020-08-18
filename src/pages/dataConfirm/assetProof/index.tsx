@@ -175,7 +175,6 @@ const TableList: React.FC<{}> = () => {
         // { ...params, sorter, filter }
         request={(params, sorter, filter) => listAssetProof()}
         columns={columns}
-        rowSelection={{}}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<AssetProof, AssetProof>

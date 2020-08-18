@@ -1,11 +1,13 @@
 export interface OnChainRequest {
+  requestId: string;
+  userId: string;
   dataHash: string;
-  assetName: string;
-  assetSys: string;
-  token: number;
-  createdAt: Date;
-  updatedAt: Date;
-  status:number;
+  dataPath: string;
+  dataName: string;
+  usages: string;
+  dataTypes: string;
+  expireAt: Date;
+  status: number;
 }
 
 export interface TableListPagination {

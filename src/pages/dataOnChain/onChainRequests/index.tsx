@@ -77,58 +77,62 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<OnChainRequest>[] = [
     {
-      title: '权属标识',
+      title: '请求id',
+      dataIndex: 'requestId',
+      hideInForm: true,
+      hideInTable: true,
+      hideInSearch: true,
+    },
+    {
+      title: '用户id',
+      dataIndex: 'userId',
+      hideInForm: true,
+      hideInTable: true,
+      hideInSearch: true,
+    },
+    {
+      title: '数据标识',
       dataIndex: 'dataHash',
       hideInForm: true,
-      ellipsis: true,
+      hideInSearch: true,
       width: 300,
-      // renderText: (val: string) => `${val} 万`,
+      ellipsis: true,
     },
     {
-      title: '资产名称',
-      dataIndex: 'assetName',
-      rules: [
-        {
-          required: true,
-          message: '资产名称为必填项',
-        },
-      ],
+      title: '资源路径',
+      dataIndex: 'dataPath',
+      hideInForm: true,
+      hideInSearch: true,
+      hideInTable: true,
     },
     {
-      title: '所有者',
-      dataIndex: 'assetSys',
-      rules: [
-        {
-          required: true,
-          message: '所有者为必填项',
-        },
-      ],
-    },
-    {
-      title: '积分',
-      dataIndex: 'token',
+      title: '使用约定',
+      dataIndex: 'usages',
       hideInForm: true,
       sorter: true,
       hideInSearch: true,
     },
     {
-      title: '创建时间',
-      dataIndex: 'createAt',
+      title: '使用类型列表',
+      dataIndex: 'dataTypes',
       hideInForm: true,
       sorter: true,
       hideInSearch: true,
     },
     {
-      title: '更新时间',
-      dataIndex: 'updateAt',
-      hideInForm: true,
-      sorter: true,
+      title: '有效期截止',
+      dataIndex: 'expireAt',
       hideInSearch: true,
     },
     {
       title: '状态',
-      dataIndex: 'option',
-      valueType: 'option',
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: {
+        1: { text: '待审批', status: "processing" },
+        2: { text: '已审批', status: "success" },
+        3: { text: '已拒绝', status: "error" }
+      }
     },
   ];
 
@@ -146,9 +150,6 @@ const TableList: React.FC<{}> = () => {
         // { ...params, sorter, filter }
         request={(params, sorter, filter) => listOnChainRequest()}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-        }}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<OnChainRequest, OnChainRequest>

@@ -153,7 +153,6 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
-        rowSelection={{}}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<DataUsage, DataUsage>
