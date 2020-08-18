@@ -20,7 +20,9 @@ export async function createOnChainRequest(token: string, params?: OnChainReques
 		headers: {
 			'Authorization': token,
 		},
-		data: ...params,
+		data: {
+			...params,
+		}
 	}).then((resp) => {
 		console.log(resp);
 	});
