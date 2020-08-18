@@ -12,6 +12,20 @@ export async function listOnChainRequest() {
   });
 }
 
+export async function createOnChainRequest(token: string, params?: OnChainRequest) {
+	console.log(token);
+	console.log(params);
+	return request('/api/onchain/upload', {
+		method: 'POST',
+		headers: {
+			'Authorization': token,
+		},
+		data: ...params,
+	}).then((resp) => {
+		console.log(resp);
+	});
+}
+
 // TODO params?: TableListParams
 export async function createAssetIdentifier() {
   return request('/api/confirm/assetIdentifier', {

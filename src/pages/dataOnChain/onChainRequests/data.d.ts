@@ -8,6 +8,7 @@ export interface OnChainRequest {
   dataTypes: string;
   expireAt: Date;
   status: number;
+  file: Object;
 }
 
 export interface OnChainRequestForm {

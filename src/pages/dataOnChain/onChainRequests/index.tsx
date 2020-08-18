@@ -7,18 +7,18 @@ import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
-import { listOnChainRequest, updateRule, addRule } from './service';
+import { listOnChainRequest, createOnChainRequest, addRule } from './service';
 
 /**
  * 添加节点
  * @param fields
  */
 const handleAdd = async (fields: OnChainRequest) => {
-console.log("shit");
-console.log(fields);
+  console.log(fields);
   const hide = message.loading('正在添加');
   try {
-    await addRule({ ...fields });
+  	let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QiLCJleHAiOjE1OTc3NDIzMzcsInVzZXJuYW1lIjoidGVzdCJ9.fDEQTaVD3GZaCoy5tW8N4veAaNdVeAtP6b-QYu1p7lE";
+    await createOnChainRequest(token, { ...fields });
     hide();
     message.success('添加成功');
     return true;
