@@ -1,6 +1,17 @@
 import { request } from 'umi';
 import { TableListParams, TableListItem } from './data.d';
 
+export async function listUseRight() {
+  return request('/api/life/traceability', {
+	  method: 'GET',
+  }).then(resp => {
+	  if(resp.status === 200) {
+		  return resp;
+	  }
+	  return "";
+  });
+}
+
 export async function queryRule(params?: TableListParams) {
   return request('/api/rule', {
     params,
