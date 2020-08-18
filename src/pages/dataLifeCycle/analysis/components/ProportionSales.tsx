@@ -10,16 +10,16 @@ import styles from '../style.less';
 
 const ProportionSales = ({
   dropdownGroup,
-  salesType,
+  pieType,
   loading,
-  salesPieData,
-  handleChangeSalesType,
+  pieData,
+  handleChangeAnalysisType,
 }: {
   loading: boolean;
   dropdownGroup: React.ReactNode;
-  salesType: 'all' | 'online' | 'stores';
-  salesPieData: VisitDataType[];
-  handleChangeSalesType?: (e: RadioChangeEvent) => void;
+  pieType: 'amount' | 'token';
+  pieData: VisitDataType[];
+  handleChangeAnalysisType?: (e: RadioChangeEvent) => void;
 }) => (
   <Card
     loading={loading}
@@ -27,8 +27,7 @@ const ProportionSales = ({
     bordered={false}
     title={
       <FormattedMessage
-        id="dashboardandanalysis.analysis.the-proportion-of-sales"
-        defaultMessage="The Proportion of Sales"
+        id="dataLifeCycle.analysis.systemData"
       />
     }
     style={{
@@ -38,15 +37,12 @@ const ProportionSales = ({
       <div className={styles.salesCardExtra}>
         {dropdownGroup}
         <div className={styles.salesTypeRadio}>
-          <Radio.Group value={salesType} onChange={handleChangeSalesType}>
-            <Radio.Button value="all">
-              <FormattedMessage id="dashboardandanalysis.channel.all" defaultMessage="ALL" />
+          <Radio.Group onChange={handleChangeAnalysisType}>
+            <Radio.Button value="amount">
+              <FormattedMessage id="dataLifeCycle.analysis.dataAmount" defaultMessage="ALL" />
             </Radio.Button>
-            <Radio.Button value="online">
-              <FormattedMessage id="dashboardandanalysis.channel.online" defaultMessage="Online" />
-            </Radio.Button>
-            <Radio.Button value="stores">
-              <FormattedMessage id="dashboardandanalysis.channel.stores" defaultMessage="Stores" />
+            <Radio.Button value="token">
+              <FormattedMessage id="dataLifeCycle.analysis.dataToken" defaultMessage="Online" />
             </Radio.Button>
           </Radio.Group>
         </div>
@@ -55,16 +51,20 @@ const ProportionSales = ({
   >
     <div>
       <h4 style={{ marginTop: 8, marginBottom: 32 }}>
-        <FormattedMessage id="dashboardandanalysis.analysis.sales" defaultMessage="Sales" />
+        {pieType==="amount" ?<FormattedMessage id="dataLifeCycle.analysis.systemDataAmount" defaultMessage="Sales" />
+            :<FormattedMessage id="dataLifeCycle.analysis.systemDataToken" defaultMessage="Sales" />
+        }
+        
+          
       </h4>
       <Pie
         hasLegend
-        subTitle={
-          <FormattedMessage id="dashboardandanalysis.analysis.sales" defaultMessage="Sales" />
+        subTitle={pieType==="amount" ?<FormattedMessage id="dataLifeCycle.analysis.systemDataAmount" defaultMessage="Sales" />
+          :<FormattedMessage id="dataLifeCycle.analysis.systemDataToken" defaultMessage="Sales" />
         }
-        total={() => <Yuan>{2}</Yuan>}
-        data={salesPieData}
-      valueFormat={(value) => <Yuan>{1}</Yuan>}
+        total={() => <div>{pieData.reduce((pre, now) => now.y + pre, 0)}</div>}
+        data={pieData}
+        valueFormat={(value) => <div>{value}</div>}
         height={248}
         lineWidth={4}
       />
