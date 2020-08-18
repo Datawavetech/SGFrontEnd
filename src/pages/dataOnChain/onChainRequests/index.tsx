@@ -7,7 +7,7 @@ import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
-import { listOnChainRequest, createOnChainRequest, addRule } from './service';
+import { listOnChainRequest, createOnChainRequest, updateOnChainRequest } from './service';
 
 /**
  * 添加节点
@@ -17,7 +17,8 @@ const handleAdd = async (fields: OnChainRequest) => {
   console.log(fields);
   const hide = message.loading('正在添加');
   try {
-    let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QiLCJleHAiOjE1OTc3NDIzMzcsInVzZXJuYW1lIjoidGVzdCJ9.fDEQTaVD3GZaCoy5tW8N4veAaNdVeAtP6b-QYu1p7lE";
+    // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
+  	let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QiLCJleHAiOjE1OTc3NDIzMzcsInVzZXJuYW1lIjoidGVzdCJ9.fDEQTaVD3GZaCoy5tW8N4veAaNdVeAtP6b-QYu1p7lE";
     await createOnChainRequest(token, { ...fields });
     hide();
     message.success('添加成功');
