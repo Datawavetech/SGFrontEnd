@@ -7,7 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import { listUserKeyInfo, queryRule, updateRule, addRule, removeRule } from './service';
 
 /**
  * 添加节点
@@ -78,73 +78,31 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '数据需求方',
-      dataIndex: 'name',
-      rules: [
-        {
-          required: true,
-          message: '规则名称为必填项',
-        },
-      ],
-    },
-    {
-      title: '数据供给',
-      dataIndex: 'desc',
+      title: '用户ID',
+      dataIndex: 'userId',
       valueType: 'textarea',
     },
+	{
+	  title: '用户名',
+	  dataIndex: 'name',
+	},
     {
-      title: '数据标识',
-      dataIndex: 'callNo',
+      title: '用户类型',
+      dataIndex: 'userType',
       hideInForm: true,
-      // renderText: (val: string) => `${val} 万`,
     },
     {
-      title: '操作类型',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: { text: '数据请求', status: 'Processing' },
-        1: { text: '数据批注', status: 'Success' },
-        // 2: { text: '已上线', status: 'Success' },
-        // 3: { text: '异常', status: 'Error' },
-      },
+      title: '私钥',
+      dataIndex: 'priKey',
     },
-    // {
-    //   title: '上次调度时间',
-    //   dataIndex: 'updatedAt',
-    //   sorter: true,
-    //   valueType: 'dateTime',
-    //   hideInForm: true,
-    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
-    //     const status = form.getFieldValue('status');
-    //     if (`${status}` === '0') {
-    //       return false;
-    //     }
-    //     if (`${status}` === '3') {
-    //       return <Input {...rest} placeholder="请输入异常原因！" />;
-    //     }
-    //     return defaultRender(item);
-    //   },
-    // },
-    // {
-    //   title: '操作',
-    //   dataIndex: 'option',
-    //   valueType: 'option',
-    //   render: (_, record) => (
-    //     <>
-    //       <a
-    //         onClick={() => {
-    //           handleUpdateModalVisible(true);
-    //           setStepFormValues(record);
-    //         }}
-    //       >
-    //         配置
-    //       </a>
-    //       <Divider type="vertical" />
-    //       <a href="">订阅警报</a>
-    //     </>
-    //   ),
-    // },
+	{
+      title: '公钥',
+      dataIndex: 'pubKey',
+    },
+	{
+	  title: '创建时间',
+	  dataIndex: 'createAt'
+	}
   ];
 
   return (
@@ -154,7 +112,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
