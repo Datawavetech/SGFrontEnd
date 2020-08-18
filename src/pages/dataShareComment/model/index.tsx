@@ -6,7 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
+import { TokenModel } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
 
@@ -77,7 +77,7 @@ const TableList: React.FC<{}> = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<TokenModel>[] = [
     {
       title: '模型id',
       dataIndex: 'modelId',
@@ -154,7 +154,7 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
+      <ProTable<TokenModel>
         headerTitle="模型信息"
         actionRef={actionRef}
         rowKey="key"

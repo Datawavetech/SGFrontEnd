@@ -63,6 +63,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       <Form form={form}>
         {renderContent()}
       </Form>
+      {props.children}
     </Modal>
   );
 };

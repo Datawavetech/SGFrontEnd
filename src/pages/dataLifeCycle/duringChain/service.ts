@@ -3,12 +3,11 @@ import { TableListParams, TableListItem } from './data.d';
 
 export async function listDcmcDataRouter() {
   return request('/api/life/dcmcRouter', {
-	  method: 'GET',
+    method: 'GET',
   }).then(resp => {
-	  if(resp.status === 200) {
-		  return resp;
-	  }
-	  return "";
+    if (resp.status === 200) {
+      return resp;
+    }
   });
 }
 

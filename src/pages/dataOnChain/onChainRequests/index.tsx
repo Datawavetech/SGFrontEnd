@@ -94,7 +94,6 @@ const TableList: React.FC<{}> = () => {
       title: '数据标识',
       dataIndex: 'dataHash',
       hideInForm: true,
-      hideInSearch: true,
       width: 300,
       ellipsis: true,
     },
@@ -123,11 +122,13 @@ const TableList: React.FC<{}> = () => {
       title: '有效期截止',
       dataIndex: 'expireAt',
       hideInSearch: true,
+      hideInForm: true,
     },
     {
       title: '状态',
       dataIndex: 'status',
       hideInSearch: true,
+      hideInForm: true,
       valueEnum: {
         1: { text: '待审批', status: "processing" },
         2: { text: '已审批', status: "success" },

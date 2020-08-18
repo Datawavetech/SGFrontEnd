@@ -84,7 +84,6 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       ellipsis: true,
       width: 300,
-      // renderText: (val: string) => `${val} 万`,
     },
     {
       title: '资产名称',
@@ -95,6 +94,7 @@ const TableList: React.FC<{}> = () => {
           message: '资产名称为必填项',
         },
       ],
+      valueType: 'text',
     },
     {
       title: '所有者',
@@ -105,6 +105,7 @@ const TableList: React.FC<{}> = () => {
           message: '所有者为必填项',
         },
       ],
+      valueType: 'text',
     },
     {
       title: '积分',
@@ -176,6 +177,7 @@ const TableList: React.FC<{}> = () => {
           rowKey="key"
           type="form"
           columns={columns}
+          rowSelection={{}}
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (
