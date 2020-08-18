@@ -48,7 +48,6 @@ const renderContent = () => {
 };
 
 const CreateForm: React.FC<CreateFormProps> = (props) => {
-  const [form] = Form.useForm();
   const { modalVisible, onCancel } = props;
 
   return (

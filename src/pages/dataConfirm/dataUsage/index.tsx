@@ -83,8 +83,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: 'id',
       dataIndex: 'usageId',
-      width: 200,
-      ellipsis: true,
       hideInSearch: true,
       hideInForm:true,
     },

@@ -98,7 +98,6 @@ const TableList: React.FC<{}> = () => {
       title: '数据标识',
       dataIndex: 'dataHash',
       hideInForm: true,
-      hideInSearch: true,
       width: 300,
       ellipsis: true,
     },
@@ -114,69 +113,70 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'usages',
       sorter: true,
       hideInSearch: true,
-	  renderFormItem: () => (
-	  	<FormItem
-        name="usages"
-        label="数据使用约定"
-        rules={[{ required: true, message: '请输入数据使用约定！' }]}
-      	>
-        	<Input placeholder="请输入" />
-		</FormItem>
-	  )
+      renderFormItem: () => (
+        <FormItem
+          name="usages"
+          label="数据使用约定"
+          rules={[{ required: true, message: '请输入数据使用约定！' }]}
+        >
+          <Input placeholder="请输入" />
+        </FormItem>
+      )
     },
     {
       title: '数据类型列表',
       dataIndex: 'dataTypes',
       sorter: true,
       hideInSearch: true,
-	  renderFormItem: () => (
-	  	<FormItem
-        name="dataTypes"
-        label="数据类型列表"
-        rules={[{ required: true, message: '请输入数据类型列表！' }]}
-      	>
-        	<Input placeholder="请输入" />
-		</FormItem>
-	  )
+      renderFormItem: () => (
+        <FormItem
+          name="dataTypes"
+          label="数据类型列表"
+          rules={[{ required: true, message: '请输入数据类型列表！' }]}
+        >
+          <Input placeholder="请输入" />
+        </FormItem>
+      )
     },
     {
       title: '有效期截止',
       dataIndex: 'expireAt',
       hideInSearch: true,
-	  renderFormItem: () => (
-	  	<FormItem
-        name="expireAt"
-        label="数据有效期"
-        rules={[{ required: true, }]}
-      	>
-	  		<DatePicker />
-		</FormItem>
-	  )
+      renderFormItem: () => (
+        <FormItem
+          name="expireAt"
+          label="数据有效期"
+          rules={[{ required: true, }]}
+        >
+          <DatePicker />
+        </FormItem>
+      )
     },
-	{
-	  title: '文件',
-	  dataIndex: 'file',
-	  hideInTable: true,
-	  hideInSearch: true,
-	  renderFormItem: () => (
-	  	<FormItem
-        name="file"
-        label="文件"
-        rules={[{ required: true, }]}
-		>
-			<Upload>
-			  <Button>
-				<UploadOutlined /> Upload
+    {
+      title: '文件',
+      dataIndex: 'file',
+      hideInTable: true,
+      hideInSearch: true,
+      renderFormItem: () => (
+        <FormItem
+          name="file"
+          label="文件"
+          rules={[{ required: true, }]}
+        >
+          <Upload>
+            <Button>
+              <UploadOutlined /> Upload
 			  </Button>
-			</Upload>
-		</FormItem>
-	  )
-	},
+          </Upload>
+        </FormItem>
+      )
+    },
     {
       title: '状态',
       dataIndex: 'status',
-	  hideInForm: true,
+      hideInForm: true,
       hideInSearch: true,
+      hideInForm: true,
       valueEnum: {
         1: { text: '待审批', status: "processing" },
         2: { text: '已审批', status: "success" },

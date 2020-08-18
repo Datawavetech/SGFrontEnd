@@ -80,8 +80,8 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据哈希',
       dataIndex: 'dataHash',
-	  ellipsis: true,
-	  width: 200,
+      ellipsis: true,
+      width: 200,
     },
     {
       title: '数据名称',
@@ -90,29 +90,29 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据权属证明',
       dataIndex: 'proof',
-	  ellipsis: true,
-	  width: 200,
+      ellipsis: true,
+      width: 200,
     },
-	{
+    {
       title: '授权用户列表',
       dataIndex: 'authorizedUsers',
-	  ellipsis: true,
-	  width: 250,
+      ellipsis: true,
+      width: 250,
     },
     {
       title: '最新授权时间',
-      dataIndex: 'authorizedAt',
+      dataIndex: 'authorizeAt',
     },
-	{
-	  title: '共享次数',
-	  dataIndex: 'count',
-	}
+    {
+      title: '共享次数',
+      dataIndex: 'count',
+    }
   ];
 
   return (
     <PageContainer>
       <ProTable<TableListItem>
-        headerTitle="查询表格"
+        headerTitle="全链路信息展示"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
@@ -143,7 +143,6 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listDcmcDataRouter()}
         columns={columns}
-        rowSelection={{}}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<TableListItem, TableListItem>
