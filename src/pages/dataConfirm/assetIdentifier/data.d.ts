@@ -20,9 +20,9 @@ export interface TableListData {
 
 export interface TableListParams {
   status?: string;
-  assetName?: string;
-  // desc?: string;
   dataHash?: string;
+  assetName?: string;
+  assetSys?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

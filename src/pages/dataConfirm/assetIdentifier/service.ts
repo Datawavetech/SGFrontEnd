@@ -1,6 +1,6 @@
 import request from 'umi-request';
-//  import { TableListParams } from './data.d';
-//  TODO params?: TableListParams
+import { TableListParams } from './data.d';
+
 export async function listAssetIdentifier() {
   return request('/api/confirm/assetIdentifier', {
     method: 'GET',
@@ -12,43 +12,31 @@ export async function listAssetIdentifier() {
   });
 }
 
-// TODO params?: TableListParams
-export async function createAssetIdentifier() {
+export async function createAssetIdentifier(params: TableListParams) {
   return request('/api/confirm/assetIdentifier', {
     method: 'POST',
-    // params,
-  });
-}
-
-// TODO params: { dataHashs: string[] }
-export async function deleteAssetIdentifier() {
-  return request('/api/rule', {
-    method: 'POST',
     data: {
-      // ...params,
-      method: 'delete',
+      ...params
     },
   });
 }
 
-// params: TableListParams
-export async function addRule() {
-  return request('/api/rule', {
-    method: 'POST',
+export async function updateAssetIdentifier(params: TableListParams) {
+  return request('/api/confirm/assetIdentifier', {
+    method: 'PUT',
     data: {
-      // ...params,
-      method: 'post',
+      ...params
     },
   });
 }
 
-//  TODO params: TableListParams
-export async function updateRule() {
-  return request('/api/rule', {
-    method: 'POST',
+
+export async function deleteAssetIdentifier(params: { deleteDataHashs: string[] }) {
+  console.log('params:', params)
+  return request('/api/confirm/assetIdentifier', {
+    method: 'DELETE',
     data: {
-      // ...params,
-      method: 'update',
+      ...params,
     },
   });
 }

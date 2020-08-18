@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, DatePicker, Input, Modal, Radio, Select, Steps } from 'antd';
+import { Form, Input, Modal } from 'antd';
 
 import { AssetIdentifier } from '../data.d';
 
@@ -7,8 +7,9 @@ export interface FormValueType extends Partial<AssetIdentifier> {
   target?: string;
   template?: string;
   type?: string;
-  time?: string;
-  frequency?: string;
+  dataHash?: string;
+  assetName?: string;
+  assetSys?: string;
 }
 
 export interface UpdateFormProps {
@@ -18,23 +19,15 @@ export interface UpdateFormProps {
   values: Partial<AssetIdentifier>;
 }
 const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
-const { Option } = Select;
-const RadioGroup = Radio.Group;
 
 export interface UpdateFormState {
   formVals: FormValueType;
-  currentStep: number;
 }
 
-// const formLayout = {
-//   labelCol: { span: 7 },
-//   wrapperCol: { span: 13 },
-// };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const [formVals, setFormVals] = useState<FormValueType>({
+    dataHash: props.values.dataHash,
     assetName: props.values.assetName,
     assetSys: props.values.assetSys,
   });
@@ -47,6 +40,12 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     updateModalVisible,
     values,
   } = props;
+
+  const handleSubmit = async () => {
+    const fieldsValue = await form.validateFields();
+    setFormVals({ ...formVals, ...fieldsValue });
+    handleUpdate({ ...formVals, ...fieldsValue });
+  }
 
   const renderContent = () => {
     return (
@@ -76,6 +75,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       destroyOnClose
       title="更新权属标识"
       visible={updateModalVisible}
+      onOk={handleSubmit}
       onCancel={() => handleUpdateModalVisible()}
     >
       <Form
@@ -84,7 +84,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           target: formVals.target,
           template: formVals.template,
           type: formVals.type,
-          frequency: formVals.frequency,
+          dataHash: formVals.dataHash,
           assetName: formVals.assetName,
           assetSys: formVals.assetSys,
         }}
