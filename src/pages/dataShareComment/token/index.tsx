@@ -6,14 +6,15 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
+import { TokenInfo } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: TableListItem) => {
+const handleAdd = async (fields: TokenInfo) => {
   const hide = message.loading('正在添加');
   try {
     await addRule({ ...fields });
@@ -76,104 +77,58 @@ const TableList: React.FC<{}> = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<TokenInfo>[] = [
     {
-      title: '申请用户ID',
-      dataIndex: 'callNo',
+      title: '用户id',
+      dataIndex: 'userId',
       sorter: true,
       hideInForm: true,
-      // renderText: (val: string) => `${val} 万`,
+      hideInTable: true,
+      hideInSearch:true,
     },
     {
-      title: '申请用户',
-      dataIndex: 'name',
-      hideInForm: true,
-      rules: [
-        {
-          required: true,
-          message: '规则名称为必填项',
-        },
-      ],
+      title: '用户名称',
+      dataIndex: 'username',
     },
     {
-      title: '申请数据ID',
-      dataIndex: 'callNo',
+      title: '用户类型',
+      dataIndex: 'userType',
       sorter: true,
-      // renderText: (val: string) => `${val} 万`,
-    },
-    {
-      title: '数据描述',
-      dataIndex: 'desc',
-      valueType: 'textarea',
-    },
-    // {
-    //   title: '服务调用次数',
-    //   dataIndex: 'callNo',
-    //   sorter: true,
-    //   hideInForm: true,
-    //   renderText: (val: string) => `${val} 万`,
-    // },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
       valueEnum: {
-        0: { text: '未审核', status: 'Error' },
-        1: { text: '已审核', status: 'Processing' },
-        2: { text: '已上链', status: 'Success' },
-        // 3: { text: '异常', status: 'Error' },
+        1: { text: '系统' },
+        2: { text: '部门'},
+        3: { text: '个人'},
       },
     },
-    // {
-    //   title: '上次调度时间',
-    //   dataIndex: 'updatedAt',
-    //   sorter: true,
-    //   valueType: 'dateTime',
-    //   hideInForm: true,
-    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
-    //     const status = form.getFieldValue('status');
-    //     if (`${status}` === '0') {
-    //       return false;
-    //     }
-    //     if (`${status}` === '3') {
-    //       return <Input {...rest} placeholder="请输入异常原因！" />;
-    //     }
-    //     return defaultRender(item);
-    //   },
-    // },
     {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            审核
-          </a>
-          <Divider type="vertical" />
-          <a href="">查看</a>
-          <Divider type="vertical" />
-          <a href="">查看上链</a>
-        </>
-      ),
+      title: '积分',
+      dataIndex: 'token',
+      sorter: true,
+      hideInSearch:true,
+    },
+    {
+      title: '积分评价',
+      dataIndex: 'tokenComment',
+      sorter: true,
+      hideInForm: true,
+      hideInSearch:true,
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateAt',
+      sorter: true,
+      hideInForm: true,
+      hideInSearch:true,
     },
   ];
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
-        headerTitle="查询表格"
+      <ProTable<TokenInfo>
+        headerTitle="积分信息"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
               overlay={
@@ -201,7 +156,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<TableListItem, TableListItem>
+        <ProTable<TokenInfo, TokenInfo>
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {

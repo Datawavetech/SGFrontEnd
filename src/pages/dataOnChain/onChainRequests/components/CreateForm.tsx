@@ -60,7 +60,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       onCancel={() => onCancel()}
       footer={null}
     >
-      <Form>
+      <Form form={form}>
         {renderContent()}
       </Form>
     </Modal>

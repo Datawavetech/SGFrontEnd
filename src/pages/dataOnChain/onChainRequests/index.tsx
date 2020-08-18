@@ -1,18 +1,19 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { DownOutlined, /* PlusOutlined, */ FormOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Menu, message, Divider } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
-import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import { OnChainRequest } from './data.d';
+import { listOnChainRequest, updateRule, addRule } from './service';
+import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: TableListItem) => {
+const handleAdd = async (fields: OnChainRequest) => {
   const hide = message.loading('正在添加');
   try {
     await addRule({ ...fields });
@@ -34,9 +35,8 @@ const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在配置');
   try {
     await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+      dataHash: fields.dataHash,
+      assetName: fields.assetName,
     });
     hide();
 
@@ -53,12 +53,12 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleRemove = async (selectedRows: AssetIdentifier[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
     await removeRule({
-      key: selectedRows.map((row) => row.key),
+      dataHashs: selectedRows.map((row) => row.dataHash),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -74,92 +74,98 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<OnChainRequest>[] = [
     {
       title: '权属标识',
       dataIndex: 'dataHash',
-      sorter: true,
       hideInForm: true,
-      hideInSearch: true,
+      ellipsis: true,
+      width: 300,
+      // renderText: (val: string) => `${val} 万`,
     },
     {
       title: '资产名称',
       dataIndex: 'assetName',
-      hideInForm: true,
+      rules: [
+        {
+          required: true,
+          message: '资产名称为必填项',
+        },
+      ],
     },
     {
-      title: '使用约定列表',
-      dataIndex: 'usages',
+      title: '所有者',
+      dataIndex: 'assetSys',
+      rules: [
+        {
+          required: true,
+          message: '所有者为必填项',
+        },
+      ],
+    },
+    {
+      title: '积分',
+      dataIndex: 'token',
+      hideInForm: true,
       sorter: true,
-      hideInForm: true,
       hideInSearch: true,
     },
     {
-      title: '数据类型列表',
-      dataIndex: 'dataTypes',
+      title: '创建时间',
+      dataIndex: 'createAt',
+      hideInForm: true,
       sorter: true,
-      hideInForm: true,
       hideInSearch: true,
     },
     {
-      title: '过期时间',
-      dataIndex: 'expireAt',
+      title: '更新时间',
+      dataIndex: 'updateAt',
+      hideInForm: true,
       sorter: true,
-      hideInForm: true,
       hideInSearch: true,
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
-      hideInSearch: true,
-      valueEnum: {
-        0: { text: '待审核', status: 'Processing' },
-        1: { text: '已上链', status: 'Success' },
-        2: { text: '已拒绝', status: 'Error' },
-      },
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      hideInTable: false,
+      render: (_, record) => (
+        <>
+          <ButtonGroup>
+            <Button type="primary" onClick={() => {
+              handleUpdateModalVisible(true)
+              setStepFormValues(record);
+            }}>更改</Button>
+            <Divider type="vertical" />
+            <Button danger>删除</Button>
+          </ButtonGroup>
+        </>
+      ),
     },
   ];
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
-        headerTitle="我的上链申请信息"
+      <ProTable<OnChainRequest>
+        headerTitle="权属信息"
         actionRef={actionRef}
         rowKey="key"
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 创建上链申请
+        toolBarRender={() => [
+          <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
+            <PlusOutlined /> 创建权属标识
           </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
         ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        // { ...params, sorter, filter }
+        request={(params, sorter, filter) => listOnChainRequest()}
         columns={columns}
+        rowSelection={{
+          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+        }}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<TableListItem, TableListItem>
+        <ProTable<OnChainRequest, OnChainRequest>
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {

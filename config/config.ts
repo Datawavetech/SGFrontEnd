@@ -89,7 +89,6 @@ export default defineConfig({
       path: '/dataOnChain',
       name: 'dataOnChain',
       icon: 'inbox',
-      // component: './Welcome',
       routes: [
         {
           path: '/dataOnChain/onChainRequests',
@@ -107,7 +106,6 @@ export default defineConfig({
       path: '/dataShareComment',
       name: 'dataShareComment',
       icon: 'cloud',
-      // component: './Welcome',
       routes: [
         {
           path: '/dataShareComment/model',

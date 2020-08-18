@@ -8,6 +8,7 @@ import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
  * 添加节点
@@ -78,87 +79,74 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '申请用户ID',
-      dataIndex: 'callNo',
+      title: '模型id',
+      dataIndex: 'modelId',
       sorter: true,
       hideInForm: true,
+      hideInTable: true,
       // renderText: (val: string) => `${val} 万`,
     },
     {
-      title: '申请用户',
-      dataIndex: 'name',
-      hideInForm: true,
+      title: '模型名称',
+      dataIndex: 'modelName',
       rules: [
         {
           required: true,
-          message: '规则名称为必填项',
+          message: '模型名称为必填项',
         },
       ],
     },
     {
-      title: '申请数据ID',
-      dataIndex: 'callNo',
+      title: '模型描述',
+      dataIndex: 'modelDesc',
       sorter: true,
-      // renderText: (val: string) => `${val} 万`,
+      rules: [
+        {
+          required: true,
+          message: '模型描述为必填项',
+        },
+      ],
     },
     {
-      title: '数据描述',
-      dataIndex: 'desc',
-      valueType: 'textarea',
+      title: '上升指数',
+      dataIndex: 'upCount',
+      sorter: true,
+      rules: [
+        {
+          required: true,
+          message: '上升指数为必填项',
+        },
+      ],
     },
-    // {
-    //   title: '服务调用次数',
-    //   dataIndex: 'callNo',
-    //   sorter: true,
-    //   hideInForm: true,
-    //   renderText: (val: string) => `${val} 万`,
-    // },
+    {
+      title: '创建时间',
+      dataIndex: 'createAt',
+      sorter: true,
+      hideInForm: true,
+    },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'isRunning',
       hideInForm: true,
       valueEnum: {
-        0: { text: '未审核', status: 'Error' },
-        1: { text: '已审核', status: 'Processing' },
-        2: { text: '已上链', status: 'Success' },
-        // 3: { text: '异常', status: 'Error' },
+        1: { text: '正在运行', status: 'Success' },
+        2: { text: '待运行', status: 'Processing' },
       },
     },
-    // {
-    //   title: '上次调度时间',
-    //   dataIndex: 'updatedAt',
-    //   sorter: true,
-    //   valueType: 'dateTime',
-    //   hideInForm: true,
-    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
-    //     const status = form.getFieldValue('status');
-    //     if (`${status}` === '0') {
-    //       return false;
-    //     }
-    //     if (`${status}` === '3') {
-    //       return <Input {...rest} placeholder="请输入异常原因！" />;
-    //     }
-    //     return defaultRender(item);
-    //   },
-    // },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
+          <ButtonGroup>
+            <Button type="primary" onClick={() => {
+              handleUpdateModalVisible(true)
               setStepFormValues(record);
-            }}
-          >
-            审核
-          </a>
-          <Divider type="vertical" />
-          <a href="">查看</a>
-          <Divider type="vertical" />
-          <a href="">查看上链</a>
+            }}>更改</Button>
+            <Divider type="vertical"></Divider>
+            <Button danger>删除</Button>
+          </ButtonGroup>
         </>
       ),
     },
@@ -171,8 +159,8 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" disabled onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
+          <Button type="primary" onClick={() => handleModalVisible(true)}>
+            <PlusOutlined /> 新建模型
           </Button>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown

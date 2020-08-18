@@ -1,10 +1,10 @@
-export interface TableListItem {
+export interface OnChainRequest {
   dataHash: string;
-  assetName:string;
-  usages:string;
-  dataTypes:string;
-  expireAt:string;
-  status:number;
+  assetName: string;
+  assetSys: string;
+  token: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface TableListPagination {
@@ -14,15 +14,15 @@ export interface TableListPagination {
 }
 
 export interface TableListData {
-  list: TableListItem[];
+  list: AssetIdentifier[];
   pagination: Partial<TableListPagination>;
 }
 
 export interface TableListParams {
   status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  assetName?: string;
+  // desc?: string;
+  dataHash?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

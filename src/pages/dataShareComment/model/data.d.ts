@@ -1,16 +1,10 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+export interface TokenModel {
+  modelId: string;
+  modelName: string;
+  modelDesc: string;
+  upCount: number;
+  createAt: Date;
+  isRunning: number;
 }
 
 export interface TableListPagination {
