@@ -10,6 +10,13 @@ export interface OnChainRequest {
   status: number;
 }
 
+export interface OnChainRequestForm {
+	usages: string;
+	dataTypes: string;
+	expireAt: Date;
+	file: string;
+}
+
 export interface TableListPagination {
   total: number;
   pageSize: number;

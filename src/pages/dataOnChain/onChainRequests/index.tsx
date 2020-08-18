@@ -1,11 +1,12 @@
-import { DownOutlined, /* PlusOutlined, */ FormOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, message, Divider } from 'antd';
+import { DownOutlined, UploadOutlined, /* PlusOutlined, */ FormOutlined, PlusOutlined } from '@ant-design/icons';
+import { Input, DatePicker, Upload, Button, Dropdown, Menu, message, Divider } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
-import { OnChainRequest } from './data.d';
+import { OnChainRequest, OnChainRequestForm } from './data.d';
 import { listOnChainRequest, updateRule, addRule } from './service';
 
 /**
@@ -13,6 +14,8 @@ import { listOnChainRequest, updateRule, addRule } from './service';
  * @param fields
  */
 const handleAdd = async (fields: OnChainRequest) => {
+console.log("shit");
+console.log(fields);
   const hide = message.loading('正在添加');
   try {
     await addRule({ ...fields });
@@ -108,25 +111,70 @@ const TableList: React.FC<{}> = () => {
     {
       title: '使用约定',
       dataIndex: 'usages',
-      hideInForm: true,
       sorter: true,
       hideInSearch: true,
+	  renderFormItem: () => (
+	  	<FormItem
+        name="usages"
+        label="数据使用约定"
+        rules={[{ required: true, message: '请输入数据使用约定！' }]}
+      	>
+        	<Input placeholder="请输入" />
+		</FormItem>
+	  )
     },
     {
-      title: '使用类型列表',
+      title: '数据类型列表',
       dataIndex: 'dataTypes',
-      hideInForm: true,
       sorter: true,
       hideInSearch: true,
+	  renderFormItem: () => (
+	  	<FormItem
+        name="dataTypes"
+        label="数据类型列表"
+        rules={[{ required: true, message: '请输入数据类型列表！' }]}
+      	>
+        	<Input placeholder="请输入" />
+		</FormItem>
+	  )
     },
     {
       title: '有效期截止',
       dataIndex: 'expireAt',
       hideInSearch: true,
+	  renderFormItem: () => (
+	  	<FormItem
+        name="expireAt"
+        label="数据有效期"
+        rules={[{ required: true, }]}
+      	>
+	  		<DatePicker />
+		</FormItem>
+	  )
     },
+	{
+	  title: '文件',
+	  dataIndex: 'file',
+	  hideInTable: true,
+	  hideInSearch: true,
+	  renderFormItem: () => (
+	  	<FormItem
+        name="file"
+        label="文件"
+        rules={[{ required: true, }]}
+		>
+			<Upload>
+			  <Button>
+				<UploadOutlined /> Upload
+			  </Button>
+			</Upload>
+		</FormItem>
+	  )
+	},
     {
       title: '状态',
       dataIndex: 'status',
+	  hideInForm: true,
       hideInSearch: true,
       valueEnum: {
         1: { text: '待审批', status: "processing" },
@@ -152,7 +200,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<OnChainRequest, OnChainRequest>
+        <ProTable<OnChainRequestForm, OnChainRequestForm>
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {
