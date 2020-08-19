@@ -1,13 +1,15 @@
-import { DownOutlined, UploadOutlined, /* PlusOutlined, */ FormOutlined, PlusOutlined } from '@ant-design/icons';
-import { Input, DatePicker, Upload, Button, Dropdown, Menu, message, Divider } from 'antd';
-import React, { useState, useRef } from 'react';
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import { Select, DatePicker, Upload, Button, message } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
-import { listOnChainRequest, createOnChainRequest, updateOnChainRequest } from './service';
+import { listOnChainRequest, createOnChainRequest, updateOnChainRequest, listDataTypes, listUsages } from './service';
+
+const { Option } = Select;
 
 /**
  * 添加节点
@@ -73,12 +75,58 @@ const handleRemove = async (selectedRows: AssetIdentifier[]) => {
   }
 };
 
+const handleChange = async (value: string[]) => {
+	console.log(value);
+}
+
+const getDataTypes = async () => {
+	try {
+		const resp = await listDataTypes();
+		const types = [];
+		for(let i = 0; i < resp.data.length; ++i) {
+			types.push(<Option key={resp.data[i].typeName}>{resp.data[i].typeName}</Option>);
+		}
+		console.log('types:', types);
+		return types;
+	} catch (error) {
+		console.log('listDataTypes failed:', error);
+		return [];
+	}
+}
+
+const getDataUsages = async () => {
+	try {
+		const resp = await listUsages();
+		const usages = [];
+		for(let i = 0; i < resp.data.length; ++i) {
+			usages.push(<Option key={resp.data[i].usage}>{resp.data[i].usage}</Option>);
+		}
+		console.log('usages:', usages);
+		return usages;
+	} catch (error) {
+		console.log('listUsages failed:', error);
+		return [];
+	}
+}
+
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
+
+  const [usageList, setUsageList] = useState([]);
+  const [dataTypes, setDataTypes] = useState([]);
+  useEffect(() => {
+  	(async () => {
+		const usages = await getDataUsages();
+		setUsageList(usages);
+		const types = await getDataTypes();
+		setDataTypes(types);
+	})();
+  }, []);
+  
   const columns: ProColumns<OnChainRequest>[] = [
     {
       title: '请求id',
@@ -119,7 +167,15 @@ const TableList: React.FC<{}> = () => {
           label="数据使用约定"
           rules={[{ required: true, message: '请输入数据使用约定！' }]}
         >
-          <Input placeholder="请输入" />
+			<Select
+			  mode="multiple"
+			  placeholder="Please select"
+			  defaultValue={['usage1']}
+			  onChange={handleChange}
+			  style={{ width: '100%' }}
+			>
+			  {usageList}
+			</Select>
         </FormItem>
       )
     },
@@ -134,7 +190,15 @@ const TableList: React.FC<{}> = () => {
           label="数据类型列表"
           rules={[{ required: true, message: '请输入数据类型列表！' }]}
         >
-          <Input placeholder="请输入" />
+			<Select
+			  mode="multiple"
+			  placeholder="Please select"
+			  defaultValue={['type1']}
+			  onChange={handleChange}
+			  style={{ width: '100%' }}
+			>
+			  {dataTypes}
+			</Select>
         </FormItem>
       )
     },

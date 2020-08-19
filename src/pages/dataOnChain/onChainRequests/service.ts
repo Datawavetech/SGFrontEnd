@@ -12,6 +12,29 @@ export async function listOnChainRequest() {
   });
 }
 
+export async function listDataTypes() {
+	return request('/api/onchain/dataType', {
+		method: 'GET',
+	}).then(resp => {
+		if(resp.status === 200) {
+			return resp;
+		}
+		return "";
+	})
+}
+
+export async function listUsages() {
+	return request('/api/confirm/dataUsage', {
+		method: 'GET',
+	}).then(resp => {
+		console.log('listUsages: ', resp);
+		if(resp.status === 200) {
+			return resp;
+		}
+		return "";
+	})
+}
+
 export async function createOnChainRequest(token: string, params?: OnChainRequest) {
 	return request('/api/onchain/upload', {
 		method: 'POST',
@@ -27,7 +50,7 @@ export async function createOnChainRequest(token: string, params?: OnChainReques
 	});
 }
 
-export async function updateOnChainRequest(token: string, reqId: string, status: int) {
+export async function updateOnChainRequest(token: string, reqId: string, status: number) {
 	return request('/api/onchain/update', {
 		method: 'POST',
 		headers: {
