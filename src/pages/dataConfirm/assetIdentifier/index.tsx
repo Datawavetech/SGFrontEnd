@@ -179,8 +179,7 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>),
 
         ]}
-        // { ...params, sorter, filter }
-        request={(params, sorter, filter) => listAssetIdentifier()}
+        request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -200,7 +199,6 @@ const TableList: React.FC<{}> = () => {
           rowKey="key"
           type="form"
           columns={columns}
-          rowSelection={{}}
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (

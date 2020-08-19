@@ -19,10 +19,11 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  modelId?: string;
+  modelName?: string;
+  modelDesc?: string;
+  upCount?: number;
+  isRunning?: number;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

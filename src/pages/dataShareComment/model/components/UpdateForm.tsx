@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Form, Button, DatePicker, Input, Modal, Radio, Select, Steps, InputNumber } from 'antd';
+import { Form, Input, Modal, InputNumber, Select } from 'antd';
 
 import { TokenModel } from '../data.d';
+import { Option } from 'antd/lib/mentions';
 
 export interface FormValueType extends Partial<TokenModel> {
   target?: string;
   template?: string;
-  type?: string;
-  time?: string;
-  frequency?: string;
+  modelId?: string;
+  modelName?: string;
+  modelDesc?: string;
+  upCount?: number;
+  isRunning?: number;
 }
 
 export interface UpdateFormProps {
@@ -18,10 +21,7 @@ export interface UpdateFormProps {
   values: Partial<TokenModel>;
 }
 const FormItem = Form.Item;
-const { Step } = Steps;
 const { TextArea } = Input;
-const { Option } = Select;
-const RadioGroup = Radio.Group;
 
 export interface UpdateFormState {
   formVals: FormValueType;
@@ -35,8 +35,11 @@ export interface UpdateFormState {
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const [formVals, setFormVals] = useState<FormValueType>({
-    assetName: props.values.assetName,
-    assetSys: props.values.assetSys,
+    modelId: props.values.modelId,
+    modelName: props.values.modelName,
+    modelDesc: props.values.modelDesc,
+    upCount: props.values.upCount,
+    isRunning: props.values.isRunning,
   });
 
   const [form] = Form.useForm();
@@ -47,6 +50,12 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     updateModalVisible,
     values,
   } = props;
+
+  const handleSubmit = async () => {
+    const fieldsValue = await form.validateFields();
+    setFormVals({ ...formVals, ...fieldsValue });
+    handleUpdate({ ...formVals, ...fieldsValue });
+  }
 
   const renderContent = () => {
     return (
@@ -72,6 +81,17 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         >
           <InputNumber min={1} max={10} />
         </FormItem>
+        {values.isRunning === 2 ? <FormItem
+          name="isRunning"
+          label="是否运行"
+          rules={[{ required: true, message: '请输入运行信息！' }]}
+        >
+          <Select defaultValue={1}>
+            <Option value="1">正在运行</Option>
+            <Option value="2">未运行</Option>
+          </Select>
+        </FormItem> : null}
+
       </>
     );
   };
@@ -84,17 +104,18 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       title="更新模型信息"
       visible={updateModalVisible}
       onCancel={() => handleUpdateModalVisible()}
+      onOk={handleSubmit}
     >
       <Form
         form={form}
         initialValues={{
           target: formVals.target,
           template: formVals.template,
-          type: formVals.type,
-          frequency: formVals.frequency,
+          modelId: formVals.modelId,
           modelName: formVals.modelName,
           modelDesc: formVals.modelDesc,
           upCount: formVals.upCount,
+          isRunning: formVals.isRunning === 2 ? "未运行" : "正在运行",
         }}
       >
         {renderContent()}

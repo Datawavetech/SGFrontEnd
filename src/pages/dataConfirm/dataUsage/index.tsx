@@ -7,7 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { DataUsage } from './data.d';
-import { listDataUsage, updateRule, addRule, removeRule } from './service';
+import { listDataUsage, updateDataUsage, createDataUsage, deleteDataUsage } from './service';
 
 import styles from './index.less';
 import ButtonGroup from 'antd/lib/button/button-group';
@@ -19,8 +19,7 @@ import ButtonGroup from 'antd/lib/button/button-group';
 const handleAdd = async (fields: DataUsage) => {
   const hide = message.loading('正在添加');
   try {
-    // { ...fields }
-    await addRule();
+    await createDataUsage({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -36,19 +35,19 @@ const handleAdd = async (fields: DataUsage) => {
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
+  const hide = message.loading('正在修改');
   try {
-    await updateRule({
-      name: '',
-      desc: '',
+    await updateDataUsage({
+      usageId: fields.usageId,
+      usage: fields.usage,
     });
     hide();
 
-    message.success('配置成功');
+    message.success('修改成功');
     return true;
   } catch (error) {
     hide();
-    message.error('配置失败请重试！');
+    message.error('修改失败请重试！');
     return false;
   }
 };
@@ -61,8 +60,8 @@ const handleRemove = async (selectedRows: DataUsage[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeRule({
-      key: selectedRows.map((row) => row.usageId),
+    await deleteDataUsage({
+      usageIds: selectedRows.map((row) => row.usageId),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -78,13 +77,14 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [selectedRows, setSelectedRows] = useState<DataUsage[]>([]);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<DataUsage>[] = [
     {
       title: 'id',
       dataIndex: 'usageId',
       hideInSearch: true,
-      hideInForm:true,
+      hideInForm: true,
     },
     {
       title: '使用约定',
@@ -95,7 +95,7 @@ const TableList: React.FC<{}> = () => {
       title: '创建时间',
       dataIndex: 'createAt',
       hideInSearch: true,
-      hideInForm:true,
+      hideInForm: true,
     },
     {
       title: '操作',
@@ -108,8 +108,6 @@ const TableList: React.FC<{}> = () => {
               handleUpdateModalVisible(true)
               setStepFormValues(record);
             }}>更改</Button>
-            <Divider type="vertical" />
-            <Button danger>删除</Button>
           </ButtonGroup>
         </>
       ),
@@ -121,7 +119,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<DataUsage>
         headerTitle="使用约定信息"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="usageId"
         toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建使用约定
@@ -139,7 +137,6 @@ const TableList: React.FC<{}> = () => {
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
                 </Menu>
               }
             >
@@ -151,6 +148,9 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
+        rowSelection={{
+          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+        }}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<DataUsage, DataUsage>
@@ -163,10 +163,9 @@ const TableList: React.FC<{}> = () => {
               }
             }
           }}
-          rowKey="key"
+          rowKey="usageId"
           type="form"
           columns={columns}
-          rowSelection={{}}
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (

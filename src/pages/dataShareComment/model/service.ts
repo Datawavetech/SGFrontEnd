@@ -1,49 +1,45 @@
 import request from 'umi-request';
 import { TableListParams, TokenModel } from './data.d';
+import { stringify } from 'qs';
 
-export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
-  }).then(resp => {
-    const tokenModels: TokenModel[] = []
-    tokenModels.push({
-      modelId: '245666-dbcsaer',
-      modelName: '标准模型',
-      modelDesc: '通用标准模型',
-      upCount: 1,
-      createAt: '2020-08-08 18:08:08',
-      isRunning: 1,
-    })
-    return { 'data': tokenModels }
-  });
-}
-
-export async function removeRule(params: { key: number[] }) {
-  return request('/api/rule', {
+export async function chooseTokenModel(params: TableListParams) {
+  return request('/api/comment/chooseModel', {
     method: 'POST',
     data: {
       ...params,
-      method: 'delete',
     },
   });
 }
 
-export async function addRule(params: TableListParams) {
-  return request('/api/rule', {
+export async function listTokenModel(params?: TableListParams) {
+  return request(`/api/comment/model?${stringify(params)}`);
+}
+
+export async function createTokenModel(params: TableListParams) {
+  return request('/api/comment/model', {
     method: 'POST',
     data: {
       ...params,
-      method: 'post',
     },
   });
 }
 
-export async function updateRule(params: TableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
+export async function updateTokenModel(params: TableListParams) {
+  console.log('params:', params)
+  return request('/api/comment/model', {
+    method: 'PUT',
     data: {
       ...params,
-      method: 'update',
     },
   });
 }
+
+export async function deleteTokenModel(params: { modelIds: string[] }) {
+  return request('/api/comment/model', {
+    method: 'DELETE',
+    data: {
+      ...params,
+    },
+  });
+}
+

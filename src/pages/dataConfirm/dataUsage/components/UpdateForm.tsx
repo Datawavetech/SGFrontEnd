@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import { Form, Button, DatePicker, Input, Modal, Radio, Select, Steps } from 'antd';
 
-import { TableListItem } from '../data.d';
+import { DataUsage } from '../data.d';
 
-export interface FormValueType extends Partial<TableListItem> {
+export interface FormValueType extends Partial<DataUsage> {
   target?: string;
   template?: string;
   type?: string;
-  time?: string;
-  frequency?: string;
+  usageId?: string;
+  usage?: string;
 }
 
 export interface UpdateFormProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
   onSubmit: (values: FormValueType) => void;
   updateModalVisible: boolean;
-  values: Partial<TableListItem>;
+  values: Partial<DataUsage>;
 }
+
 const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
-const { Option } = Select;
-const RadioGroup = Radio.Group;
 
 export interface UpdateFormState {
   formVals: FormValueType;
@@ -35,6 +32,7 @@ const formLayout = {
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const [formVals, setFormVals] = useState<FormValueType>({
+    usageId: props.values.usageId,
     usage: props.values.usage,
   });
 
@@ -61,6 +59,12 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     );
   };
 
+  const handleSubmit = async () => {
+    const fieldsValue = await form.validateFields();
+    setFormVals({ ...formVals, ...fieldsValue });
+    handleUpdate({ ...formVals, ...fieldsValue });
+  }
+
   return (
     <Modal
       width={640}
@@ -69,14 +73,13 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       title="更改使用约定"
       visible={updateModalVisible}
       onCancel={() => handleUpdateModalVisible()}
+      onOk={handleSubmit}
     >
       <Form
         form={form}
         initialValues={{
           target: formVals.target,
           template: formVals.template,
-          type: formVals.type,
-          frequency: formVals.frequency,
           usage: formVals.usage,
         }}
       >

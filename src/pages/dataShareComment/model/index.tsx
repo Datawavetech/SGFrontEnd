@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, InputNumber } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -7,17 +7,18 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TokenModel } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import { listTokenModel, updateTokenModel, createTokenModel, deleteTokenModel } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
+import FormItem from 'antd/lib/form/FormItem';
 
 /**
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: TableListItem) => {
+const handleAdd = async (fields: TokenModel) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({ ...fields });
+    await createTokenModel({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -33,20 +34,22 @@ const handleAdd = async (fields: TableListItem) => {
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
+  const hide = message.loading('正在修改');
   try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+    await updateTokenModel({
+      modelId: fields.modelId,
+      modelName: fields.modelName,
+      modelDesc: fields.modelDesc,
+      upCount: fields.upCount,
+      isRunning: fields.isRunning,
     });
     hide();
 
-    message.success('配置成功');
+    message.success('修改成功');
     return true;
   } catch (error) {
     hide();
-    message.error('配置失败请重试！');
+    message.error('修改失败请重试！');
     return false;
   }
 };
@@ -55,12 +58,12 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleRemove = async (selectedRows: TokenModel[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
+    await deleteTokenModel({
+      modelIds: selectedRows.map((row) => row.modelId),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -76,15 +79,15 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [selectedRows, setSelectedRows] = useState<TokenModel[]>([]);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TokenModel>[] = [
     {
       title: '模型id',
       dataIndex: 'modelId',
-      sorter: true,
-      hideInForm: true,
       hideInTable: true,
-      // renderText: (val: string) => `${val} 万`,
+      hideInSearch: true,
+      hideInForm: true,
     },
     {
       title: '模型名称',
@@ -106,6 +109,7 @@ const TableList: React.FC<{}> = () => {
           message: '模型描述为必填项',
         },
       ],
+      hideInSearch: true,
     },
     {
       title: '上升指数',
@@ -117,12 +121,22 @@ const TableList: React.FC<{}> = () => {
           message: '上升指数为必填项',
         },
       ],
+      hideInSearch: true,
+      renderFormItem: () => (
+        <FormItem
+          name="upCount"
+          label="上升指数"
+        >
+          <InputNumber min={1} max={10} />
+        </FormItem>
+      )
     },
     {
       title: '创建时间',
       dataIndex: 'createAt',
       sorter: true,
       hideInForm: true,
+      hideInSearch: true,
     },
     {
       title: '状态',
@@ -144,8 +158,6 @@ const TableList: React.FC<{}> = () => {
               handleUpdateModalVisible(true)
               setStepFormValues(record);
             }}>更改</Button>
-            <Divider type="vertical"></Divider>
-            <Button danger>删除</Button>
           </ButtonGroup>
         </>
       ),
@@ -157,7 +169,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<TokenModel>
         headerTitle="模型信息"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="modelId"
         toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建模型
@@ -175,7 +187,6 @@ const TableList: React.FC<{}> = () => {
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
                 </Menu>
               }
             >
@@ -185,11 +196,14 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => listTokenModel({ ...params, sorter, filter })}
         columns={columns}
+        rowSelection={{
+          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+        }}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<TableListItem, TableListItem>
+        <ProTable<TokenModel, TokenModel>
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {
