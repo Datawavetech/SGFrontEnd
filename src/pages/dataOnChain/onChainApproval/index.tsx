@@ -7,7 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
-import { listOnChainRequest, updateOnChainRequest } from './service';
+import { listWaitingRequests, updateOnChainRequest } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
@@ -90,6 +90,12 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
+    {
+	  title: '申请ID',
+	  dataIndex: 'requestId',
+	  hideInForm: true,
+	  hideInTable: true,
+	},
     {
       title: '权属标识',
       dataIndex: 'dataHash',

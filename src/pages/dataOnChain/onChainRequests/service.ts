@@ -1,9 +1,12 @@
 import request from 'umi-request';
 import { OnChainRequest } from './data.d';
-//  TODO params?: TableListParams
-export async function listOnChainRequest() {
+
+export async function listUserRequests(token: string) {
   return request('/api/onchain/list', {
     method: 'GET',
+	headers: {
+		"Authorization": token,
+	}
   }).then((resp) => {
 	  if(resp.status === 200) {
 		  return resp;

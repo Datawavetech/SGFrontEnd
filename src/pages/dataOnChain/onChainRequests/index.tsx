@@ -7,7 +7,7 @@ import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
-import { listOnChainRequest, createOnChainRequest, updateOnChainRequest, listDataTypes, listUsages } from './service';
+import { listUserRequests, createOnChainRequest, listDataTypes, listUsages } from './service';
 
 const { Option } = Select;
 
@@ -261,7 +261,7 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter) => listOnChainRequest()}
+        request={(params, sorter, filter) => listUserRequests()}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
