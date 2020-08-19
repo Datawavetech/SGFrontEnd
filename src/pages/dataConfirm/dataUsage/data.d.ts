@@ -17,9 +17,8 @@ export interface TableListData {
 
 export interface TableListParams {
   status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  usageId?: string;
+  usage?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal } from 'antd';
-import Form from 'antd/lib/form/Form';
 
 interface CreateFormProps {
   modalVisible: boolean;

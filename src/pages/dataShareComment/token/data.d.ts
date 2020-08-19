@@ -1,10 +1,10 @@
 export interface TokenInfo {
   userId: string;
-  username:string;
-  userType:number;
-  token:number;
-  tokenComment:string;
-  updateAt:Date;
+  username: string;
+  userType: number;
+  token: number;
+  tokenComment: string;
+  updateAt: Date;
 }
 
 export interface TableListPagination {
@@ -19,10 +19,8 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  username?: string;
+  userType?: number;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

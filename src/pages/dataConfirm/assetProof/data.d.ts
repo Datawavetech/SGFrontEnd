@@ -5,6 +5,7 @@ export interface AssetProof {
   proof: string;
   createAt: Date;
   updateAt: Date;
+  verifyRes: number;
 }
 
 export interface TableListPagination {
@@ -20,9 +21,9 @@ export interface TableListData {
 
 export interface TableListParams {
   status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  dataHash?: string;
+  assetName?: string;
+  assetSys?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

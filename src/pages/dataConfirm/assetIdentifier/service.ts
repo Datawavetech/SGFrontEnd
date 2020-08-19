@@ -1,10 +1,9 @@
 import request from 'umi-request';
 import { TableListParams } from './data.d';
+import { stringify } from 'qs';
 
-export async function listAssetIdentifier() {
-  return request('/api/confirm/assetIdentifier', {
-    method: 'GET',
-  }).then((resp) => {
+export async function listAssetIdentifier(params: TableListParams) {
+  return request(`/api/confirm/assetIdentifier?${stringify(params)}`).then((resp) => {
     if (resp.status === 200) {
       return resp;
     }
