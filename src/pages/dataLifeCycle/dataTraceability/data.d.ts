@@ -1,16 +1,7 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: number;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+export interface DataTraceability {
+  assetName: string;
+  sourceSys: string;
+  createAt: Date;
 }
 
 export interface TableListPagination {
@@ -25,16 +16,8 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  sorter?: {
-    [key: string]: string;
-  };
-  filter?: {
-    [key: string]: React.ReactText[];
-  };
-  status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  assetName?: string;
+  sourceSys?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

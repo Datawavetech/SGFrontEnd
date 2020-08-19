@@ -6,9 +6,9 @@ export default {
   'dataLifeCycle.analysis.dataAmount':'数据量',
   'dataLifeCycle.analysis.dataToken':'数据积分',
   
-  'dataLifeCycle.analysis.6':'申请用户数量',
-  'dataLifeCycle.analysis.7':'人均申请次数',
-  'dataLifeCycle.analysis.8':'',
+  'dataLifeCycle.analysis.userData':'用户申请认证数据统计',
+  'dataLifeCycle.analysis.userApplyAmount':'用户申请数量',
+  'dataLifeCycle.analysis.applyAmountPerUser':'人均申请次数',
 
   'dataLifeCycle.table.users':'用户',
   'dataLifeCycle.table.uid': '用户ID',

@@ -1,4 +1,4 @@
-export interface TableListItem {
+export interface DataRouter {
   dataIdentifier:string;
   levelOneSysName:string;
   levelOneSysDataHash:string;
@@ -23,16 +23,9 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  sorter?: {
-    [key: string]: string;
-  };
-  filter?: {
-    [key: string]: React.ReactText[];
-  };
-  status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  levelOneSysName?:string;
+  levelTwoSysName?:string;
+  levelThreeSysName?:string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

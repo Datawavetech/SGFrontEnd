@@ -85,6 +85,14 @@ const TableList: React.FC<{}> = () => {
     }
   ];
  
+  const userData = [];
+  for (let i = 0; i < 50; i += 1) {
+    userData.push({
+      userId: `${i}`,
+      userName: `用户${i}`,
+      applyCount: Math.floor(Math.random() * 1000),
+    });
+  }
   
   const handleChangeAnalysisType = (e: RadioChangeEvent) => {
     console.log("debug:",e)
@@ -105,7 +113,7 @@ const TableList: React.FC<{}> = () => {
             <TopSearch
               //loading={loading}
               visitData2={visitData2}
-              //searchData={searchData}
+              tableData={userData}
               //dropdownGroup={dropdownGroup}
             />
           </Suspense>

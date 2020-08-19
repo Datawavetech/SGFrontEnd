@@ -1,53 +1,50 @@
 import { request } from 'umi';
-import { TableListParams, TableListItem } from './data';
+import { TableListParams, DataRouter } from './data';
+import { stringify } from 'qs';
 
-export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
-  }).then(resp => {
-    const list: TableListItem[] = []
-    list.push({
-      dataIdentifier: '2caaabbbb244365',
-      levelOneSysName: '政治保电系统',
-      levelOneSysDataHash: 'cccaaabbb',
-      levelOneSysCreateAt: '2020-08-08 01:02:03',
-      levelTwoSysName: '数据中台',
-      levelTwoSysDataHash: 'cccaaabbb',
-      levelTwoSysCreateAt: '2020-08-09 01:02:03',
-      levelThreeSysName: '冬奥指挥平台',
-      levelThreeSysDataHash: 'cccaaabbb',
-      levelThreeSysCreateAt: '2020-08-10 01:02:03',
-    })
-    return {'data':list}
-  });
-}
+export async function listDataRouter(params?: TableListParams) {
+  console.log('params:', params)
+  return request(`/api/life/router?${stringify(params)}`).then(resp => {
+    const list: DataRouter[] = []
+    if (resp.data !== null) {
+      const data = resp.data
+      for (var i = 0; i < data.length; i++) {
+        const levelOne = data[i].levelOneSys
+        const levelTwo = data[i].levelTwoSys
+        const levelThree = data[i].levelThreeSys
+        var levelOneSysName, levelOneSysDataHash, levelOneSysCreateAt
+        var levelTwoSysName, levelTwoSysDataHash, levelTwoSysCreateAt
+        var levelThreeSysName, levelThreeSysDataHash, levelThreeSysCreateAt
+        if (levelOne !== null) {
+          levelOneSysName = levelOne.sysName
+          levelOneSysDataHash = levelOne.dataHash
+          levelOneSysCreateAt = levelOne.createAt
+        }
+        if (levelTwo !== null) {
+          levelTwoSysName = levelTwo.sysName
+          levelTwoSysDataHash = levelTwo.dataHash
+          levelTwoSysCreateAt = levelTwo.createAt
+        }
+        if (levelThree !== null) {
+          levelThreeSysName = levelThree.sysName
+          levelThreeSysDataHash = levelThree.dataHash
+          levelThreeSysCreateAt = levelThree.createAt
+        }
+        list.push({
+          dataIdentifier: data[i].dataIdentifier,
+          levelOneSysName: levelOneSysName,
+          levelOneSysDataHash: levelOneSysDataHash,
+          levelOneSysCreateAt: levelOneSysCreateAt,
+          levelTwoSysName: levelTwoSysName,
+          levelTwoSysDataHash: levelTwoSysDataHash,
+          levelTwoSysCreateAt: levelTwoSysCreateAt,
+          levelThreeSysName: levelThreeSysName,
+          levelThreeSysDataHash: levelThreeSysDataHash,
+          levelThreeSysCreateAt: levelThreeSysCreateAt,
+        })
+      }
+    }
 
-export async function removeRule(params: { key: number[] }) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'delete',
-    },
-  });
-}
-
-export async function addRule(params: TableListItem) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'post',
-    },
-  });
-}
-
-export async function updateRule(params: TableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'update',
-    },
+    return { 'data': list }
   });
 }

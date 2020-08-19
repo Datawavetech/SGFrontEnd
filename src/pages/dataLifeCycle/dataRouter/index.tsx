@@ -1,87 +1,21 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import { DataRouter } from './data';
+import { listDataRouter } from './service';
 
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: TableListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
 
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
 
 const TableList: React.FC<{}> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<DataRouter>[] = [
     {
       title: '数据标识',
       dataIndex: 'dataIdentifier',
       ellipsis: true,
       width: 200,
+      hideInSearch: true,
     },
     {
       title: '一级系统名称',
@@ -92,11 +26,15 @@ const TableList: React.FC<{}> = () => {
       title: '一级系统数据哈希',
       dataIndex: 'levelOneSysDataHash',
       valueType: 'textarea',
+      hideInSearch: true,
+      ellipsis: true,
+      width: 100,
     },
     {
       title: '一级系统数据创建时间',
       dataIndex: 'levelOneSysCreateAt',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: '二级系统名称',
@@ -107,11 +45,15 @@ const TableList: React.FC<{}> = () => {
       title: '二级系统数据哈希',
       dataIndex: 'levelTwoSysDataHash',
       valueType: 'textarea',
+      hideInSearch: true,
+      ellipsis: true,
+      width: 100,
     },
     {
       title: '二级系统数据创建时间',
       dataIndex: 'levelTwoSysCreateAt',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: '三级系统名称',
@@ -122,21 +64,25 @@ const TableList: React.FC<{}> = () => {
       title: '三级系统数据哈希',
       dataIndex: 'levelThreeSysDataHash',
       valueType: 'textarea',
+      hideInSearch: true,
+      ellipsis: true,
+      width: 100,
     },
     {
       title: '三级系统数据创建时间',
       dataIndex: 'levelThreeSysCreateAt',
       valueType: 'textarea',
+      hideInSearch: true,
     },
   ];
 
   return (
     <PageContainer>
-      <ProTable<TableListItem>
+      <ProTable<DataRouter>
         headerTitle="数据流转信息"
         actionRef={actionRef}
         rowKey="key"
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => listDataRouter({ ...params, sorter, filter })}
         columns={columns}
       />
     </PageContainer>
