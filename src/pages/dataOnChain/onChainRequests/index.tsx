@@ -20,15 +20,19 @@ const handleAdd = async (fields: OnChainRequest) => {
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-  	let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QiLCJleHAiOjE1OTc3NDIzMzcsInVzZXJuYW1lIjoidGVzdCJ9.fDEQTaVD3GZaCoy5tW8N4veAaNdVeAtP6b-QYu1p7lE";
-    await createOnChainRequest(token, { ...fields });
+	/*let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QxIiwiZXhwIjoxNTk3ODUxMDc4LCJ1c2VybmFtZSI6InRlc3QxIn0.CCwSPF0js_PmWXIekarzTSw5Bn9Y27-kOYR3U6KbYHw";*/
+	let token = localStorage.getItem('token');
+    let ret = await createOnChainRequest(token, { ...fields });
     hide();
-    message.success('添加成功');
+	if(ret) {
+		message.success('申请成功');
+	} else {
+		message.warn('申请失败');
+	}
     return true;
   } catch (error) {
-  console.log(error);
     hide();
-    message.error('添加失败请重试！');
+    message.error('申请失败');
     return false;
   }
 };
@@ -116,6 +120,8 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
+
+  const token = localStorage.getItem('token');
 
   const [usageList, setUsageList] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
@@ -262,7 +268,7 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter) => listUserRequests()}
+        request={(params, sorter, filter, token) => listUserRequests(token)}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
