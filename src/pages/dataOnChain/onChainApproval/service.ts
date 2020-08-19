@@ -19,6 +19,33 @@ export async function queryRule(params?: TableListParams) {
   });
 }
 
+export async function listOnChainRequest() {
+  return request('/api/onchain/list', {
+    method: 'GET',
+  }).then((resp) => {
+	  if(resp.status === 200) {
+		  return resp;
+	  }
+	  return "";
+  });
+}
+
+export async function updateOnChainRequest(token: string, reqId: string, status: number) {
+	return request('/api/onchain/update', {
+		method: 'POST',
+		headers: {
+			'Authorization': token,
+		},
+		data: {
+			'requestId': reqId,
+			'status': status,
+		}
+	}).then(resp => {
+		console.log(resp);
+		return resp.status === 200;
+	});
+}
+
 export async function removeRule(params: { key: number[] }) {
   return request('/api/rule', {
     method: 'POST',
