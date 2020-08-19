@@ -3,7 +3,7 @@ import { OnChainRequest } from './data.d';
 
 
 export async function listUserRequests(token: string) {
-  return request('/api/onchain/list', {
+  return request('/api/onchain/listUserRequests', {
     method: 'GET',
 	headers: {
 		"Authorization": token,
@@ -41,12 +41,10 @@ export async function listUsages() {
 
 export async function createOnChainRequest(token: string, params?: OnChainRequest) {
 	const formData = new FormData();
-	//const fr = new FileReader();
-	//fr.readAsDataURL(params.file.fileList[0]);
 	formData.append('usages', JSON.stringify(params.usages));
 	formData.append('dataTypes', JSON.stringify(params.dataTypes));
 	formData.append('expireAt', params.expireAt);
-	formData.append('file', params.file.fileList[0]);
+	formData.append('file', params.file.file.originFileObj);
 	return request('/api/onchain/upload', {
 		method: 'POST',
 		headers: {
