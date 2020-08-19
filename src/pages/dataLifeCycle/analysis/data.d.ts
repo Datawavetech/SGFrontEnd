@@ -11,6 +11,12 @@ export interface SearchDataType {
   status: number;
 }
 
+export interface UserDataType{
+  userId: string;
+  userName: string;
+  applyCount: number;
+}
+
 export interface OfflineDataType {
   name: string;
   cvr: number;
