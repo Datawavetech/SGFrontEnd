@@ -26,6 +26,7 @@ const handleAdd = async (fields: OnChainRequest) => {
     message.success('添加成功');
     return true;
   } catch (error) {
+  console.log(error);
     hide();
     message.error('添加失败请重试！');
     return false;
