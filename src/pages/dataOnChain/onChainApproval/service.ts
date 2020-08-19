@@ -7,6 +7,7 @@ export async function queryRule(params?: TableListParams) {
   }).then(resp => {
     const tableListDataSource: TableListItem[] = [];
     tableListDataSource.push({
+	  requestId: 'reqId1',
       dataHash: '0x5dcccccdaa9237504',
       user: '章明',
       department: "业务部",
@@ -17,6 +18,36 @@ export async function queryRule(params?: TableListParams) {
     });
     return { 'data': tableListDataSource }
   });
+}
+
+export async function listWaitingRequests(token: string) {
+  return request('/api/onchain/list', {
+    method: 'GET',
+	headers: {
+		'Authorization': token,
+	}
+  }).then((resp) => {
+	  if(resp.status === 200) {
+		  return resp;
+	  }
+	  return "";
+  });
+}
+
+export async function updateOnChainRequest(token: string, reqId: string, status: number) {
+	return request('/api/onchain/update', {
+		method: 'POST',
+		headers: {
+			'Authorization': token,
+		},
+		data: {
+			'requestId': reqId,
+			'status': status,
+		}
+	}).then(resp => {
+		console.log(resp);
+		return resp.status === 200;
+	});
 }
 
 export async function removeRule(params: { key: number[] }) {

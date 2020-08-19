@@ -7,6 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+import { listWaitingRequests, updateOnChainRequest } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
 
 /**
@@ -71,12 +72,30 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   }
 };
 
+const updateRequest = async (record, status) => {
+	try{
+		// TODO: 从localStorage获取token
+		const token = "xxx";
+		const ret = await updateOnChainRequest(token, record.requestId, status);
+		return ret;
+	} catch (error) {
+		console.log("udpateOnChainRequest failed:", error);
+		return false;
+	}
+}
+
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
+    {
+	  title: '申请ID',
+	  dataIndex: 'requestId',
+	  hideInForm: true,
+	  hideInTable: true,
+	},
     {
       title: '权属标识',
       dataIndex: 'dataHash',
@@ -131,9 +150,23 @@ const TableList: React.FC<{}> = () => {
       render: (_, record) => (
         <>
           <ButtonGroup>
-            <Button type="primary">通过</Button>
+            <Button type="primary" onClick={async () => {
+				const success = await updateRequest(record, 2);
+				if(success) {
+					message.info("成功");
+				} else {
+					message.warn("失败");
+				}
+			}}>通过</Button>
             <Divider type="vertical"></Divider>
-            <Button danger>拒绝</Button>
+            <Button danger onClick={async () => {
+				const success = await updateRequest(record, 3);
+				if(success) {
+					message.info("成功");
+				} else {
+					message.warn("失败");
+				}
+			}}>拒绝</Button>
           </ButtonGroup>
         </>
       ),
