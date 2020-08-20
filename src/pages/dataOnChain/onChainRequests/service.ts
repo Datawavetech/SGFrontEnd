@@ -53,7 +53,7 @@ export async function createOnChainRequest(token: string, params?: OnChainReques
 		data: formData,
 	}).then((resp) => {
 		console.log(resp);
-		return resp;
+		return resp.status === 200;
 	});
 }
 
@@ -69,7 +69,7 @@ export async function updateOnChainRequest(token: string, reqId: string, status:
 		}
 	}).then(resp => {
 		console.log(resp);
-		return resp;
+		return resp.status === 200;
 	});
 }
 
