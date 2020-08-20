@@ -75,6 +75,11 @@ class Pie extends Component<PieProps, PieState> {
     }
   }, 400);
 
+  componentWillMount() {
+    const { data } = this.props;
+    console.log(data)
+  }
+
   componentDidMount() {
     window.addEventListener(
       'resize',

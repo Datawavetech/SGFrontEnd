@@ -29,8 +29,8 @@ const columns = [
   
   {
     title: <FormattedMessage id="dataLifeCycle.table.applyNumber" defaultMessage="Users" />,
-    dataIndex: 'applyCount',
-    key: 'applyCount',
+    dataIndex: 'count',
+    key: 'count',
     sorter: (a: { count: number }, b: { count: number }) => a.count - b.count,
     className: styles.alignRight,
   }
@@ -40,11 +40,10 @@ const TopSearch = ({
   loading,
   visitData2,
   tableData,
-  dropdownGroup,
+  analysisData,
 }: {
   loading: boolean;
   visitData2: VisitDataType[];
-  dropdownGroup: React.ReactNode;
   tableData: UserDataType[];
 }) => (
   <Card
@@ -56,7 +55,6 @@ const TopSearch = ({
         defaultMessage="Online Top Search"
       />
     }
-    extra={dropdownGroup}
     style={{
       height: '100%',
     }}
@@ -73,7 +71,7 @@ const TopSearch = ({
             </span>
           }
           gap={8}
-          total={numeral(12321).format('0,0')}
+          total={analysisData.total}
         />
         <MiniArea line height={45} data={visitData2} />
       </Col>
@@ -87,7 +85,7 @@ const TopSearch = ({
               />
             </span>
           }
-          total={2.7}
+          total={analysisData.average}
           gap={8}
         />
         <MiniArea line height={45} data={visitData2} />
