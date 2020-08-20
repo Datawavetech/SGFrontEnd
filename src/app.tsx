@@ -16,7 +16,12 @@ export async function getInitialState(): Promise<{
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     try {
-      const currentUser = await queryCurrent();
+      // const currentUser = await queryCurrent();
+      const currentUserStr = localStorage.getItem('tdsp');
+      let currentUser = {}
+      if (currentUserStr != null) {
+        currentUser = JSON.parse(currentUserStr)
+      }
       return {
         currentUser,
         settings: defaultSettings,

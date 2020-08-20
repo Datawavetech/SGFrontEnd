@@ -1,14 +1,14 @@
-import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined } from '@ant-design/icons';
 import { Alert, Checkbox, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, SelectLang, history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
 import logo from '@/assets/sg_logo.svg';
-import { LoginParamsType, fakeAccountLogin } from '@/services/login';
+import { LoginParamsType, login, fakeAccountLogin } from '@/services/login';
 import LoginFrom from './components/Login';
 import styles from './style.less';
+import { stringify } from 'qs';
 
-const { Tab, Username, Password, Mobile, Captcha, Submit } = LoginFrom;
+const { Tab, Username, Password, Submit } = LoginFrom;
 
 const LoginMessage: React.FC<{
   content: string;
@@ -57,9 +57,10 @@ const Login: React.FC<{}> = () => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await fakeAccountLogin({ ...values, type });
-      if (msg.status === 'ok') {
+      const msg = await login({ ...values });
+      if (msg.status === 200) {
         message.success('登录成功！');
+        localStorage.setItem('tdsp', JSON.stringify(msg.data))
         replaceGoto();
         setTimeout(() => {
           refresh();
@@ -74,7 +75,7 @@ const Login: React.FC<{}> = () => {
     setSubmitting(false);
   };
 
-  const { status, type: loginType } = userLoginState;
+  const { status, data } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -95,13 +96,13 @@ const Login: React.FC<{}> = () => {
         <div className={styles.main}>
           <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
             <Tab key="account" tab="账户密码登录">
-              {status === 'error' && loginType === 'account' && !submitting && (
-                <LoginMessage content="账户或密码错误（admin/ant.design）" />
+              {status !== 200 && !submitting && (
+                <LoginMessage content="账户或密码错误" />
               )}
 
               <Username
                 name="username"
-                placeholder="用户名: admin or user"
+                placeholder="用户名"
                 rules={[
                   {
                     required: true,
@@ -111,7 +112,7 @@ const Login: React.FC<{}> = () => {
               />
               <Password
                 name="password"
-                placeholder="密码: ant.design"
+                placeholder="密码"
                 rules={[
                   {
                     required: true,
@@ -124,13 +125,6 @@ const Login: React.FC<{}> = () => {
               <Checkbox checked={autoLogin} onChange={(e) => setAutoLogin(e.target.checked)}>
                 自动登录
               </Checkbox>
-              <a
-                style={{
-                  float: 'right',
-                }}
-              >
-                忘记密码
-              </a>
             </div>
             <Submit loading={submitting}>登录</Submit>
           </LoginFrom>

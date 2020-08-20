@@ -3,24 +3,25 @@ import { OnChainRequest } from './data.d';
 
 
 export async function listUserRequests(token: string) {
-  return request('/api/onchain/list', {
-    method: 'GET',
-	headers: {
-		"Authorization": token,
-	}
-  }).then((resp) => {
-	  if(resp.status === 200) {
-		  return resp;
-	  }
-	  return "";
-  });
+	return request('/api/onchain/listUserRequests', {
+		method: 'GET',
+		headers: {
+			"Authorization": token,
+		}
+	}).then((resp) => {
+		console.log('resp;', resp)
+		if (resp.status === 200) {
+			return resp;
+		}
+		return "";
+	});
 }
 
 export async function listDataTypes() {
 	return request('/api/onchain/dataType', {
 		method: 'GET',
 	}).then(resp => {
-		if(resp.status === 200) {
+		if (resp.status === 200) {
 			return resp;
 		}
 		return "";
@@ -32,7 +33,7 @@ export async function listUsages() {
 		method: 'GET',
 	}).then(resp => {
 		console.log('listUsages: ', resp);
-		if(resp.status === 200) {
+		if (resp.status === 200) {
 			return resp;
 		}
 		return "";
@@ -77,41 +78,41 @@ export async function updateOnChainRequest(token: string, reqId: string, status:
 
 // TODO params?: TableListParams
 export async function createAssetIdentifier() {
-  return request('/api/confirm/assetIdentifier', {
-    method: 'POST',
-    // params,
-  });
+	return request('/api/confirm/assetIdentifier', {
+		method: 'POST',
+		// params,
+	});
 }
 
 // TODO params: { dataHashs: string[] }
 export async function deleteAssetIdentifier() {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      // ...params,
-      method: 'delete',
-    },
-  });
+	return request('/api/rule', {
+		method: 'POST',
+		data: {
+			// ...params,
+			method: 'delete',
+		},
+	});
 }
 
 // params: TableListParams
 export async function addRule() {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      // ...params,
-      method: 'post',
-    },
-  });
+	return request('/api/rule', {
+		method: 'POST',
+		data: {
+			// ...params,
+			method: 'post',
+		},
+	});
 }
 
 //  TODO params: TableListParams
 export async function updateRule() {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      // ...params,
-      method: 'update',
-    },
-  });
+	return request('/api/rule', {
+		method: 'POST',
+		data: {
+			// ...params,
+			method: 'update',
+		},
+	});
 }
