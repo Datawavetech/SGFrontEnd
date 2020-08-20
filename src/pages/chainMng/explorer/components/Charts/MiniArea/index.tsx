@@ -36,18 +36,19 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
     color = 'rgba(24, 144, 255, 0.2)',
     borderColor = '#1089ff',
     scale = { x: {}, y: {} },
-    borderWidth = 2,
+    borderWidth = 0.5,
     line,
     xAxis,
     yAxis,
     animate = true,
   } = props;
 
-  const padding: [number, number, number, number] = [36, 5, 30, 5];
+  const padding: [number, number, number, number] = [20, 5, 30, 5];
 
   const scaleProps = {
     x: {
-      type: 'timeCat',
+      type : "time",
+      range: [0, 1],
       ...scale.x,
     },
     y: {
@@ -82,28 +83,13 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
               key="axis-x"
               name="x"
               label={null}
-              line={null}
-              tickLine={null}
-              grid={null}
-              {...xAxis}
             />
             <Axis
               key="axis-y"
               name="y"
               label={null}
-              line={null}
-              tickLine={null}
-              grid={null}
-              {...yAxis}
             />
-            <Tooltip showTitle={false} crosshairs={false} />
-            <Geom
-              type="area"
-              position="x*y"
-              color={color}
-              tooltip={tooltip}
-            />
-            
+            <Tooltip  />
             <Geom
               type="line"
               position="x*y"
@@ -111,6 +97,14 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
               size={borderWidth}
               tooltip={false}
             />
+            <Geom
+              type="area"
+              position="x*y"
+              color={color}
+              tooltip={tooltip}
+              opacity={0.2}
+            />
+            
             
           </Chart>
         )}
