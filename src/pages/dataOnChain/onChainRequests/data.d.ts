@@ -30,9 +30,6 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  status?: string;
-  assetName?: string;
-  // desc?: string;
   dataHash?: string;
   pageSize?: number;
   currentPage?: number;

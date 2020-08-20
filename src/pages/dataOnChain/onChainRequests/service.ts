@@ -1,26 +1,27 @@
 import request from 'umi-request';
-import { OnChainRequest } from './data.d';
+import { OnChainRequest, TableListParams } from './data.d';
+import { stringify } from 'qs';
 
 
-export async function listUserRequests(token: string) {
-  return request('/api/onchain/listUserRequests', {
-    method: 'GET',
-	headers: {
-		"Authorization": token,
-	}
-  }).then((resp) => {
-	  if(resp.status === 200) {
-		  return resp;
-	  }
-	  return "";
-  });
+export async function listUserRequests(token: string, params: TableListParams) {
+	return request(`/api/onchain/listUserRequests?${stringify(params)}`, {
+		method: 'GET',
+		headers: {
+			"Authorization": token,
+		}
+	}).then((resp) => {
+		if (resp.status === 200) {
+			return resp;
+		}
+		return "";
+	});
 }
 
 export async function listDataTypes() {
 	return request('/api/onchain/dataType', {
 		method: 'GET',
 	}).then(resp => {
-		if(resp.status === 200) {
+		if (resp.status === 200) {
 			return resp;
 		}
 		return "";
@@ -31,8 +32,7 @@ export async function listUsages() {
 	return request('/api/confirm/dataUsage', {
 		method: 'GET',
 	}).then(resp => {
-		console.log('listUsages: ', resp);
-		if(resp.status === 200) {
+		if (resp.status === 200) {
 			return resp;
 		}
 		return "";
@@ -52,7 +52,6 @@ export async function createOnChainRequest(token: string, params?: OnChainReques
 		},
 		data: formData,
 	}).then((resp) => {
-		console.log(resp);
 		return resp.status === 200;
 	});
 }
@@ -71,45 +70,4 @@ export async function updateOnChainRequest(token: string, reqId: string, status:
 		console.log(resp);
 		return resp.status === 200;
 	});
-}
-
-// TODO params?: TableListParams
-export async function createAssetIdentifier() {
-  return request('/api/confirm/assetIdentifier', {
-    method: 'POST',
-    // params,
-  });
-}
-
-// TODO params: { dataHashs: string[] }
-export async function deleteAssetIdentifier() {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      // ...params,
-      method: 'delete',
-    },
-  });
-}
-
-// params: TableListParams
-export async function addRule() {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      // ...params,
-      method: 'post',
-    },
-  });
-}
-
-//  TODO params: TableListParams
-export async function updateRule() {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      // ...params,
-      method: 'update',
-    },
-  });
 }

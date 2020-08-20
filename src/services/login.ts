@@ -8,6 +8,21 @@ export interface LoginParamsType {
   type: string;
 }
 
+export async function login(params: LoginParamsType) {
+  return request<API.LoginStateType>('/api/user/login', {
+    method: 'POST',
+    data: { ...params },
+  });
+}
+
+export async function logout() {
+  return request('/api/user/logout').then(resp => {
+    localStorage.removeItem('tdsp')
+    localStorage.removeItem('tdsp_token')
+    return { 'success': true, 'data': {} }
+  });
+}
+
 export async function fakeAccountLogin(params: LoginParamsType) {
   return request<API.LoginStateType>('/api/login/account', {
     method: 'POST',

@@ -1,5 +1,5 @@
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
-import { Select, DatePicker, Upload, Button, message } from 'antd';
+import { Tag, Select, DatePicker, Upload, Button, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -16,19 +16,21 @@ const { Option } = Select;
  * @param fields
  */
 const handleAdd = async (fields: OnChainRequest) => {
-  console.log(fields);
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-	/*let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QxIiwiZXhwIjoxNTk3ODUxMDc4LCJ1c2VybmFtZSI6InRlc3QxIn0.CCwSPF0js_PmWXIekarzTSw5Bn9Y27-kOYR3U6KbYHw";*/
-	let token = localStorage.getItem('token');
-    let ret = await createOnChainRequest(token, { ...fields });
-    hide();
-	if(ret) {
-		message.success('申请成功');
-	} else {
-		message.warn('申请失败');
-	}
+    let dataStr = localStorage.getItem('tdsp');
+    if (dataStr !== undefined && dataStr !== null) {
+      let data = JSON.parse(dataStr)
+      let token = data.token
+      let ret = await createOnChainRequest(token, { ...fields });
+      hide();
+      if (ret) {
+        message.success('申请成功');
+      } else {
+        message.warn('申请失败');
+      }
+    }
     return true;
   } catch (error) {
     hide();
@@ -37,103 +39,59 @@ const handleAdd = async (fields: OnChainRequest) => {
   }
 };
 
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      dataHash: fields.dataHash,
-      assetName: fields.assetName,
-    });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: AssetIdentifier[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      dataHashs: selectedRows.map((row) => row.dataHash),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
 const handleChange = async (value: string[]) => {
-	console.log(value);
+  console.log(value);
 }
 
 const getDataTypes = async () => {
-	try {
-		const resp = await listDataTypes();
-		const types = [];
-		for(let i = 0; i < resp.data.length; ++i) {
-			types.push(<Option key={resp.data[i].typeName}>{resp.data[i].typeName}</Option>);
-		}
-		console.log('types:', types);
-		return types;
-	} catch (error) {
-		console.log('listDataTypes failed:', error);
-		return [];
-	}
+  try {
+    const resp = await listDataTypes();
+    const types = [];
+    for (let i = 0; i < resp.data.length; ++i) {
+      types.push(<Option key={resp.data[i].typeName}>{resp.data[i].typeName}</Option>);
+    }
+    return types;
+  } catch (error) {
+    console.log('listDataTypes failed:', error);
+    return [];
+  }
 }
 
 const getDataUsages = async () => {
-	try {
-		const resp = await listUsages();
-		const usages = [];
-		for(let i = 0; i < resp.data.length; ++i) {
-			usages.push(<Option key={resp.data[i].usage}>{resp.data[i].usage}</Option>);
-		}
-		console.log('usages:', usages);
-		return usages;
-	} catch (error) {
-		console.log('listUsages failed:', error);
-		return [];
-	}
+  try {
+    const resp = await listUsages();
+    const usages = [];
+    for (let i = 0; i < resp.data.length; ++i) {
+      usages.push(<Option key={resp.data[i].usage}>{resp.data[i].usage}</Option>);
+    }
+    return usages;
+  } catch (error) {
+    console.log('listUsages failed:', error);
+    return [];
+  }
 }
 
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
-  const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
 
-  const token = localStorage.getItem('token');
-
+  let dataStr = localStorage.getItem('tdsp');
+  let token = ""
+  if (dataStr !== undefined && dataStr !== null) {
+    let data = JSON.parse(dataStr)
+    token = data.token
+  }
   const [usageList, setUsageList] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
   useEffect(() => {
-  	(async () => {
-		const usages = await getDataUsages();
-		setUsageList(usages);
-		const types = await getDataTypes();
-		setDataTypes(types);
-	})();
+    (async () => {
+      const usages = await getDataUsages();
+      setUsageList(usages);
+      const types = await getDataTypes();
+      setDataTypes(types);
+    })();
   }, []);
-  
+
   const columns: ProColumns<OnChainRequest>[] = [
     {
       title: '请求id',
@@ -166,7 +124,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '使用约定',
       dataIndex: 'usages',
-      sorter: true,
       hideInSearch: true,
       renderFormItem: () => (
         <FormItem
@@ -174,22 +131,21 @@ const TableList: React.FC<{}> = () => {
           label="数据使用约定"
           rules={[{ required: true, message: '请输入数据使用约定！' }]}
         >
-			<Select
-			  mode="multiple"
-			  placeholder="Please select"
-			  defaultValue={['usage1']}
-			  onChange={handleChange}
-			  style={{ width: '100%' }}
-			>
-			  {usageList}
-			</Select>
+          <Select
+            mode="multiple"
+            placeholder="Please select"
+            defaultValue={['报表']}
+            onChange={handleChange}
+            style={{ width: '100%' }}
+          >
+            {usageList}
+          </Select>
         </FormItem>
       )
     },
     {
       title: '数据类型列表',
       dataIndex: 'dataTypes',
-      sorter: true,
       hideInSearch: true,
       renderFormItem: () => (
         <FormItem
@@ -197,15 +153,15 @@ const TableList: React.FC<{}> = () => {
           label="数据类型列表"
           rules={[{ required: true, message: '请输入数据类型列表！' }]}
         >
-			<Select
-			  mode="multiple"
-			  placeholder="Please select"
-			  defaultValue={['type1']}
-			  onChange={handleChange}
-			  style={{ width: '100%' }}
-			>
-			  {dataTypes}
-			</Select>
+          <Select
+            mode="multiple"
+            placeholder="Please select"
+            defaultValue={['报表']}
+            onChange={handleChange}
+            style={{ width: '100%' }}
+          >
+            {dataTypes}
+          </Select>
         </FormItem>
       )
     },
@@ -248,11 +204,20 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       hideInSearch: true,
       hideInForm: true,
-      valueEnum: {
-        1: { text: '待审批', status: "processing" },
-        2: { text: '已审批', status: "success" },
-        3: { text: '已拒绝', status: "error" }
-      }
+      render: (_, record) => {
+        if (record.status == 2) {
+          return (<Tag color="green">已通过</Tag>);
+        }
+        if (record.status == 3) {
+          return (<Tag color="red">已拒绝</Tag>);
+        }
+        return (<Tag color="yellow">待审核</Tag>);
+      },
+      /*      valueEnum: {*/
+      /*1: { text: '待审批', status: "processing" },*/
+      /*2: { text: '已审批', status: "success" },*/
+      /*3: { text: '已拒绝', status: "error" }*/
+      /*}*/
     },
   ];
 
@@ -268,7 +233,7 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter, token) => listUserRequests(token)}
+        request={(params, sorter, filter) => listUserRequests(token, { ...params, filter })}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
