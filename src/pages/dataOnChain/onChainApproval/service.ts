@@ -21,12 +21,13 @@ export async function queryRule(params?: TableListParams) {
 }
 
 export async function listWaitingRequests(token: string) {
-  return request('/api/onchain/list', {
+  return request('/api/onchain/listAllRequests', {
     method: 'GET',
 	headers: {
 		'Authorization': token,
 	}
   }).then((resp) => {
+	  console.log('listWaitingRequests:', resp);
 	  if(resp.status === 200) {
 		  return resp;
 	  }
@@ -48,34 +49,4 @@ export async function updateOnChainRequest(token: string, reqId: string, status:
 		console.log(resp);
 		return resp.status === 200;
 	});
-}
-
-export async function removeRule(params: { key: number[] }) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'delete',
-    },
-  });
-}
-
-export async function addRule(params: TableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'post',
-    },
-  });
-}
-
-export async function updateRule(params: TableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'update',
-    },
-  });
 }

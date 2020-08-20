@@ -1,5 +1,5 @@
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
-import { Select, DatePicker, Upload, Button, message } from 'antd';
+import { Tag, Select, DatePicker, Upload, Button, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -173,12 +173,12 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="usages"
           label="数据使用约定"
-          /*rules={[{ required: true, message: '请输入数据使用约定！' }]}*/
+		  rules={[{ required: true, message: '请输入数据使用约定！' }]}
         >
 			<Select
 			  mode="multiple"
 			  placeholder="Please select"
-			  defaultValue={['usage1']}
+			  defaultValue={['报表']}
 			  onChange={handleChange}
 			  style={{ width: '100%' }}
 			>
@@ -196,12 +196,12 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="dataTypes"
           label="数据类型列表"
-          /*rules={[{ required: true, message: '请输入数据类型列表！' }]}*/
+		  rules={[{ required: true, message: '请输入数据类型列表！' }]}
         >
 			<Select
 			  mode="multiple"
 			  placeholder="Please select"
-			  defaultValue={['type1']}
+			  defaultValue={['报表']}
 			  onChange={handleChange}
 			  style={{ width: '100%' }}
 			>
@@ -249,11 +249,20 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       hideInSearch: true,
       hideInForm: true,
-      valueEnum: {
-        1: { text: '待审批', status: "processing" },
-        2: { text: '已审批', status: "success" },
-        3: { text: '已拒绝', status: "error" }
-      }
+	  render: (_, record) => {
+	  	if(record.status == 2) {
+			return (<Tag color="green">已通过</Tag>);
+		}
+		if(record.status == 3) {
+			return (<Tag color="red">已拒绝</Tag>);
+		}
+		return (<Tag color="yellow">待审核</Tag>);
+	  },
+/*      valueEnum: {*/
+        /*1: { text: '待审批', status: "processing" },*/
+        /*2: { text: '已审批', status: "success" },*/
+        /*3: { text: '已拒绝', status: "error" }*/
+      /*}*/
     },
   ];
 

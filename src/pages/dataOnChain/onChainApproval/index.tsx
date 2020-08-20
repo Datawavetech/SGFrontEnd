@@ -1,81 +1,19 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Tag, Button, Divider, Dropdown, Menu, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
 import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
 import { listWaitingRequests, updateOnChainRequest } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
-
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: TableListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
-
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
 
 const updateRequest = async (record, status) => {
 	try{
 		// TODO: 从localStorage获取token
-		const token = "xxx";
+		/*const token = localStorage.getItem("token");*/
+		const token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
 		const ret = await updateOnChainRequest(token, record.requestId, status);
 		return ret;
 	} catch (error) {
@@ -89,6 +27,10 @@ const TableList: React.FC<{}> = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
+  
+  /*const token = localStorage.getItem('token');*/
+  const token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";	
+
   const columns: ProColumns<TableListItem>[] = [
     {
 	  title: '申请ID',
@@ -102,10 +44,12 @@ const TableList: React.FC<{}> = () => {
       sorter: true,
       hideInForm: true,
       hideInSearch: true,
+	  ellipsis: true,
+	  width: 150,
     },
     {
       title: '用户',
-      dataIndex: 'user',
+      dataIndex: 'username',
       sorter: true,
       hideInForm: true,
       hideInSearch: true,
@@ -119,7 +63,7 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '资产名称',
-      dataIndex: 'assetName',
+      dataIndex: 'dataName',
       hideInForm: true,
     },
     {
@@ -147,29 +91,47 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
-        <>
-          <ButtonGroup>
-            <Button type="primary" onClick={async () => {
-				const success = await updateRequest(record, 2);
-				if(success) {
-					message.info("成功");
-				} else {
-					message.warn("失败");
-				}
-			}}>通过</Button>
-            <Divider type="vertical"></Divider>
-            <Button danger onClick={async () => {
-				const success = await updateRequest(record, 3);
-				if(success) {
-					message.info("成功");
-				} else {
-					message.warn("失败");
-				}
-			}}>拒绝</Button>
-          </ButtonGroup>
-        </>
-      ),
+      render: (_, record) => {
+			if(record.status == 2) {
+				return (
+					<Tag color="green">已通过</Tag>
+				);
+			}
+			if(record.status == 3) {
+				return (
+					<Tag color="red">已拒绝</Tag>
+				);
+			}
+			return (
+				<>
+				  <ButtonGroup>
+					<Button type="primary" onClick={async () => {
+						const success = await updateRequest(record, 2);
+						if(success) {
+							message.info("成功");
+							if(actionRef.current) {
+								actionRef.current.reload();
+							}
+						} else {
+							message.warn("失败");
+						}
+					}}>通过</Button>
+					<Divider type="vertical"></Divider>
+					<Button danger onClick={async () => {
+						const success = await updateRequest(record, 3);
+						if(success) {
+							message.info("成功");
+							if(actionRef.current) {
+								actionRef.current.reload();
+							}
+						} else {
+							message.warn("失败");
+						}
+					}}>拒绝</Button>
+				  </ButtonGroup>
+				</>
+		    );
+		}
     },
   ];
 
@@ -206,7 +168,7 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => listWaitingRequests(token)}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
