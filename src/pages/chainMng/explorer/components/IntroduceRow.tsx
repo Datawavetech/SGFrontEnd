@@ -16,40 +16,17 @@ const topColResponsiveProps = {
   style: { marginBottom: 24 },
 };
 
-const IntroduceRow = ({ loading, visitData, visitData2, visitData3, visitData4}: { loading: boolean; visitData: VisitDataType[]; visitData2: VisitDataType[]; visitData3: VisitDataType[]; visitData4: VisitDataType[] }) => (
+const IntroduceRow = ({ loading, blockHeightData, txAmountData, realTimeTxAmountData, realTimeBlockHeightData}: { loading: boolean; blockHeightData: VisitDataType[]; txAmountData: VisitDataType[]; realTimeTxAmountData: VisitDataType[]; realTimeBlockHeightData: VisitDataType[];}) => (
   <Row gutter={24}>
     <Col {...topColResponsiveProps}>
       <ChartCard
         bordered={false}
         loading={loading}
         title={<FormattedMessage id="chainMng.explorer.blockheight" defaultMessage="Visits" />}
-        total={numeral(85).format('0,0')}
+        total={numeral(blockHeightData[blockHeightData.length-1].y).format('0,0')}
         contentHeight={80}
       >
-        <MiniArea color="#975FE4" data={visitData} />
-      </ChartCard>
-    </Col>
-
-    <Col {...topColResponsiveProps}>
-      <ChartCard
-        bordered={false}
-        loading={loading}
-        title={<FormattedMessage id="chainMng.explorer.txamount" defaultMessage="Visits" />}
-        total={numeral(31).format('0,0')}
-        contentHeight={80}
-      >
-        <MiniArea color="#970325" data={visitData2} />
-      </ChartCard>
-    </Col>
-    <Col {...topColResponsiveProps}>
-      <ChartCard
-        bordered={false}
-        loading={loading}
-        title={<FormattedMessage id="chainMng.explorer.realtimetx" defaultMessage="Visits" />}
-        total={numeral(2).format('0,0')}
-        contentHeight={80}
-      >
-        <MiniArea color="#055336" data={visitData3} />
+        <MiniArea color="#975FE4" data={blockHeightData} line/>
       </ChartCard>
     </Col>
     <Col {...topColResponsiveProps}>
@@ -57,12 +34,35 @@ const IntroduceRow = ({ loading, visitData, visitData2, visitData3, visitData4}:
         bordered={false}
         loading={loading}
         title={<FormattedMessage id="chainMng.explorer.latestblocks" defaultMessage="Visits" />}
-        total={numeral(85).format('0,0')}
+        total={numeral(realTimeBlockHeightData[realTimeBlockHeightData.length-1].y).format('0,0')}
         contentHeight={80}
       >
-        <MiniArea color="#322554" data={visitData4} />
+        <MiniArea color="#322554" data={realTimeBlockHeightData} />
       </ChartCard>
     </Col>
+    <Col {...topColResponsiveProps}>
+      <ChartCard
+        bordered={false}
+        loading={loading}
+        title={<FormattedMessage id="chainMng.explorer.txamount" defaultMessage="Visits" />}
+        total={numeral(txAmountData[txAmountData.length-1].y).format('0,0')}
+        contentHeight={80}
+      >
+        <MiniArea color="#970325" data={txAmountData} />
+      </ChartCard>
+    </Col>
+    <Col {...topColResponsiveProps}>
+      <ChartCard
+        bordered={false}
+        loading={loading}
+        title={<FormattedMessage id="chainMng.explorer.realtimetx" defaultMessage="Visits" />}
+        total={numeral(realTimeTxAmountData[realTimeTxAmountData.length-1].y).format('0,0')}
+        contentHeight={80}
+      >
+        <MiniArea color="#055336" data={realTimeTxAmountData} />
+      </ChartCard>
+    </Col>
+    
   </Row>
 );
 

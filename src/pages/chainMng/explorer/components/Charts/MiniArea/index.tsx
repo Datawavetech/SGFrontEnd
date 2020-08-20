@@ -47,8 +47,7 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
 
   const scaleProps = {
     x: {
-      type: 'cat',
-      range: [0, 1],
+      type: 'timeCat',
       ...scale.x,
     },
     y: {
@@ -103,23 +102,16 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
               position="x*y"
               color={color}
               tooltip={tooltip}
-              shape="smooth"
-              style={{
-                fillOpacity: 1,
-              }}
             />
-            {line ? (
-              <Geom
-                type="line"
-                position="x*y"
-                shape="smooth"
-                color={borderColor}
-                size={borderWidth}
-                tooltip={false}
-              />
-            ) : (
-              <span style={{ display: 'none' }} />
-            )}
+            
+            <Geom
+              type="line"
+              position="x*y"
+              color={borderColor}
+              size={borderWidth}
+              tooltip={false}
+            />
+            
           </Chart>
         )}
       </div>
