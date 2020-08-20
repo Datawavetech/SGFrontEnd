@@ -20,15 +20,15 @@ const handleAdd = async (fields: OnChainRequest) => {
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-	/*let token = localStorage.getItem('token');*/
-	let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
+    let token = localStorage.getItem('tdsp_token');
+    // let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
     let ret = await createOnChainRequest(token, { ...fields });
     hide();
-	if(ret) {
-		message.success('申请成功');
-	} else {
-		message.warn('申请失败');
-	}
+    if (ret) {
+      message.success('申请成功');
+    } else {
+      message.warn('申请失败');
+    }
     return true;
   } catch (error) {
     hide();
@@ -173,17 +173,17 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="usages"
           label="数据使用约定"
-		  rules={[{ required: true, message: '请输入数据使用约定！' }]}
+          rules={[{ required: true, message: '请输入数据使用约定！' }]}
         >
-			<Select
-			  mode="multiple"
-			  placeholder="Please select"
-			  defaultValue={['报表']}
-			  onChange={handleChange}
-			  style={{ width: '100%' }}
-			>
-			  {usageList}
-			</Select>
+          <Select
+            mode="multiple"
+            placeholder="Please select"
+            defaultValue={['报表']}
+            onChange={handleChange}
+            style={{ width: '100%' }}
+          >
+            {usageList}
+          </Select>
         </FormItem>
       )
     },
@@ -196,17 +196,17 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="dataTypes"
           label="数据类型列表"
-		  rules={[{ required: true, message: '请输入数据类型列表！' }]}
+          rules={[{ required: true, message: '请输入数据类型列表！' }]}
         >
-			<Select
-			  mode="multiple"
-			  placeholder="Please select"
-			  defaultValue={['报表']}
-			  onChange={handleChange}
-			  style={{ width: '100%' }}
-			>
-			  {dataTypes}
-			</Select>
+          <Select
+            mode="multiple"
+            placeholder="Please select"
+            defaultValue={['报表']}
+            onChange={handleChange}
+            style={{ width: '100%' }}
+          >
+            {dataTypes}
+          </Select>
         </FormItem>
       )
     },
@@ -249,19 +249,19 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       hideInSearch: true,
       hideInForm: true,
-	  render: (_, record) => {
-	  	if(record.status == 2) {
-			return (<Tag color="green">已通过</Tag>);
-		}
-		if(record.status == 3) {
-			return (<Tag color="red">已拒绝</Tag>);
-		}
-		return (<Tag color="yellow">待审核</Tag>);
-	  },
-/*      valueEnum: {*/
-        /*1: { text: '待审批', status: "processing" },*/
-        /*2: { text: '已审批', status: "success" },*/
-        /*3: { text: '已拒绝', status: "error" }*/
+      render: (_, record) => {
+        if (record.status == 2) {
+          return (<Tag color="green">已通过</Tag>);
+        }
+        if (record.status == 3) {
+          return (<Tag color="red">已拒绝</Tag>);
+        }
+        return (<Tag color="yellow">待审核</Tag>);
+      },
+      /*      valueEnum: {*/
+      /*1: { text: '待审批', status: "processing" },*/
+      /*2: { text: '已审批', status: "success" },*/
+      /*3: { text: '已拒绝', status: "error" }*/
       /*}*/
     },
   ];

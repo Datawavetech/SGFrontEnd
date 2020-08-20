@@ -61,6 +61,10 @@ const Login: React.FC<{}> = () => {
       if (msg.status === 200) {
         message.success('登录成功！');
         localStorage.setItem('tdsp', JSON.stringify(msg.data))
+        if (msg.data !== undefined) {
+          const data = JSON.parse(msg.data)
+          localStorage.setItem('tdsp_token', data.token)
+        }
         replaceGoto();
         setTimeout(() => {
           refresh();

@@ -18,6 +18,7 @@ export async function login(params: LoginParamsType) {
 export async function logout() {
   return request('/api/user/logout').then(resp => {
     localStorage.removeItem('tdsp')
+    localStorage.removeItem('tdsp_token')
     return { 'success': true, 'data': {} }
   });
 }
