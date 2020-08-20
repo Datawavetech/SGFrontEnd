@@ -2,6 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
@@ -13,6 +14,7 @@ export default defineConfig({
     name: '可信数据共享应用',
     locale: true,
     siderWidth: 208,
+    logo: '../../logo.svg',
   },
   locale: {
     // default zh-CN

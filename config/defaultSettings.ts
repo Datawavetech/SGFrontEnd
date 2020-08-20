@@ -13,7 +13,7 @@ export default {
     locale: true,
     defaultOpenAll: true,
   },
-  title: 'Ant Design Pro',
+  title: '可信数据共享应用',
   pwa: false,
   iconfontUrl: '',
 } as LayoutSettings & {
