@@ -16,7 +16,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '用户id',
       dataIndex: 'userId',
-      sorter: true,
       hideInForm: true,
       hideInTable: true,
       hideInSearch:true,
@@ -28,7 +27,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '用户类型',
       dataIndex: 'userType',
-      sorter: true,
       valueEnum: {
         1: { text: '系统' },
         2: { text: '部门'},
@@ -38,20 +36,17 @@ const TableList: React.FC<{}> = () => {
     {
       title: '积分',
       dataIndex: 'token',
-      sorter: true,
       hideInSearch:true,
     },
     {
       title: '积分评价',
       dataIndex: 'tokenComment',
-      sorter: true,
       hideInForm: true,
       hideInSearch:true,
     },
     {
       title: '更新时间',
       dataIndex: 'updateAt',
-      sorter: true,
       hideInForm: true,
       hideInSearch:true,
     },

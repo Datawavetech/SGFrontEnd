@@ -102,7 +102,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '模型描述',
       dataIndex: 'modelDesc',
-      sorter: true,
       rules: [
         {
           required: true,
@@ -114,7 +113,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '上升指数',
       dataIndex: 'upCount',
-      sorter: true,
       rules: [
         {
           required: true,
@@ -134,7 +132,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '创建时间',
       dataIndex: 'createAt',
-      sorter: true,
       hideInForm: true,
       hideInSearch: true,
     },

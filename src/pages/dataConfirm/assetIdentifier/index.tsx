@@ -112,21 +112,18 @@ const TableList: React.FC<{}> = () => {
       title: '积分',
       dataIndex: 'token',
       hideInForm: true,
-      sorter: true,
       hideInSearch: true,
     },
     {
       title: '创建时间',
       dataIndex: 'createAt',
       hideInForm: true,
-      sorter: true,
       hideInSearch: true,
     },
     {
       title: '更新时间',
       dataIndex: 'updateAt',
       hideInForm: true,
-      sorter: true,
       hideInSearch: true,
     },
     {

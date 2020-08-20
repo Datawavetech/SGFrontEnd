@@ -4,7 +4,7 @@ import { Avatar, Menu, Spin } from 'antd';
 import { ClickParam } from 'antd/es/menu';
 import { history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
-import { outLogin } from '@/services/login';
+import { outLogin, logout } from '@/services/login';
 
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
@@ -18,7 +18,8 @@ export interface GlobalHeaderRightProps {
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  await outLogin();
+  // await outLogin();
+  localStorage.removeItem('tdsp')
   const { redirect } = getPageQuery();
   // Note: There may be security issues, please note
   if (window.location.pathname !== '/user/login' && !redirect) {

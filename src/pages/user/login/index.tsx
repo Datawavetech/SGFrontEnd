@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { Link, SelectLang, history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
 import logo from '@/assets/sg_logo.svg';
-import { LoginParamsType, login, fakeAccountLogin } from '@/services/login';
+import { LoginParamsType, login } from '@/services/login';
 import LoginFrom from './components/Login';
 import styles from './style.less';
-import { stringify } from 'qs';
 
 const { Tab, Username, Password, Submit } = LoginFrom;
 
@@ -61,10 +60,6 @@ const Login: React.FC<{}> = () => {
       if (msg.status === 200) {
         message.success('登录成功！');
         localStorage.setItem('tdsp', JSON.stringify(msg.data))
-        if (msg.data !== undefined) {
-          const data = JSON.parse(msg.data)
-          localStorage.setItem('tdsp_token', data.token)
-        }
         replaceGoto();
         setTimeout(() => {
           refresh();

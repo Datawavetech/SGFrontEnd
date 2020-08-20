@@ -25,10 +25,8 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
+  dataHash?:string;
+  dataName?:string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

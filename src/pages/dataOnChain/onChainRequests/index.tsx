@@ -16,66 +16,25 @@ const { Option } = Select;
  * @param fields
  */
 const handleAdd = async (fields: OnChainRequest) => {
-  console.log(fields);
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-    let token = localStorage.getItem('tdsp_token');
-    // let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
-    let ret = await createOnChainRequest(token, { ...fields });
-    hide();
-    if (ret) {
-      message.success('申请成功');
-    } else {
-      message.warn('申请失败');
+    let dataStr = localStorage.getItem('tdsp');
+    if (dataStr !== undefined && dataStr !== null) {
+      let data = JSON.parse(dataStr)
+      let token = data.token
+      let ret = await createOnChainRequest(token, { ...fields });
+      hide();
+      if (ret) {
+        message.success('申请成功');
+      } else {
+        message.warn('申请失败');
+      }
     }
     return true;
   } catch (error) {
     hide();
     message.error('申请失败');
-    return false;
-  }
-};
-
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      dataHash: fields.dataHash,
-      assetName: fields.assetName,
-    });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: AssetIdentifier[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      dataHashs: selectedRows.map((row) => row.dataHash),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
     return false;
   }
 };
@@ -91,7 +50,6 @@ const getDataTypes = async () => {
     for (let i = 0; i < resp.data.length; ++i) {
       types.push(<Option key={resp.data[i].typeName}>{resp.data[i].typeName}</Option>);
     }
-    console.log('types:', types);
     return types;
   } catch (error) {
     console.log('listDataTypes failed:', error);
@@ -106,7 +64,6 @@ const getDataUsages = async () => {
     for (let i = 0; i < resp.data.length; ++i) {
       usages.push(<Option key={resp.data[i].usage}>{resp.data[i].usage}</Option>);
     }
-    console.log('usages:', usages);
     return usages;
   } catch (error) {
     console.log('listUsages failed:', error);
@@ -116,14 +73,14 @@ const getDataUsages = async () => {
 
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
-  const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
 
-  const token = localStorage.getItem('tdsp_token');
-  /*const token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";*/
-
+  let dataStr = localStorage.getItem('tdsp');
+  let token = ""
+  if (dataStr !== undefined && dataStr !== null) {
+    let data = JSON.parse(dataStr)
+    token = data.token
+  }
   const [usageList, setUsageList] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
   useEffect(() => {
@@ -167,7 +124,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '使用约定',
       dataIndex: 'usages',
-      sorter: true,
       hideInSearch: true,
       renderFormItem: () => (
         <FormItem
@@ -190,7 +146,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据类型列表',
       dataIndex: 'dataTypes',
-      sorter: true,
       hideInSearch: true,
       renderFormItem: () => (
         <FormItem
@@ -278,7 +233,7 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter) => listUserRequests(token)}
+        request={(params, sorter, filter) => listUserRequests(token, { ...params, filter })}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
