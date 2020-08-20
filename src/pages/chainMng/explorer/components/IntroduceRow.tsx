@@ -35,18 +35,6 @@ const IntroduceRow = ({ loading, visitData, visitData2, visitData3, visitData4}:
         bordered={false}
         loading={loading}
         title={<FormattedMessage id="chainMng.explorer.txamount" defaultMessage="Visits" />}
-        action={
-          <Tooltip
-            title={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.introduce"
-                defaultMessage="Introduce"
-              />
-            }
-          >
-            <InfoCircleOutlined />
-          </Tooltip>
-        }
         total={numeral(31).format('0,0')}
         contentHeight={80}
       >
@@ -58,18 +46,6 @@ const IntroduceRow = ({ loading, visitData, visitData2, visitData3, visitData4}:
         bordered={false}
         loading={loading}
         title={<FormattedMessage id="chainMng.explorer.realtimetx" defaultMessage="Visits" />}
-        action={
-          <Tooltip
-            title={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.introduce"
-                defaultMessage="Introduce"
-              />
-            }
-          >
-            <InfoCircleOutlined />
-          </Tooltip>
-        }
         total={numeral(2).format('0,0')}
         contentHeight={80}
       >
@@ -81,18 +57,6 @@ const IntroduceRow = ({ loading, visitData, visitData2, visitData3, visitData4}:
         bordered={false}
         loading={loading}
         title={<FormattedMessage id="chainMng.explorer.latestblocks" defaultMessage="Visits" />}
-        action={
-          <Tooltip
-            title={
-              <FormattedMessage
-                id="dashboardandanalysis.analysis.introduce"
-                defaultMessage="Introduce"
-              />
-            }
-          >
-            <InfoCircleOutlined />
-          </Tooltip>
-        }
         total={numeral(85).format('0,0')}
         contentHeight={80}
       >

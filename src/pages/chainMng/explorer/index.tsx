@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import IntroduceRow from './components/IntroduceRow';
-import { getBlockHeightData } from './service';
+import { getBlockHeightData, getBlockInfo } from './service';
 import { VisitDataType } from './data'
 import moment from 'moment';
 
@@ -48,6 +48,7 @@ const TableList: React.FC<{}> = () => {
   const [realTimeTX, setRealTimeTX] = useState({});
   const [latestBlock, setLatestBlock] = useState({});
   useEffect(()=>{
+    getBlockInfo()
     setBlockHeightData(visitData)
     setTxAmount(visitData2)
     setRealTimeTX(visitData3)
