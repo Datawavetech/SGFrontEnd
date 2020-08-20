@@ -1,5 +1,5 @@
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
-import { Select, DatePicker, Upload, Button, message } from 'antd';
+import { Tag, Select, DatePicker, Upload, Button, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -20,15 +20,19 @@ const handleAdd = async (fields: OnChainRequest) => {
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-    let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QiLCJleHAiOjE1OTc3NDIzMzcsInVzZXJuYW1lIjoidGVzdCJ9.fDEQTaVD3GZaCoy5tW8N4veAaNdVeAtP6b-QYu1p7lE";
-    await createOnChainRequest(token, { ...fields });
+	/*let token = localStorage.getItem('token');*/
+	let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
+    let ret = await createOnChainRequest(token, { ...fields });
     hide();
-    message.success('添加成功');
+	if(ret) {
+		message.success('申请成功');
+	} else {
+		message.warn('申请失败');
+	}
     return true;
   } catch (error) {
-    console.log(error);
     hide();
-    message.error('添加失败请重试！');
+    message.error('申请失败');
     return false;
   }
 };
@@ -117,6 +121,9 @@ const TableList: React.FC<{}> = () => {
   const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
 
+  /*const token = localStorage.getItem('token');*/
+  const token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
+
   const [usageList, setUsageList] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
   useEffect(() => {
@@ -166,17 +173,17 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="usages"
           label="数据使用约定"
-          rules={[{ required: true, message: '请输入数据使用约定！' }]}
+		  rules={[{ required: true, message: '请输入数据使用约定！' }]}
         >
-          <Select
-            mode="multiple"
-            placeholder="Please select"
-            defaultValue={['usage1']}
-            onChange={handleChange}
-            style={{ width: '100%' }}
-          >
-            {usageList}
-          </Select>
+			<Select
+			  mode="multiple"
+			  placeholder="Please select"
+			  defaultValue={['报表']}
+			  onChange={handleChange}
+			  style={{ width: '100%' }}
+			>
+			  {usageList}
+			</Select>
         </FormItem>
       )
     },
@@ -189,17 +196,17 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="dataTypes"
           label="数据类型列表"
-          rules={[{ required: true, message: '请输入数据类型列表！' }]}
+		  rules={[{ required: true, message: '请输入数据类型列表！' }]}
         >
-          <Select
-            mode="multiple"
-            placeholder="Please select"
-            defaultValue={['type1']}
-            onChange={handleChange}
-            style={{ width: '100%' }}
-          >
-            {dataTypes}
-          </Select>
+			<Select
+			  mode="multiple"
+			  placeholder="Please select"
+			  defaultValue={['报表']}
+			  onChange={handleChange}
+			  style={{ width: '100%' }}
+			>
+			  {dataTypes}
+			</Select>
         </FormItem>
       )
     },
@@ -242,11 +249,20 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       hideInSearch: true,
       hideInForm: true,
-      valueEnum: {
-        1: { text: '待审批', status: "processing" },
-        2: { text: '已审批', status: "success" },
-        3: { text: '已拒绝', status: "error" }
-      }
+	  render: (_, record) => {
+	  	if(record.status == 2) {
+			return (<Tag color="green">已通过</Tag>);
+		}
+		if(record.status == 3) {
+			return (<Tag color="red">已拒绝</Tag>);
+		}
+		return (<Tag color="yellow">待审核</Tag>);
+	  },
+/*      valueEnum: {*/
+        /*1: { text: '待审批', status: "processing" },*/
+        /*2: { text: '已审批', status: "success" },*/
+        /*3: { text: '已拒绝', status: "error" }*/
+      /*}*/
     },
   ];
 
@@ -262,7 +278,7 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter) => listUserRequests("eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QiLCJleHAiOjE1OTc3NDIzMzcsInVzZXJuYW1lIjoidGVzdCJ9.fDEQTaVD3GZaCoy5tW8N4veAaNdVeAtP6b-QYu1p7lE")}
+        request={(params, sorter, filter) => listUserRequests(token)}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
