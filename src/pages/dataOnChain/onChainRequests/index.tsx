@@ -20,8 +20,8 @@ const handleAdd = async (fields: OnChainRequest) => {
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-	/*let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6InRlc3QxIiwiZXhwIjoxNTk3ODUxMDc4LCJ1c2VybmFtZSI6InRlc3QxIn0.CCwSPF0js_PmWXIekarzTSw5Bn9Y27-kOYR3U6KbYHw";*/
-	let token = localStorage.getItem('token');
+	/*let token = localStorage.getItem('token');*/
+	let token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
     let ret = await createOnChainRequest(token, { ...fields });
     hide();
 	if(ret) {
@@ -121,7 +121,8 @@ const TableList: React.FC<{}> = () => {
   const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
 
-  const token = localStorage.getItem('token');
+  /*const token = localStorage.getItem('token');*/
+  const token = "eyJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QiLCJ0eXAiOiJKV1QifQ.eyJwYXNzd29yZCI6ImFkbWluIiwiZXhwIjoxNTk3ODkxNjkwLCJ1c2VybmFtZSI6ImFkbWluIn0.bUs08-RakFfal6BGMPzBUY3yTu829DLcHYD9J6InUUs";
 
   const [usageList, setUsageList] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
@@ -172,7 +173,7 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="usages"
           label="数据使用约定"
-          rules={[{ required: true, message: '请输入数据使用约定！' }]}
+          /*rules={[{ required: true, message: '请输入数据使用约定！' }]}*/
         >
 			<Select
 			  mode="multiple"
@@ -195,7 +196,7 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="dataTypes"
           label="数据类型列表"
-          rules={[{ required: true, message: '请输入数据类型列表！' }]}
+          /*rules={[{ required: true, message: '请输入数据类型列表！' }]}*/
         >
 			<Select
 			  mode="multiple"
@@ -268,7 +269,7 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter, token) => listUserRequests(token)}
+        request={(params, sorter, filter) => listUserRequests(token)}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>

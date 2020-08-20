@@ -9,6 +9,7 @@ export async function listUserRequests(token: string) {
 		"Authorization": token,
 	}
   }).then((resp) => {
+	  console.log('listUserRequests:', resp);
 	  if(resp.status === 200) {
 		  return resp;
 	  }
