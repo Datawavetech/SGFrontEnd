@@ -143,6 +143,8 @@ export default {
   },
   'GET /api/login/outLogin': (req: Request, res: Response) => {
     access = '';
+    localStorage.removeItem('tdsp')
+    localStorage.removeItem('tdsp_token')
     res.send({ data: {}, success: true });
   },
   'POST /api/register': (req: Request, res: Response) => {
