@@ -8,9 +8,10 @@ import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { DataUsage } from './data.d';
 import { listDataUsage, updateDataUsage, createDataUsage, deleteDataUsage } from './service';
-
+import { useAccess, Access } from 'umi'
 import styles from './index.less';
 import ButtonGroup from 'antd/lib/button/button-group';
+import access from '@/access';
 
 /**
  * 添加节点
@@ -79,6 +80,7 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRows, setSelectedRows] = useState<DataUsage[]>([]);
   const actionRef = useRef<ActionType>();
+  const access = useAccess()
   const columns: ProColumns<DataUsage>[] = [
     {
       title: 'id',
@@ -101,6 +103,7 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      hideInTable: !access.canAdmin,
       render: (_, record) => (
         <>
           <ButtonGroup>
@@ -121,7 +124,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="usageId"
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <Button type="primary" hidden={!access.canAdmin} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建使用约定
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -148,9 +151,9 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
-        rowSelection={{
+        rowSelection={access.canAdmin ? {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-        }}
+        } : undefined}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<DataUsage, DataUsage>

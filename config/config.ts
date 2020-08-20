@@ -43,32 +43,10 @@ export default defineConfig({
       ],
     },
 
-    // {
-    //   path: '/welcome',
-    //   name: 'welcome',
-    //   icon: 'smile',
-    //   component: './Welcome',
-    // },
-    // {
-    //   path: '/admin',
-    //   name: 'admin',
-    //   icon: 'crown',
-    //   access: 'canAdmin',
-    //   component: './Admin',
-    //   routes: [
-    //     {
-    //       path: '/admin/sub-page',
-    //       name: 'sub-page',
-    //       icon: 'smile',
-    //       component: './Welcome',
-    //     },
-    //   ],
-    // },
     {
       path: '/dataConfirm',
       name: 'dataConfirm',
       icon: 'save',
-      // component: './Welcome',
       routes: [
         {
           path: '/dataConfirm/assetIdentifier',
@@ -101,6 +79,7 @@ export default defineConfig({
           path: '/dataOnChain/onChainApproval',
           name: 'onChainApproval',
           component: './dataOnChain/onChainApproval',
+          access: 'canAdmin',
         },
       ],
     },
@@ -108,6 +87,7 @@ export default defineConfig({
       path: '/dataShareComment',
       name: 'dataShareComment',
       icon: 'cloud',
+      access: 'canAdmin',
       routes: [
         {
           path: '/dataShareComment/model',
@@ -125,7 +105,6 @@ export default defineConfig({
       path: '/dataLifeCycle',
       name: 'dataLifeCycle',
       icon: 'appstore',
-      // component: './Welcome',
       routes: [
         {
           path: '/dataLifeCycle/dataTraceability',
@@ -153,12 +132,12 @@ export default defineConfig({
       path: '/chainMng',
       name: 'chainMng',
       icon: 'link',
-      // component: './Welcome',
       routes: [
         {
           path: '/chainMng/keyMng',
           name: 'keyMng',
           component: './chainMng/keyMng',
+          access: 'canAdmin',
         },
         {
           path: '/chainMng/explorer',
@@ -167,12 +146,6 @@ export default defineConfig({
         },
       ],
     },
-    // {
-    //   name: 'list.table-list',
-    //   icon: 'table',
-    //   path: '/list',
-    //   component: './ListTableList',
-    // },
     {
       path: '/',
       redirect: '/dataConfirm/assetIdentifier',

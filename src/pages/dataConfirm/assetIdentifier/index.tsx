@@ -9,6 +9,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { AssetIdentifier } from './data.d';
 import { listAssetIdentifier, updateAssetIdentifier, createAssetIdentifier, deleteAssetIdentifier } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { useAccess, Access } from 'umi';
 
 /**
  * 添加节点
@@ -78,6 +79,7 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRows, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
+  const access = useAccess();
   const columns: ProColumns<AssetIdentifier>[] = [
     {
       title: '权属标识',
@@ -130,7 +132,7 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      hideInTable: false,
+      hideInTable: !access.canAdmin,
       render: (_, record) => (
         <>
           <ButtonGroup>
@@ -151,7 +153,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="dataHash"
         toolBarRender={(action, { selectedRows }) => [
-          <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
+          <Button hidden={!access.canAdmin} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建权属标识
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -178,9 +180,9 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
-        rowSelection={{
+        rowSelection={access.canAdmin ? {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-        }}
+        } : undefined}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<AssetIdentifier, AssetIdentifier>
