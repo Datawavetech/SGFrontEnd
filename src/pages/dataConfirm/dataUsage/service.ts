@@ -10,18 +10,24 @@ export async function listDataUsage(params: TableListParams) {
   });
 }
 
-export async function createDataUsage(params: TableListParams) {
+export async function createDataUsage(token: string, params: TableListParams) {
   return request('/api/confirm/dataUsage', {
     method: 'POST',
+    headers: {
+      'Authorization': token
+    },
     data: {
       ...params,
     },
   });
 }
 
-export async function updateDataUsage(params: TableListParams) {
+export async function updateDataUsage(token: string, params: TableListParams) {
   return request('/api/confirm/dataUsage', {
     method: 'PUT',
+    headers: {
+      'Authorization': token
+    },
     data: {
       ...params,
     },
@@ -29,9 +35,12 @@ export async function updateDataUsage(params: TableListParams) {
 }
 
 
-export async function deleteDataUsage(params: { usageIds: string[] }) {
+export async function deleteDataUsage(token: string, params: { usageIds: string[] }) {
   return request('/api/confirm/dataUsage', {
     method: 'DELETE',
+    headers: {
+      'Authorization': token
+    },
     data: {
       ...params,
     },

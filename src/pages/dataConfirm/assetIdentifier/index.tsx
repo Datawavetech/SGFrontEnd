@@ -15,10 +15,10 @@ import { useAccess, Access } from 'umi';
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: AssetIdentifier) => {
+const handleAdd = async (token: string, fields: AssetIdentifier) => {
   const hide = message.loading('正在添加');
   try {
-    await createAssetIdentifier({ ...fields });
+    await createAssetIdentifier(token, { ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -33,10 +33,10 @@ const handleAdd = async (fields: AssetIdentifier) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (fields: FormValueType) => {
+const handleUpdate = async (token: string, fields: FormValueType) => {
   const hide = message.loading('正在修改');
   try {
-    await updateAssetIdentifier({
+    await updateAssetIdentifier(token, {
       dataHash: fields.dataHash,
       assetName: fields.assetName,
       assetSys: fields.assetSys,
@@ -56,11 +56,11 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: AssetIdentifier[]) => {
+const handleRemove = async (token: string, selectedRows: AssetIdentifier[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await deleteAssetIdentifier({
+    await deleteAssetIdentifier(token, {
       deleteDataHashs: selectedRows.map((row) => row.dataHash),
     });
     hide();
@@ -162,7 +162,7 @@ const TableList: React.FC<{}> = () => {
                 <Menu
                   onClick={async (e) => {
                     if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
+                      await handleRemove(access.token || '', selectedRows);
                       action.reload();
                     }
                   }}
@@ -187,7 +187,7 @@ const TableList: React.FC<{}> = () => {
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<AssetIdentifier, AssetIdentifier>
           onSubmit={async (value) => {
-            const success = await handleAdd(value);
+            const success = await handleAdd(access.token || '', value);
             if (success) {
               handleModalVisible(false);
               if (actionRef.current) {
@@ -204,7 +204,7 @@ const TableList: React.FC<{}> = () => {
         <UpdateForm
           onSubmit={async (value) => {
             console.log('submit vals:', value)
-            const success = await handleUpdate(value);
+            const success = await handleUpdate(access.token || '', value);
             if (success) {
               handleUpdateModalVisible(false);
               setStepFormValues({});

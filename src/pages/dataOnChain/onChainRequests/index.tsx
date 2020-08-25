@@ -7,6 +7,7 @@ import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
+import { useAccess } from 'umi';
 import { listUserRequests, createOnChainRequest, listDataTypes, listUsages } from './service';
 
 const { Option } = Select;
@@ -15,21 +16,16 @@ const { Option } = Select;
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: OnChainRequest) => {
+const handleAdd = async (token: string, fields: OnChainRequest) => {
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-    let dataStr = localStorage.getItem('tdsp');
-    if (dataStr !== undefined && dataStr !== null) {
-      let data = JSON.parse(dataStr)
-      let token = data.token
-      let ret = await createOnChainRequest(token, { ...fields });
-      hide();
-      if (ret) {
-        message.success('申请成功');
-      } else {
-        message.warn('申请失败');
-      }
+    let ret = await createOnChainRequest(token, { ...fields });
+    hide();
+    if (ret) {
+      message.success('申请成功');
+    } else {
+      message.warn('申请失败');
     }
     return true;
   } catch (error) {
@@ -75,12 +71,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
 
-  let dataStr = localStorage.getItem('tdsp');
-  let token = ""
-  if (dataStr !== undefined && dataStr !== null) {
-    let data = JSON.parse(dataStr)
-    token = data.token
-  }
+  const access = useAccess()
   const [usageList, setUsageList] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
   useEffect(() => {
@@ -203,7 +194,6 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
-      hideInForm: true,
       render: (_, record) => {
         if (record.status == 2) {
           return (<Tag color="green">已通过</Tag>);
@@ -233,13 +223,13 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
         // { ...params, sorter, filter }
-        request={(params, sorter, filter) => listUserRequests(token, { ...params, filter })}
+        request={(params, sorter, filter) => listUserRequests(access.token || '', { ...params, filter })}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<OnChainRequestForm, OnChainRequestForm>
           onSubmit={async (value) => {
-            const success = await handleAdd(value);
+            const success = await handleAdd(access.token||'',value);
             if (success) {
               handleModalVisible(false);
               if (actionRef.current) {

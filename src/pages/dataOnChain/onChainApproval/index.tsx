@@ -1,21 +1,15 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Tag, Button, Divider, Dropdown, Menu, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Tag, Button, Divider, message } from 'antd';
+import React, { useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
-import { TableListItem } from './data.d';
+import { OnChainRequest } from './data.d';
 import { listWaitingRequests, updateOnChainRequest } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { useAccess } from 'umi';
 
-const updateRequest = async (record, status) => {
+const updateRequest = async (token: string, record: OnChainRequest, status: number) => {
   try {
-    let dataStr = localStorage.getItem('tdsp');
-    let token = ""
-    if (dataStr !== undefined && dataStr !== null) {
-      let data = JSON.parse(dataStr)
-      token = data.token
-    }
     const ret = await updateOnChainRequest(token, record.requestId, status);
     return ret;
   } catch (error) {
@@ -25,25 +19,15 @@ const updateRequest = async (record, status) => {
 }
 
 const TableList: React.FC<{}> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
-
-  let dataStr = localStorage.getItem('tdsp');
-  let token = ""
-  if (dataStr !== undefined && dataStr !== null) {
-    let data = JSON.parse(dataStr)
-    token = data.token
-  }
-
-  const columns: ProColumns<TableListItem>[] = [
+  const access = useAccess()
+  const columns: ProColumns<OnChainRequest>[] = [
     {
       title: '申请ID',
       dataIndex: 'requestId',
       hideInForm: true,
       hideInTable: true,
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '权属标识',
@@ -106,7 +90,7 @@ const TableList: React.FC<{}> = () => {
           <>
             <ButtonGroup>
               <Button type="primary" onClick={async () => {
-                const success = await updateRequest(record, 2);
+                const success = await updateRequest(access.token || '', record, 2);
                 if (success) {
                   message.info("成功");
                   if (actionRef.current) {
@@ -118,7 +102,7 @@ const TableList: React.FC<{}> = () => {
               }}>通过</Button>
               <Divider type="vertical"></Divider>
               <Button danger onClick={async () => {
-                const success = await updateRequest(record, 3);
+                const success = await updateRequest(access.token || '', record, 3);
                 if (success) {
                   message.info("成功");
                   if (actionRef.current) {
@@ -137,11 +121,11 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
+      <ProTable<OnChainRequest>
         headerTitle="审批单列表"
         actionRef={actionRef}
         rowKey="key"
-        request={(params, sorter, filter) => listWaitingRequests(token, { ...params, filter })}
+        request={(params, sorter, filter) => listWaitingRequests(access.token || '', { ...params, filter })}
         columns={columns}
       />
     </PageHeaderWrapper>

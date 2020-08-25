@@ -1,16 +1,13 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+export interface OnChainRequest {
+  requestId: string;
+  userId: string;
+  dataHash: string;
+  dataPath: string;
+  dataName: string;
+  usages: string;
+  dataTypes: string;
+  expireAt: Date;
+  status: number;
 }
 
 export interface TableListPagination {
@@ -25,8 +22,8 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  dataHash?:string;
-  dataName?:string;
+  dataHash?: string;
+  dataName?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

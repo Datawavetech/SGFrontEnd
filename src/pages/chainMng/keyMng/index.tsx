@@ -5,9 +5,11 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import { TableListItem } from './data.d';
 import { listUserKeyInfo } from './service';
+import { useAccess } from 'umi';
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
+  const access = useAccess();
   const columns: ProColumns<TableListItem>[] = [
     {
       title: '用户ID',
@@ -57,7 +59,7 @@ const TableList: React.FC<{}> = () => {
         headerTitle="用户信息"
         actionRef={actionRef}
         rowKey="key"
-        request={(params, sorter, filter) => listUserKeyInfo({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => listUserKeyInfo(access.token || '', { ...params, sorter, filter })}
         columns={columns}
       // rowSelection={{}}
       />
