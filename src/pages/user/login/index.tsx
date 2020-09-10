@@ -95,7 +95,7 @@ const Login: React.FC<{}> = () => {
         <div className={styles.main}>
           <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
             <Tab key="account" tab="账户密码登录">
-              {status !== 200 && !submitting && (
+              {!submitting && status !== 200 && (
                 <LoginMessage content="账户或密码错误" />
               )}
               <Username

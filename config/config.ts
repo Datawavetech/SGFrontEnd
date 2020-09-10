@@ -92,11 +92,13 @@ export default defineConfig({
           path: '/dataShareComment/model',
           name: 'model',
           component: './dataShareComment/model',
+          access: 'canAdmin',
         },
         {
           path: '/dataShareComment/token',
           name: 'token',
           component: './dataShareComment/token',
+          access: 'canAdmin',
         },
       ],
     },
