@@ -11,7 +11,7 @@ export default {
   colorWeak: false,
   menu: {
     locale: true,
-    defaultOpenAll: true,
+    defaultOpenAll: false,
   },
   title: '可信数据共享应用',
   pwa: false,

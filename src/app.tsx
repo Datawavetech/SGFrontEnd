@@ -18,9 +18,11 @@ export async function getInitialState(): Promise<{
     try {
       // const currentUser = await queryCurrent();
       const currentUserStr = localStorage.getItem('tdsp');
-      let currentUser = {}
+      let currentUser = {};
       if (currentUserStr != null) {
-        currentUser = JSON.parse(currentUserStr)
+        currentUser = JSON.parse(currentUserStr);
+      }else{
+        history.push('/user/login')
       }
       return {
         currentUser,
