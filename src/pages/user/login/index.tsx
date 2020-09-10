@@ -124,7 +124,7 @@ const Login: React.FC<{}> = () => {
                 自动登录
               </Checkbox>
             </div>
-            <Submit loading={submitting}>登录</Submit>
+            <Submit>登录</Submit>
           </LoginFrom>
         </div>
       </div>
