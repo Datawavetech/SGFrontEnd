@@ -98,7 +98,6 @@ const Login: React.FC<{}> = () => {
               {!submitting && status !== 200 && (
                 <LoginMessage content="账户或密码错误" />
               )}
-
               <Username
                 name="username"
                 placeholder="用户名"
