@@ -46,7 +46,7 @@ const replaceGoto = () => {
 
 const Login: React.FC<{}> = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginStateType>({});
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(true);
 
   const { refresh } = useModel('@@initialState');
   const [autoLogin, setAutoLogin] = useState(true);
@@ -98,7 +98,6 @@ const Login: React.FC<{}> = () => {
               {status !== 200 && !submitting && (
                 <LoginMessage content="账户或密码错误" />
               )}
-
               <Username
                 name="username"
                 placeholder="用户名"
