@@ -91,23 +91,13 @@ const TableList: React.FC<{}> = () => {
     {
       title: '资产名称',
       dataIndex: 'assetName',
-      rules: [
-        {
-          required: true,
-          message: '资产名称为必填项',
-        },
-      ],
+      formItemProps: { required: true },
       valueType: 'text',
     },
     {
       title: '所有者',
       dataIndex: 'assetSys',
-      rules: [
-        {
-          required: true,
-          message: '所有者为必填项',
-        },
-      ],
+      formItemProps: { required: true },
       valueType: 'text',
     },
     {

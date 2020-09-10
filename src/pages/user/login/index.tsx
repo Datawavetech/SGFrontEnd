@@ -46,7 +46,7 @@ const replaceGoto = () => {
 
 const Login: React.FC<{}> = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginStateType>({});
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(true);
 
   const { refresh } = useModel('@@initialState');
   const [autoLogin, setAutoLogin] = useState(true);
@@ -95,7 +95,7 @@ const Login: React.FC<{}> = () => {
         <div className={styles.main}>
           <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
             <Tab key="account" tab="账户密码登录">
-              {status !== 200 && !submitting && (
+              {!submitting && status !== 200 && (
                 <LoginMessage content="账户或密码错误" />
               )}
 
@@ -125,7 +125,7 @@ const Login: React.FC<{}> = () => {
                 自动登录
               </Checkbox>
             </div>
-            <Submit loading={submitting}>登录</Submit>
+            <Submit>登录</Submit>
           </LoginFrom>
         </div>
       </div>

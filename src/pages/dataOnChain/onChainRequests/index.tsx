@@ -116,34 +116,26 @@ const TableList: React.FC<{}> = () => {
       title: '使用约定',
       dataIndex: 'usages',
       hideInSearch: true,
+      formItemProps: { required: true },
       renderFormItem: () => (
-        <FormItem
-          name="usages"
-          label="数据使用约定"
-          rules={[{ required: true, message: '请输入数据使用约定！' }]}
+        <Select
+          mode="multiple"
+          placeholder="Please select"
+          defaultValue={['报表']}
+          onChange={handleChange}
+          style={{ width: '100%' }}
         >
-          <Select
-            mode="multiple"
-            placeholder="Please select"
-            defaultValue={['报表']}
-            onChange={handleChange}
-            style={{ width: '100%' }}
-          >
-            {usageList}
-          </Select>
-        </FormItem>
+          {usageList}
+        </Select>
       )
     },
     {
       title: '数据类型列表',
       dataIndex: 'dataTypes',
       hideInSearch: true,
-      renderFormItem: () => (
-        <FormItem
-          name="dataTypes"
-          label="数据类型列表"
-          rules={[{ required: true, message: '请输入数据类型列表！' }]}
-        >
+      formItemProps: { required: true },
+      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+        return (
           <Select
             mode="multiple"
             placeholder="Please select"
@@ -153,21 +145,16 @@ const TableList: React.FC<{}> = () => {
           >
             {dataTypes}
           </Select>
-        </FormItem>
-      )
+        )
+      }
     },
     {
       title: '有效期截止',
       dataIndex: 'expireAt',
       hideInSearch: true,
+      formItemProps: { required: true },
       renderFormItem: () => (
-        <FormItem
-          name="expireAt"
-          label="数据有效期"
-          rules={[{ required: true, }]}
-        >
-          <DatePicker />
-        </FormItem>
+        <DatePicker />
       )
     },
     {
@@ -175,18 +162,13 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'file',
       hideInTable: true,
       hideInSearch: true,
+      formItemProps: { required: true },
       renderFormItem: () => (
-        <FormItem
-          name="file"
-          label="文件"
-          rules={[{ required: true, }]}
-        >
-          <Upload>
-            <Button>
-              <UploadOutlined /> Upload
+        <Upload>
+          <Button>
+            <UploadOutlined /> Upload
 			  </Button>
-          </Upload>
-        </FormItem>
+        </Upload>
       )
     },
     {
@@ -229,7 +211,7 @@ const TableList: React.FC<{}> = () => {
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<OnChainRequestForm, OnChainRequestForm>
           onSubmit={async (value) => {
-            const success = await handleAdd(access.token||'',value);
+            const success = await handleAdd(access.token || '', value);
             if (success) {
               handleModalVisible(false);
               if (actionRef.current) {

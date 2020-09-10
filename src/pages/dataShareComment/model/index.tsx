@@ -92,42 +92,21 @@ const TableList: React.FC<{}> = () => {
     {
       title: '模型名称',
       dataIndex: 'modelName',
-      rules: [
-        {
-          required: true,
-          message: '模型名称为必填项',
-        },
-      ],
+      formItemProps: { required: true },
     },
     {
       title: '模型描述',
       dataIndex: 'modelDesc',
-      rules: [
-        {
-          required: true,
-          message: '模型描述为必填项',
-        },
-      ],
+      formItemProps: { required: true },
       hideInSearch: true,
     },
     {
       title: '上升指数',
       dataIndex: 'upCount',
-      rules: [
-        {
-          required: true,
-          message: '上升指数为必填项',
-        },
-      ],
+      formItemProps: { required: true },
       hideInSearch: true,
       renderFormItem: () => (
-        <FormItem
-          name="upCount"
-          label="上升指数"
-          required={true}
-        >
-          <InputNumber min={1} max={10} />
-        </FormItem>
+        <InputNumber min={1} max={10} />
       )
     },
     {

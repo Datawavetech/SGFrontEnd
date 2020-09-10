@@ -91,6 +91,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '使用约定',
       dataIndex: 'usage',
+      formItemProps: { required: true },
       valueType: 'textarea',
     },
     {
