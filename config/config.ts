@@ -17,11 +17,10 @@ export default defineConfig({
     logo: '../../logo.svg',
   },
   locale: {
-    // default zh-CN
     default: 'zh-CN',
     // default true, when it is true, will use `navigator.language` overwrite default
-    antd: true,
-    baseNavigator: true,
+    antd: false,
+    baseNavigator: false,
   },
   dynamicImport: {
     loading: '@/components/PageLoading/index',

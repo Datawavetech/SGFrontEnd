@@ -124,6 +124,7 @@ const TableList: React.FC<{}> = () => {
         <FormItem
           name="upCount"
           label="上升指数"
+          required={true}
         >
           <InputNumber min={1} max={10} />
         </FormItem>
