@@ -18,19 +18,15 @@ const columns = [
         defaultMessage="Search keyword"
       />
     ),
-    dataIndex: 'userId',
-    key: 'userId'
+    dataIndex: 'userId'
   },
   {
     title: <FormattedMessage id="dataLifeCycle.table.users" defaultMessage="Rank" />,
-    dataIndex: 'userName',
-    key: 'userName',
+    dataIndex: 'userName'
   },
-  
   {
     title: <FormattedMessage id="dataLifeCycle.table.applyNumber" defaultMessage="Users" />,
     dataIndex: 'count',
-    key: 'count',
     sorter: (a: { count: number }, b: { count: number }) => a.count - b.count,
     className: styles.alignRight,
   }
@@ -92,7 +88,7 @@ const TopSearch = ({
       </Col>
     </Row>
     <Table<any>
-      rowKey={(record) => record.index}
+      rowKey="userId"
       size="small"
       columns={columns}
       dataSource={tableData}

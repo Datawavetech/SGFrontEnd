@@ -36,7 +36,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<DataTraceability>
         headerTitle="溯源信息"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="createAt"
         request={(params, sorter, filter) => listTraceability({ ...params, sorter, filter })}
         columns={columns}
       />
