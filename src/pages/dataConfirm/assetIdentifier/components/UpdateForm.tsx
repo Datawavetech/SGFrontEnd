@@ -76,7 +76,9 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       title="更新权属标识"
       visible={updateModalVisible}
       onOk={handleSubmit}
+      okText="提交"
       onCancel={() => handleUpdateModalVisible()}
+      cancelText="取消"
     >
       <Form
         form={form}
