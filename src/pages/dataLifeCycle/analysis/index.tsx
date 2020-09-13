@@ -69,7 +69,7 @@ const TableList: React.FC<{}> = () => {
   useEffect(()=>{
     (async () =>{
       const sys = await querySysData();
-      console.log(sys)
+      //console.log(sys)
       setSysDataAmount(sys.sysDataAmount)
       setSysDataToken(sys.sysDataToken)
 
@@ -96,7 +96,7 @@ const TableList: React.FC<{}> = () => {
  
   
   const handleChangeAnalysisType = (e: RadioChangeEvent) => {
-    console.log("debug:",e)
+    //console.log("debug:",e)
     setAnalysisType(e.target.value)
     //console.log(analysisType)
   };

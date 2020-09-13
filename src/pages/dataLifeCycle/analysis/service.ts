@@ -2,9 +2,9 @@ import request from 'umi-request';
 // import { TableListParams } from './data.d';
 
 export async function querySysData(){
-  console.log("in")
+  //console.log("in")
   const res = await request('/api/life/dataAnalyse')
-  console.log(res)
+  //console.log(res)
   if (res.status === 200){
     const {data} = res
     const sysDataAmount = []
