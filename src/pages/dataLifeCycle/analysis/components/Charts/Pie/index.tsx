@@ -77,7 +77,7 @@ class Pie extends Component<PieProps, PieState> {
 
   componentWillMount() {
     const { data } = this.props;
-    console.log(data)
+    //console.log(data)
   }
 
   componentDidMount() {

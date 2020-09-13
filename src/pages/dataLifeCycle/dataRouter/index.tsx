@@ -81,7 +81,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<DataRouter>
         headerTitle="数据流转信息"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="dataIdentifier"
         request={(params, sorter, filter) => listDataRouter({ ...params, sorter, filter })}
         columns={columns}
       />

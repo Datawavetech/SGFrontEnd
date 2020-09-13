@@ -3,7 +3,7 @@ import { TableListParams, DataRouter } from './data';
 import { stringify } from 'qs';
 
 export async function listDataRouter(params?: TableListParams) {
-  console.log('params:', params)
+  //console.log('params:', params)
   return request(`/api/life/router?${stringify(params)}`).then(resp => {
     const list: DataRouter[] = []
     if (resp.data !== null) {

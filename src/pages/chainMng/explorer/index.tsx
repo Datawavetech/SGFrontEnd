@@ -59,10 +59,10 @@ const TableList: React.FC<{}> = () => {
       setTxAmount(txAmountT)
       setRealTimeTxAmount(realTimeBlockHeightT)
       setRealTimeBlockHeight(realTimeTxAmountT)
-      console.log(blockHeightT,realTimeBlockHeightT,txAmountT,realTimeTxAmountT)
+      //console.log(blockHeightT,realTimeBlockHeightT,txAmountT,realTimeTxAmountT)
     })();
 
-    console.log(blockHeight)
+    //console.log(blockHeight)
   },[])
 
   return (

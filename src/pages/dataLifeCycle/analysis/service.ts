@@ -2,7 +2,9 @@ import request from 'umi-request';
 // import { TableListParams } from './data.d';
 
 export async function querySysData(){
+  console.log("in")
   const res = await request('/api/life/dataAnalyse')
+  console.log(res)
   if (res.status === 200){
     const {data} = res
     const sysDataAmount = []
@@ -17,6 +19,7 @@ export async function querySysData(){
         y : data.sysTokenInfos[i].token
       })
     }
+
     return {sysDataAmount, sysDataToken}
   }
   return 0

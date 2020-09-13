@@ -8,6 +8,36 @@ import moment from 'moment';
 import { RadioChangeEvent } from 'antd/es/radio';
 import { querySysData, queryUsrData} from './service'
 
+const analysisDataToken = [
+  {
+    x: '系统a',
+    y: 50,
+  },
+  {
+    x: '系统b',
+    y: 45,
+  },
+  {
+    x: '系统c',
+    y: 35,
+  },
+  {
+    x: '系统d',
+    y: 30,
+  },
+  {
+    x: '系统e',
+    y: 25,
+  },
+  {
+    x: '系统f',
+    y: 20,
+  },
+  {
+    x: '系统g',
+    y: 10,
+  }
+];
 const analysisDataAmount = [
   {
     x: '系统a',
@@ -31,15 +61,15 @@ const userData: any[] | (() => any[]) = [];
 const TableList: React.FC<{}> = () => {
 
   const [analysisType,setAnalysisType] = useState<string>("amount")
-  const [analysisData,setAnalysisData] = useState({})
   const [sysDataAmount,setSysDataAmount] = useState(analysisDataAmount)
-  const [sysDataToken,setSysDataToken] = useState({})
+  const [sysDataToken,setSysDataToken] = useState(analysisDataToken)
   const [usrData,setUsrData] = useState(userData)
   const [usrAnalysisData,setUsrAnalysisData] = useState({total:10000,average:100})
 
   useEffect(()=>{
     (async () =>{
       const sys = await querySysData();
+      console.log(sys)
       setSysDataAmount(sys.sysDataAmount)
       setSysDataToken(sys.sysDataToken)
 
@@ -62,42 +92,13 @@ const TableList: React.FC<{}> = () => {
   }
  
   //console.log(analysisDataAmount)
-  const analysisDataToken = [
-    {
-      x: '系统a',
-      y: 50,
-    },
-    {
-      x: '系统b',
-      y: 45,
-    },
-    {
-      x: '系统c',
-      y: 35,
-    },
-    {
-      x: '系统d',
-      y: 30,
-    },
-    {
-      x: '系统e',
-      y: 25,
-    },
-    {
-      x: '系统f',
-      y: 20,
-    },
-    {
-      x: '系统g',
-      y: 10,
-    }
-  ];
+
  
   
   const handleChangeAnalysisType = (e: RadioChangeEvent) => {
     console.log("debug:",e)
     setAnalysisType(e.target.value)
-    console.log(analysisType)
+    //console.log(analysisType)
   };
 
   return (

@@ -20,7 +20,9 @@ const ProportionSales = ({
   pieType: 'amount' | 'token';
   pieData: VisitDataType[];
   handleChangeAnalysisType?: (e: RadioChangeEvent) => void;
-}) => (
+}) => {
+  console.log(pieType, pieData)
+  return (
   <Card
     loading={loading}
     className={styles.salesCard}
@@ -39,10 +41,10 @@ const ProportionSales = ({
         <div className={styles.salesTypeRadio}>
           <Radio.Group onChange={handleChangeAnalysisType}>
             <Radio.Button value="amount">
-              <FormattedMessage id="dataLifeCycle.analysis.dataAmount" defaultMessage="ALL" />
+              <FormattedMessage id="dataLifeCycle.analysis.dataAmount" defaultMessage="数据量" />
             </Radio.Button>
             <Radio.Button value="token">
-              <FormattedMessage id="dataLifeCycle.analysis.dataToken" defaultMessage="Online" />
+              <FormattedMessage id="dataLifeCycle.analysis.dataToken" defaultMessage="数据积分" />
             </Radio.Button>
           </Radio.Group>
         </div>
@@ -70,6 +72,6 @@ const ProportionSales = ({
       />
     </div>
   </Card>
-);
+)};
 
 export default ProportionSales;
