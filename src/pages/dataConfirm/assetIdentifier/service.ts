@@ -1,13 +1,14 @@
-import request from 'umi-request';
+import request from '@/utils/interceptors';
 import { TableListParams } from './data.d';
 import { stringify } from 'qs';
+import { SuperResult } from '@/services/SuperResult'
+import { message } from 'antd';
 
-export async function listAssetIdentifier(params: TableListParams) {
-  return request(`/api/confirm/assetIdentifier?${stringify(params)}`).then((resp) => {
-    if (resp.status === 200) {
-      return resp;
-    }
-    return '';
+export async function listAssetIdentifier(token: string, params: TableListParams) {
+  return request(`/api/confirm/assetIdentifier?${stringify(params)}`, {
+    headers: {
+      'Authorization': token
+    },
   });
 }
 
@@ -20,6 +21,11 @@ export async function createAssetIdentifier(token: string, params: TableListPara
     data: {
       ...params
     },
+  }).then((resp: SuperResult) => {
+    if (resp.status !== 200) {
+      throw message.error(resp.data);
+    }
+    return resp;
   });
 }
 

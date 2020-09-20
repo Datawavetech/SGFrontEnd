@@ -22,7 +22,7 @@ export async function getInitialState(): Promise<{
       if (currentUserStr != null) {
         currentUser = JSON.parse(currentUserStr);
       }else{
-        history.push('/user/login')
+        history.push('/user/login');
       }
       return {
         currentUser,
