@@ -1,7 +1,30 @@
 import { SuperResult } from '@/services/SuperResult';
 import { message } from 'antd';
 import { history } from 'umi';
-import request from 'umi-request'
+import request from 'umi-request';
+
+request.interceptors.request.use((url, options) => {
+    const currentUserStr = localStorage.getItem('tdsp');
+    let currentUser: API.CurrentUser = {};
+    if (currentUserStr != null) {
+        currentUser = JSON.parse(currentUserStr);
+        if (currentUser.token === undefined || currentUser.token === null) {
+            message.error("登录异常，请重新登录");
+            history.push('/user/login');
+        }
+        const headers = {
+            Authorization: `${currentUser.token}`,
+        };
+        return ({
+            url: url,
+            options: { ...options, headers: headers },
+        });
+    } else {
+        history.push('/user/login');
+        return ({});
+    }
+
+})
 
 // 对于请求返回的统一处理
 request.interceptors.response.use(async response => {

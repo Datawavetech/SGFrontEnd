@@ -167,7 +167,7 @@ const TableList: React.FC<{}> = () => {
               </Button>
             </Dropdown>),
         ]}
-        request={(params, sorter, filter) => listAssetIdentifier(access.token || '', { ...params, sorter, filter })}
+        request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={access.canAdmin ? {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),

@@ -4,12 +4,8 @@ import { stringify } from 'qs';
 import { SuperResult } from '@/services/SuperResult'
 import { message } from 'antd';
 
-export async function listAssetIdentifier(token: string, params: TableListParams) {
-  return request(`/api/confirm/assetIdentifier?${stringify(params)}`, {
-    headers: {
-      'Authorization': token
-    },
-  });
+export async function listAssetIdentifier(params: TableListParams) {
+  return request(`/api/confirm/assetIdentifier?${stringify(params)}`);
 }
 
 export async function createAssetIdentifier(token: string, params: TableListParams) {
