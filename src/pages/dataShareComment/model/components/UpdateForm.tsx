@@ -105,6 +105,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       visible={updateModalVisible}
       onCancel={() => handleUpdateModalVisible()}
       onOk={handleSubmit}
+      okText="提交"
+      cancelText="取消"
     >
       <Form
         form={form}
