@@ -58,7 +58,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<TableListItem>
         headerTitle="用户信息"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="userId"
         request={(params, sorter, filter) => listUserKeyInfo(access.token || '', { ...params, sorter, filter })}
         columns={columns}
       // rowSelection={{}}

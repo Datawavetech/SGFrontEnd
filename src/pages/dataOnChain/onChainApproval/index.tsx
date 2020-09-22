@@ -124,7 +124,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<OnChainRequest>
         headerTitle="审批单列表"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="requestId"
         request={(params, sorter, filter) => listWaitingRequests(access.token || '', { ...params, filter })}
         columns={columns}
       />

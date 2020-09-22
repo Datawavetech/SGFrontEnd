@@ -50,7 +50,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<DcmcChainData>
         headerTitle="全链路信息展示"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="dataHash"
 
         request={(params, sorter, filter) => listDcmcDataRouter(params, sorter, filter)}
         columns={columns}

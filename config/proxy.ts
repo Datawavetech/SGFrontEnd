@@ -9,14 +9,15 @@ export default {
   dev: {
     '/api/': {
       target: 'http://localhost:20002',
-	    // target: 'http://8.210.105.204:20002',
+	    //target: 'http://8.210.105.204:20002',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
   },
   test: {
     '/api/': {
-      target: 'http://localhost:9000',
+      target: 'http://8.210.105.204:20002',
+      //target: 'http://localhost:9000',
       // target: 'http://8.210.105.204:9000',
       changeOrigin: true,
       pathRewrite: { '^': '' },
@@ -24,7 +25,8 @@ export default {
   },
   pre: {
     '/api/': {
-      target: 'http://localhost:9000',
+      target: 'http://8.210.105.204:20002',
+      //target: 'http://localhost:9000',
       // target: 'http://8.210.105.204:9000',
       changeOrigin: true,
       pathRewrite: { '^': '' },

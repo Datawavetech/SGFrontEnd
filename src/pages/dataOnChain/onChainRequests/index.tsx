@@ -198,7 +198,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<OnChainRequest>
         headerTitle="权属信息"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="requestId"
         toolBarRender={() => [
           <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 上链申请
@@ -219,7 +219,7 @@ const TableList: React.FC<{}> = () => {
               }
             }
           }}
-          rowKey="key"
+          rowKey="requestId"
           type="form"
           columns={columns}
           rowSelection={{}}
