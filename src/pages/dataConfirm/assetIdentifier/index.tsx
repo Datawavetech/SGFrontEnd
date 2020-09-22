@@ -166,7 +166,6 @@ const TableList: React.FC<{}> = () => {
                 批量操作 <DownOutlined />
               </Button>
             </Dropdown>),
-
         ]}
         request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
