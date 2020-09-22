@@ -1,4 +1,4 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 import { TableListParams, TokenModel } from './data.d';
 import { stringify } from 'qs';
 

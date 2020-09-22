@@ -1,4 +1,4 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 // import { TableListParams } from './data.d';
 
 export async function querySysData(){
@@ -60,10 +60,9 @@ export async function queryRule(params?: TableListParams) {
 
 export async function removeRule(params: { key: number[] }) {
   return request('/api/rule', {
-    method: 'POST',
+    method: 'Delete',
     data: {
       ...params,
-      method: 'delete',
     },
   });
 }

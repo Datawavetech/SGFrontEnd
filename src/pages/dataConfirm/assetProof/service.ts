@@ -1,10 +1,7 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 import { TableListParams } from './data.d';
 import { stringify } from 'qs';
 
 export async function listAssetProof(params?: TableListParams) {
-  return request(`/api/confirm/assetProof?${stringify(params)}`).then((resp) => {
-    if (resp.status === 200) return resp;
-    return 0;
-  });
+  return request(`/api/confirm/assetProof?${stringify(params)}`);
 }
