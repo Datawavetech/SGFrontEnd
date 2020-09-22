@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { OnChainRequest, TableListParams } from './data.d';
+import { OnChainRequestForm, TableListParams } from './data.d';
 import { stringify } from 'qs';
 
 
@@ -15,12 +15,14 @@ export async function listUsages() {
 	return request('/api/confirm/dataUsage');
 }
 
-export async function createOnChainRequest(token: string, params?: OnChainRequest) {
-	const formData = new FormData();
-	formData.append('usages', JSON.stringify(params.usages));
-	formData.append('dataTypes', JSON.stringify(params.dataTypes));
-	formData.append('expireAt', params.expireAt);
-	formData.append('file', params.file.file.originFileObj);
+export async function createOnChainRequest(token: string, params: OnChainRequestForm) {
+  const formData = new FormData();
+  const {usages, dataTypes, expireAt, file} = params
+  console.log(params)
+	formData.append('usages', JSON.stringify(usages));
+	formData.append('dataTypes', JSON.stringify(dataTypes));
+	formData.append('expireAt', expireAt);
+	formData.append('file', file.file.originFileObj);
 	return request('/api/onchain/upload', {
 		method: 'POST',
 		headers: {

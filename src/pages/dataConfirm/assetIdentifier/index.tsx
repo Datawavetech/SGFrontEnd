@@ -9,7 +9,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { AssetIdentifier } from './data.d';
 import { listAssetIdentifier, updateAssetIdentifier, createAssetIdentifier, deleteAssetIdentifier } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
-import { useAccess, Access } from 'umi';
+import { useAccess } from 'umi';
 
 /**
  * 添加节点
@@ -77,6 +77,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRows, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
   const access = useAccess();
@@ -86,7 +87,6 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'dataHash',
       hideInForm: true,
       ellipsis: true,
-      width: 300,
     },
     {
       title: '资产名称',
@@ -142,6 +142,7 @@ const TableList: React.FC<{}> = () => {
         headerTitle="权属信息"
         actionRef={actionRef}
         rowKey="dataHash"
+        // eslint-disable-next-line no-shadow
         toolBarRender={(action, { selectedRows }) => [
           <Button hidden={!access.canAdmin} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建权属标识
@@ -170,6 +171,7 @@ const TableList: React.FC<{}> = () => {
         request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={access.canAdmin ? {
+          // eslint-disable-next-line no-shadow
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } : undefined}
       />

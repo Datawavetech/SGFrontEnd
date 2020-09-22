@@ -92,18 +92,18 @@ const TableList: React.FC<{}> = () => {
     {
       title: '模型名称',
       dataIndex: 'modelName',
-      formItemProps: { required: true },
+      fieldProps: { required: true },
     },
     {
       title: '模型描述',
       dataIndex: 'modelDesc',
-      formItemProps: { required: true },
+      fieldProps: { required: true },
       hideInSearch: true,
     },
     {
       title: '上升指数',
       dataIndex: 'upCount',
-      formItemProps: { required: true },
+      fieldProps: { required: true },
       hideInSearch: true,
       renderFormItem: () => (
         <InputNumber min={1} max={10} />

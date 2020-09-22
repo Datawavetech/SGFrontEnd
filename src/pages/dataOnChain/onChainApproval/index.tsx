@@ -76,12 +76,12 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        if (record.status == 2) {
+        if (record.status === 2) {
           return (
             <Tag color="green">已通过</Tag>
           );
         }
-        if (record.status == 3) {
+        if (record.status === 3) {
           return (
             <Tag color="red">已拒绝</Tag>
           );
@@ -100,7 +100,7 @@ const TableList: React.FC<{}> = () => {
                   message.warn("失败");
                 }
               }}>通过</Button>
-              <Divider type="vertical"></Divider>
+              <Divider type="vertical" />
               <Button danger onClick={async () => {
                 const success = await updateRequest(access.token || '', record, 3);
                 if (success) {

@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Carousel, Card, Button, Divider, Dropdown, Menu, message /* Input */ } from 'antd';
+import { Button, Dropdown, Menu, message /* Input */ } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -8,10 +8,8 @@ import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { DataUsage } from './data';
 import { listDataUsage, updateDataUsage, createDataUsage, deleteDataUsage } from './service';
-import { useAccess, Access } from 'umi'
-import styles from './index.less';
+import { useAccess } from 'umi'
 import ButtonGroup from 'antd/lib/button/button-group';
-import access from '@/access';
 
 /**
  * 添加节点
@@ -78,6 +76,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRows, setSelectedRows] = useState<DataUsage[]>([]);
   const actionRef = useRef<ActionType>();
   const access = useAccess()
@@ -91,7 +90,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据类型',
       dataIndex: 'type',
-      formItemProps: { required: true },
+      fieldProps: { required: true },
       valueType: 'textarea',
     },
     {
@@ -124,6 +123,7 @@ const TableList: React.FC<{}> = () => {
         headerTitle="使用约定信息"
         actionRef={actionRef}
         rowKey="usageId"
+        // eslint-disable-next-line no-shadow
         toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" hidden={!access.canAdmin} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建使用约定
@@ -153,6 +153,7 @@ const TableList: React.FC<{}> = () => {
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={access.canAdmin ? {
+          // eslint-disable-next-line no-shadow
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } : undefined}
       />

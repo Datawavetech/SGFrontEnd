@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
@@ -52,7 +52,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="dataHash"
 
-        request={(params, sorter, filter) => listDcmcDataRouter(params, sorter, filter)}
+        request={(params) => listDcmcDataRouter(params)}
         columns={columns}
       />
 

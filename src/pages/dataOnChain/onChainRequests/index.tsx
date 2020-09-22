@@ -3,7 +3,6 @@ import { Tag, Select, DatePicker, Upload, Button, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import FormItem from 'antd/lib/form/FormItem';
 
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
@@ -16,11 +15,12 @@ const { Option } = Select;
  * 添加节点
  * @param fields
  */
-const handleAdd = async (token: string, fields: OnChainRequest) => {
+const handleAdd = async (token: string, fields: OnChainRequestForm) => {
   const hide = message.loading('正在添加');
   try {
     // 登录获取token->保存到localStorage->从localStorage获取token进行私有接口请求
-    let ret = await createOnChainRequest(token, { ...fields });
+    console.log(fields)
+    const ret = await createOnChainRequest(token, { ...fields });
     hide();
     if (ret) {
       message.success('申请成功');
@@ -43,7 +43,7 @@ const getDataTypes = async () => {
   try {
     const resp = await listDataTypes();
     const types = [];
-    for (let i = 0; i < resp.data.length; ++i) {
+    for (let i = 0; i < resp.data.length; i+=1) {
       types.push(<Option key={resp.data[i].typeName}>{resp.data[i].typeName}</Option>);
     }
     return types;
@@ -57,7 +57,7 @@ const getDataUsages = async () => {
   try {
     const resp = await listUsages();
     const usages = [];
-    for (let i = 0; i < resp.data.length; ++i) {
+    for (let i = 0; i < resp.data.length; i+=1) {
       usages.push(<Option key={resp.data[i].usage}>{resp.data[i].usage}</Option>);
     }
     return usages;
@@ -116,7 +116,7 @@ const TableList: React.FC<{}> = () => {
       title: '使用约定',
       dataIndex: 'usages',
       hideInSearch: true,
-      formItemProps: { required: true },
+      fieldProps: { required: true },
       renderFormItem: () => (
         <Select
           mode="multiple"
@@ -133,8 +133,8 @@ const TableList: React.FC<{}> = () => {
       title: '数据类型列表',
       dataIndex: 'dataTypes',
       hideInSearch: true,
-      formItemProps: { required: true },
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+      fieldProps: { required: true },
+      renderFormItem: () => {
         return (
           <Select
             mode="multiple"
@@ -152,7 +152,7 @@ const TableList: React.FC<{}> = () => {
       title: '有效期截止',
       dataIndex: 'expireAt',
       hideInSearch: true,
-      formItemProps: { required: true },
+      fieldProps: { required: true },
       renderFormItem: () => (
         <DatePicker />
       )
@@ -162,12 +162,12 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'file',
       hideInTable: true,
       hideInSearch: true,
-      formItemProps: { required: true },
+      fieldProps: { required: true },
       renderFormItem: () => (
         <Upload>
           <Button>
             <UploadOutlined /> Upload
-			  </Button>
+			    </Button>
         </Upload>
       )
     },
@@ -177,19 +177,20 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       hideInSearch: true,
       render: (_, record) => {
-        if (record.status == 2) {
+        if (record.status === 2) {
           return (<Tag color="green">已通过</Tag>);
         }
-        if (record.status == 3) {
+        if (record.status === 3) {
           return (<Tag color="red">已拒绝</Tag>);
         }
         return (<Tag color="yellow">待审核</Tag>);
       },
-      /*      valueEnum: {*/
-      /*1: { text: '待审批', status: "processing" },*/
-      /*2: { text: '已审批', status: "success" },*/
-      /*3: { text: '已拒绝', status: "error" }*/
-      /*}*/
+      /*      valueEnum: {
+                1: { text: '待审批', status: "processing" },
+                2: { text: '已审批', status: "success" },
+                3: { text: '已拒绝', status: "error" }
+              }
+      */
     },
   ];
 
@@ -211,6 +212,7 @@ const TableList: React.FC<{}> = () => {
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<OnChainRequestForm, OnChainRequestForm>
           onSubmit={async (value) => {
+            console.log(value)
             const success = await handleAdd(access.token || '', value);
             if (success) {
               handleModalVisible(false);

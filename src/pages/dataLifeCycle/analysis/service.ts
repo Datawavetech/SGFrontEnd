@@ -1,10 +1,9 @@
 import request from '@/utils/request';
-// import { TableListParams } from './data.d';
 
 export async function querySysData(){
-  //console.log("in")
+  // console.log("in")
   const res = await request('/api/life/dataAnalyse')
-  //console.log(res)
+  // console.log(res)
   if (res.status === 200){
     const {data} = res
     const sysDataAmount = []
@@ -41,7 +40,7 @@ export async function queryUsrData(){
     }
     return {usrData, analysisData:
                         {
-                          total:sum, 
+                          total:sum,
                           average: sum/data.userApplicationsAnalyse.length
                         }}
   }
@@ -52,17 +51,4 @@ export async function queryUserData(){
   return request('/api/life/dataAnalyse')
 }
 
-export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
-  });
-}
 
-export async function removeRule(params: { key: number[] }) {
-  return request('/api/rule', {
-    method: 'Delete',
-    data: {
-      ...params,
-    },
-  });
-}

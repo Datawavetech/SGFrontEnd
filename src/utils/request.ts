@@ -69,14 +69,12 @@ request.interceptors.request.use((url, options) => {
       Authorization: `${currentUser.token}`,
     };
     return ({
-      url: url,
-      options: { ...options, headers: headers },
+      url,
+      options: { ...options, headers },
     });
-  } else {
+  }
     history.push('/user/login');
     return ({});
-  }
-
 })
 
 // 对于请求返回的统一处理
@@ -89,6 +87,7 @@ request.interceptors.response.use(async (response) => {
   // 未登录或登录超时，统一跳转到登录页面
   if (data.status === 401) {
     history.push('/user/login');
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw message.error("登录超时，请重新登录");
   } else if (data.status === 402) {
     message.error("用户权限不足");
