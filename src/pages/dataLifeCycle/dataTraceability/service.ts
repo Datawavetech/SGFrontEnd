@@ -1,4 +1,4 @@
-import { request } from 'umi';
+import request from '@/utils/request';
 import { TableListParams } from './data';
 import { stringify } from 'qs';
 

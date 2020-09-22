@@ -1,7 +1,7 @@
-import request from '@/utils/interceptors';
+import request from '@/utils/request';
 import { TableListParams } from './data.d';
 import { stringify } from 'qs';
-import { SuperResult } from '@/services/SuperResult'
+import { SuperResult } from '@/services/SuperResult';
 import { message } from 'antd';
 
 export async function listAssetIdentifier(params: TableListParams) {

@@ -1,42 +1,18 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 import { OnChainRequest, TableListParams } from './data.d';
 import { stringify } from 'qs';
 
 
 export async function listUserRequests(token: string, params: TableListParams) {
-	return request(`/api/onchain/listUserRequests?${stringify(params)}`, {
-		method: 'GET',
-		headers: {
-			"Authorization": token,
-		}
-	}).then((resp) => {
-		if (resp.status === 200) {
-			return resp;
-		}
-		return "";
-	});
+	return request(`/api/onchain/listUserRequests?${stringify(params)}`);
 }
 
 export async function listDataTypes() {
-	return request('/api/onchain/dataType', {
-		method: 'GET',
-	}).then(resp => {
-		if (resp.status === 200) {
-			return resp;
-		}
-		return "";
-	})
+	return request('/api/onchain/dataType');
 }
 
 export async function listUsages() {
-	return request('/api/confirm/dataUsage', {
-		method: 'GET',
-	}).then(resp => {
-		if (resp.status === 200) {
-			return resp;
-		}
-		return "";
-	})
+	return request('/api/confirm/dataUsage');
 }
 
 export async function createOnChainRequest(token: string, params?: OnChainRequest) {
@@ -59,9 +35,6 @@ export async function createOnChainRequest(token: string, params?: OnChainReques
 export async function updateOnChainRequest(token: string, reqId: string, status: number) {
 	return request('/api/onchain/update', {
 		method: 'POST',
-		headers: {
-			'Authorization': token,
-		},
 		data: {
 			'requestId': reqId,
 			'status': status,
