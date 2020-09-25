@@ -52,14 +52,14 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         <FormItem
           name="assetName"
           label="资产名称"
-          rules={[{ required: true, message: '请输入资产名称！' }, { max: 30, message: "输入长度超出范围，最长为30" }]}
+          rules={[{ required: true, message: '请输入资产名称！' }, { max: 30, message: "输入长度超出范围0-30" }]}
         >
           <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           name="assetSys"
           label="所有者"
-          rules={[{ required: true, message: '请输入资产所属人！' }, { max: 20, message: "输入长度超出范围，最长为20" }]}
+          rules={[{ required: true, message: '请输入资产所属人！' }, { max: 20, message: "输入长度超出范围0-20" }]}
         >
           <Input placeholder="请输入" />
         </FormItem>

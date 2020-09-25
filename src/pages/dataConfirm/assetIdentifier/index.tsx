@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import React, { useState, useRef } from 'react';
-import { FooterToolbar, PageHeaderWrapper, } from '@ant-design/pro-layout';
+import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
@@ -93,13 +93,13 @@ const TableList: React.FC<{}> = () => {
     {
       title: '资产名称',
       dataIndex: 'assetName',
-      formItemProps: { rules: [{ required: true, message: "资产名称为必填项" }, { max: 30, message: "输入长度超出范围" }] },
+      formItemProps: { rules: [{ required: true, message: "资产名称为必填项" }, { max: 30, message: "输入长度超出范围0-30" }] },
       valueType: 'text',
     },
     {
       title: '所有者',
       dataIndex: 'assetSys',
-      formItemProps: { rules: [{ required: true, message: "资产所属者为必填项" }, { max: 20, message: "输入长度超出范围" }] },
+      formItemProps: { rules: [{ required: true, message: "资产所属者为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
       valueType: 'text',
     },
     {
@@ -139,13 +139,13 @@ const TableList: React.FC<{}> = () => {
   ];
 
   return (
-    <PageHeaderWrapper>
+    <PageContainer>
       <ProTable<AssetIdentifier, AssetIdentifier>
         headerTitle="权属信息"
         actionRef={actionRef}
         rowKey="dataHash"
         beforeSearchSubmit={(params: Partial<AssetIdentifier>) => {
-          const { dataHash, assetName, assetSys } = params
+          const { dataHash, assetName, assetSys } = params;
           if (dataHash && dataHash.length > 64) {
             message.error("权属标识输入超出范围0-64");
             return {};
@@ -228,7 +228,7 @@ const TableList: React.FC<{}> = () => {
           />
         ) : null
       }
-    </PageHeaderWrapper >
+    </PageContainer >
   );
 };
 

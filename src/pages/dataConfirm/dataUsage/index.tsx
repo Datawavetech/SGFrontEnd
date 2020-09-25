@@ -1,7 +1,7 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, message /* Input */ } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { FooterToolbar, PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
@@ -15,10 +15,10 @@ import ButtonGroup from 'antd/lib/button/button-group';
  * 添加节点
  * @param fields
  */
-const handleAdd = async (token: string, fields: DataUsage) => {
+const handleAdd = async (fields: DataUsage) => {
   const hide = message.loading('正在添加');
   try {
-    await createDataUsage(token, { ...fields });
+    await createDataUsage({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -33,10 +33,10 @@ const handleAdd = async (token: string, fields: DataUsage) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (token: string, fields: FormValueType) => {
+const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在修改');
   try {
-    await updateDataUsage(token, {
+    await updateDataUsage({
       usageId: fields.usageId,
       usage: fields.usage,
     });
@@ -55,11 +55,11 @@ const handleUpdate = async (token: string, fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (token: string, selectedRows: DataUsage[]) => {
+const handleRemove = async (selectedRows: DataUsage[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await deleteDataUsage(token, {
+    await deleteDataUsage({
       usageIds: selectedRows.map((row) => row.usageId),
     });
     hide();
@@ -76,8 +76,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedRows, setSelectedRows] = useState<DataUsage[]>([]);
+  const [selectedRowsState, setSelectedRows] = useState<DataUsage[]>([]);
   const actionRef = useRef<ActionType>();
   const access = useAccess()
   const columns: ProColumns<DataUsage>[] = [
@@ -90,7 +89,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '使用约定',
       dataIndex: 'usage',
-      fieldProps: { required: true },
+      formItemProps: { rules: [{ required: true, message: "使用约定为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
       valueType: 'textarea',
     },
     {
@@ -123,44 +122,48 @@ const TableList: React.FC<{}> = () => {
         headerTitle="使用约定信息"
         actionRef={actionRef}
         rowKey="usageId"
-        // eslint-disable-next-line no-shadow
-        toolBarRender={(action, { selectedRows }) => [
+        toolBarRender={() => [
           <Button type="primary" hidden={!access.canAdmin} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建使用约定
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(access.token || '', selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
+          </Button>
         ]}
+        beforeSearchSubmit={(params: Partial<DataUsage>) => {
+          const { usage } = params;
+          if (usage && usage.length > 20) {
+            message.error("权属标识输入超出范围0-20");
+            return {};
+          }
+          return params;
+        }}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={access.canAdmin ? {
-          // eslint-disable-next-line no-shadow
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } : undefined}
       />
+      {selectedRowsState?.length > 0 && (
+        <FooterToolbar
+          extra={
+            <div>
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
+            </div>
+          }
+        >
+          <Button
+            danger
+            onClick={async () => {
+              await handleRemove(selectedRowsState);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          >
+            批量删除
+          </Button></FooterToolbar>)
+      }
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<DataUsage, DataUsage>
           onSubmit={async (value) => {
-            const success = await handleAdd(access.token || '', value);
+            const success = await handleAdd(value);
             if (success) {
               handleModalVisible(false);
               if (actionRef.current) {
@@ -176,7 +179,7 @@ const TableList: React.FC<{}> = () => {
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
           onSubmit={async (value) => {
-            const success = await handleUpdate(access.token || '', value);
+            const success = await handleUpdate(value);
             if (success) {
               handleUpdateModalVisible(false);
               setStepFormValues({});
