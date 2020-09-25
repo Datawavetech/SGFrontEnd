@@ -5,7 +5,6 @@
 import { extend } from 'umi-request';
 import { message, notification } from 'antd';
 import { history } from 'umi';
-import { SuperResult } from '@/services/SuperResult';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -28,36 +27,36 @@ const codeMessage = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): Response => {
-  const { response } = error;
-  if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+// const errorHandler = (error: { response: Response }): Response => {
+//   console.log('error:', error)
+//   const { response } = error;
+//   if (response && response.status) {
+//     const errorText = codeMessage[response.status] || response.statusText;
+//     const { status, url } = response;
 
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
-  } else if (!response) {
-    notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
-    });
-  }
-  return response;
-};
+//     notification.error({
+//       message: `请求错误 ${status}: ${url}`,
+//       description: errorText,
+//     });
+//   } else if (!response) {
+//     notification.error({
+//       description: '您的网络发生异常，无法连接服务器',
+//       message: '网络异常',
+//     });
+//   }
+//   return response;
+// };
 
 /**
  * 配置request请求时的默认参数
  */
 const request = extend({
-  errorHandler, // 默认错误处理
+  // errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
 
 request.interceptors.request.use((url, options) => {
   const currentUserStr = localStorage.getItem('tdsp');
-  console.log('request')
   let currentUser: API.CurrentUser = {};
   if (currentUserStr != null) {
     currentUser = JSON.parse(currentUserStr);
@@ -73,29 +72,30 @@ request.interceptors.request.use((url, options) => {
       options: { ...options, headers },
     });
   }
-    history.push('/user/login');
-    return ({});
+  history.push('/user/login');
+  return ({});
 })
 
 // 对于请求返回的统一处理
-request.interceptors.response.use(async (response) => {
-  const data: SuperResult = await response.clone().json();
+request.interceptors.response.use(async (response: any) => {
+  const data = await response.clone().json();
   if (data === undefined || data === null) {
     return response;
   }
-  console.log('状态:', data);
-  // 未登录或登录超时，统一跳转到登录页面
-  if (data.status === 401) {
+  // 查询参数错误或写入参数异常
+  if (data.status === 422) {
+    if (data.data !== undefined && data.data !== null) {
+      message.error(data.data);
+    }
+  } else if (data.status === 401) { // 未登录或登录超时，统一跳转到登录页面
     history.push('/user/login');
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw message.error("登录超时，请重新登录");
+    message.error("登录超时，请重新登录");
   } else if (data.status === 402) {
     message.error("用户权限不足");
   } else if (data.status === 500) {
     if (data.data !== undefined && data.data !== null) {
       message.error(data.data);
     }
-    return response;
   }
   return response;
 });

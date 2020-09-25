@@ -1,7 +1,7 @@
-import { PlusOutlined, DownOutlined } from '@ant-design/icons';
-import { Button, message, Menu, Dropdown } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, message } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageHeaderWrapper, } from '@ant-design/pro-layout';
+import { FooterToolbar, PageHeaderWrapper, } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
@@ -15,14 +15,15 @@ import { useAccess } from 'umi';
  * 添加节点
  * @param fields
  */
-const handleAdd = async (token: string, fields: AssetIdentifier) => {
+const handleAdd = async (fields: AssetIdentifier) => {
   const hide = message.loading('正在添加');
   try {
-    await createAssetIdentifier(token, { ...fields });
+    await createAssetIdentifier({ ...fields });
     hide();
     message.success('添加成功');
     return true;
   } catch (error) {
+    console.log('error:', error)
     hide();
     message.error('添加失败请重试！');
     return false;
@@ -33,10 +34,10 @@ const handleAdd = async (token: string, fields: AssetIdentifier) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (token: string, fields: FormValueType) => {
+const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在修改');
   try {
-    await updateAssetIdentifier(token, {
+    await updateAssetIdentifier({
       dataHash: fields.dataHash,
       assetName: fields.assetName,
       assetSys: fields.assetSys,
@@ -56,11 +57,11 @@ const handleUpdate = async (token: string, fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (token: string, selectedRows: AssetIdentifier[]) => {
+const handleRemove = async (selectedRows: AssetIdentifier[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await deleteAssetIdentifier(token, {
+    await deleteAssetIdentifier({
       deleteDataHashs: selectedRows.map((row) => row.dataHash),
     });
     hide();
@@ -78,7 +79,7 @@ const TableList: React.FC<{}> = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedRows, setSelectedRows] = useState<AssetIdentifier[]>([]);
+  const [selectedRowsState, setSelectedRows] = useState<AssetIdentifier[]>([]);
   const actionRef = useRef<ActionType>();
   const access = useAccess();
   const columns: ProColumns<AssetIdentifier>[] = [
@@ -87,17 +88,18 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'dataHash',
       hideInForm: true,
       ellipsis: true,
+      copyable: true,
     },
     {
       title: '资产名称',
       dataIndex: 'assetName',
-      formItemProps: { required: true },
+      formItemProps: { rules: [{ required: true, message: "资产名称为必填项" }, { max: 30, message: "输入长度超出范围" }] },
       valueType: 'text',
     },
     {
       title: '所有者',
       dataIndex: 'assetSys',
-      formItemProps: { required: true },
+      formItemProps: { rules: [{ required: true, message: "资产所属者为必填项" }, { max: 20, message: "输入长度超出范围" }] },
       valueType: 'text',
     },
     {
@@ -123,7 +125,7 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'option',
       valueType: 'option',
       hideInTable: !access.canAdmin,
-      render: (_, record) => (
+      render: (_: any, record: React.SetStateAction<{}>) => (
         <>
           <ButtonGroup>
             <Button type="primary" onClick={() => {
@@ -138,47 +140,60 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<AssetIdentifier>
+      <ProTable<AssetIdentifier, AssetIdentifier>
         headerTitle="权属信息"
         actionRef={actionRef}
         rowKey="dataHash"
-        // eslint-disable-next-line no-shadow
-        toolBarRender={(action, { selectedRows }) => [
+        beforeSearchSubmit={(params: Partial<AssetIdentifier>) => {
+          const { dataHash, assetName, assetSys } = params
+          if (dataHash && dataHash.length > 64) {
+            message.error("权属标识输入超出范围0-64");
+            return {};
+          }
+          if (assetName && assetName.length > 30) {
+            message.error("资产名称输入超出范围0-30");
+            return {};
+          }
+          if (assetSys && assetSys.length > 20) {
+            message.error("所属者输入超出范围0-20");
+            return {};
+          }
+          return params;
+        }}
+        toolBarRender={() => [
           <Button hidden={!access.canAdmin} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建权属标识
           </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(access.token || '', selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>),
         ]}
         request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={access.canAdmin ? {
-          // eslint-disable-next-line no-shadow
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } : undefined}
       />
+      {selectedRowsState?.length > 0 && (
+        <FooterToolbar
+          extra={
+            <div>
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
+            </div>
+          }
+        >
+          <Button
+            danger
+            onClick={async () => {
+              await handleRemove(selectedRowsState);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          >
+            批量删除
+          </Button></FooterToolbar>)
+      }
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<AssetIdentifier, AssetIdentifier>
           onSubmit={async (value) => {
-            const success = await handleAdd(access.token || '', value);
+            const success = await handleAdd(value);
             if (success) {
               handleModalVisible(false);
               if (actionRef.current) {
@@ -186,33 +201,34 @@ const TableList: React.FC<{}> = () => {
               }
             }
           }}
-          rowKey="key"
+          rowKey="dataHash"
           type="form"
           columns={columns}
         />
       </CreateForm>
-      {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
-          onSubmit={async (value) => {
-            console.log('submit vals:', value)
-            const success = await handleUpdate(access.token || '', value);
-            if (success) {
+      {
+        stepFormValues && Object.keys(stepFormValues).length ? (
+          <UpdateForm
+            onSubmit={async (value) => {
+              const success = await handleUpdate(value);
+              if (success) {
+                handleUpdateModalVisible(false);
+                setStepFormValues({});
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }
+            }}
+            onCancel={() => {
               handleUpdateModalVisible(false);
               setStepFormValues({});
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
-          values={stepFormValues}
-        />
-      ) : null}
-    </PageHeaderWrapper>
+            }}
+            updateModalVisible={updateModalVisible}
+            values={stepFormValues}
+          />
+        ) : null
+      }
+    </PageHeaderWrapper >
   );
 };
 
