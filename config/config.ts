@@ -80,6 +80,11 @@ export default defineConfig({
           component: './dataOnChain/onChainApproval',
           access: 'canAdmin',
         },
+        {
+          path: '/dataOnChain/dataType',
+          name: 'dataType',
+          component: './dataOnChain/dataType',
+        },
       ],
     },
     {

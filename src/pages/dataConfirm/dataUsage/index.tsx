@@ -130,7 +130,7 @@ const TableList: React.FC<{}> = () => {
         beforeSearchSubmit={(params: Partial<DataUsage>) => {
           const { usage } = params;
           if (usage && usage.length > 20) {
-            message.error("权属标识输入超出范围0-20");
+            message.error("使用约定输入超出范围0-20");
             return {};
           }
           return params;

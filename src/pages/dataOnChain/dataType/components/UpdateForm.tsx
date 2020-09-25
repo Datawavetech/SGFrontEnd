@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { Form, Button, DatePicker, Input, Modal, Radio, Select, Steps } from 'antd';
+import { Form, Input, Modal, } from 'antd';
 
-import { DataUsage } from '../data.d';
+import { DataType } from '../data';
 
-export interface FormValueType extends Partial<DataUsage> {
+export interface FormValueType extends Partial<DataType> {
   target?: string;
   template?: string;
   type?: string;
-  usageId?: string;
-  usage?: string;
+  typeId?: string;
+  typeName?: string;
 }
 
 export interface UpdateFormProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
   onSubmit: (values: FormValueType) => void;
   updateModalVisible: boolean;
-  values: Partial<DataUsage>;
+  values: Partial<DataType>;
 }
 
 const FormItem = Form.Item;
@@ -32,8 +32,8 @@ const formLayout = {
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const [formVals, setFormVals] = useState<FormValueType>({
-    usageId: props.values.usageId,
-    usage: props.values.usage,
+    typeId: props.values.typeId,
+    typeName: props.values.typeName,
   });
 
   const [form] = Form.useForm();
@@ -42,16 +42,15 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     onSubmit: handleUpdate,
     onCancel: handleUpdateModalVisible,
     updateModalVisible,
-    values,
   } = props;
 
   const renderContent = () => {
     return (
       <>
         <FormItem
-          name="usage"
-          label="使用约定"
-          rules={[{ required: true, message: '请输入使用约定！' }]}
+          name="typeName"
+          label="使用类型"
+          rules={[{ required: true, message: '请输入使用类型！' }, { max: 20, message: "输入长度超出范围0-20" }]}
         >
           <Input placeholder="请输入" />
         </FormItem>
@@ -70,7 +69,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       width={640}
       bodyStyle={{ padding: '32px 40px 48px' }}
       destroyOnClose
-      title="更改使用约定"
+      title="更改使用类型"
       visible={updateModalVisible}
       onCancel={() => handleUpdateModalVisible()}
       onOk={handleSubmit}
@@ -82,7 +81,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         initialValues={{
           target: formVals.target,
           template: formVals.template,
-          usage: formVals.usage,
+          typeName: formVals.typeName,
         }}
       >
         {renderContent()}

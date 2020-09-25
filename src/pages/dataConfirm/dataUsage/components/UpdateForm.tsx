@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, DatePicker, Input, Modal, Radio, Select, Steps } from 'antd';
+import { Form, Input, Modal } from 'antd';
 
 import { DataUsage } from '../data.d';
 
@@ -42,7 +42,6 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     onSubmit: handleUpdate,
     onCancel: handleUpdateModalVisible,
     updateModalVisible,
-    values,
   } = props;
 
   const renderContent = () => {
@@ -51,7 +50,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         <FormItem
           name="usage"
           label="使用约定"
-          rules={[{ required: true, message: '请输入使用约定！' }]}
+          rules={[{ required: true, message: '请输入使用约定！' }, { max: 20, message: "输入长度超出范围0-20" }]}
         >
           <Input placeholder="请输入" />
         </FormItem>

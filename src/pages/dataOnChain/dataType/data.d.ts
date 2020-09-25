@@ -1,6 +1,6 @@
-export interface DataUsage {
-  usageId: string;
-  usage: string;
+export interface DataType {
+  typeId: string;
+  typeName: string;
   createAt: Date;
 }
 
@@ -17,8 +17,8 @@ export interface TableListData {
 
 export interface TableListParams {
   status?: string;
-  usageId?: string;
-  usage?: string;
+  typeId?: string;
+  typeName?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

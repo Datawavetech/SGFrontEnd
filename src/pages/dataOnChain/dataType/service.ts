@@ -1,13 +1,13 @@
 import request from '@/utils/request';
-import { TableListParams } from './data.d';
+import { TableListParams } from './data';
 import { stringify } from 'qs';
 
-export async function listDataUsage(params: TableListParams) {
-  return request(`/api/confirm/dataUsage?${stringify(params)}`);
+export async function listDataType(params: TableListParams) {
+  return request(`/api/onchain/dataType?${stringify(params)}`);
 }
 
-export async function createDataUsage(token: string, params: TableListParams) {
-  return request('/api/confirm/dataUsage', {
+export async function createDataType(params: TableListParams) {
+  return request('/api/onchain/dataType', {
     method: 'POST',
     data: {
       ...params,
@@ -15,8 +15,8 @@ export async function createDataUsage(token: string, params: TableListParams) {
   });
 }
 
-export async function updateDataUsage(token: string, params: TableListParams) {
-  return request('/api/confirm/dataUsage', {
+export async function updateDataType(params: TableListParams) {
+  return request('/api/onchain/dataType', {
     method: 'PUT',
     data: {
       ...params,
@@ -25,8 +25,8 @@ export async function updateDataUsage(token: string, params: TableListParams) {
 }
 
 
-export async function deleteDataUsage(token: string, params: { usageIds: string[] }) {
-  return request('/api/confirm/dataUsage', {
+export async function deleteDataType(params: { typeIds: string[] }) {
+  return request('/api/onchain/dataType', {
     method: 'DELETE',
     data: {
       ...params,

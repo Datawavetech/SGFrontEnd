@@ -7,6 +7,7 @@ export default {
   'menu.dataOnChain': '数据上链',
   'menu.dataOnChain.onChainRequests': '上链申请查看',
   'menu.dataOnChain.onChainApproval': '上链审批',
+  'menu.dataOnChain.dataType': '数据类型',
 
   'menu.dataShareComment': '共享评价管理',
   'menu.dataShareComment.model': '模型管理',
