@@ -3,14 +3,13 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 
-import { TableListItem } from './data.d';
+import { UserKeyInfo } from './data.d';
 import { listUserKeyInfo } from './service';
-import { useAccess } from 'umi';
+import { message } from 'antd';
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-  const access = useAccess();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<UserKeyInfo>[] = [
     {
       title: '用户ID',
       dataIndex: 'userId',
@@ -37,14 +36,18 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'priKey',
       ellipsis: true,
       width: 300,
+      valueType: "textarea",
       hideInSearch: true,
+      copyable: true,
     },
     {
       title: '公钥',
       dataIndex: 'pubKey',
       ellipsis: true,
       width: 300,
+      valueType: "textarea",
       hideInSearch: true,
+      copyable: true,
     },
     {
       title: '创建时间',
@@ -55,13 +58,24 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
+      <ProTable<UserKeyInfo>
         headerTitle="用户信息"
         actionRef={actionRef}
         rowKey="userId"
-        request={(params, sorter, filter) => listUserKeyInfo(access.token || '', { ...params, sorter, filter })}
+        beforeSearchSubmit={(params: Partial<UserKeyInfo>) => {
+          const { name, userType } = params;
+          if (name && name.length > 20) {
+            message.error("用户名输入超出范围0-20");
+            return {};
+          }
+          if (userType && (userType < 0 || userType > 3)) {
+            message.error("用户类型输入异常");
+            return {};
+          }
+          return params;
+        }}
+        request={(params, sorter, filter) => listUserKeyInfo({ ...params, sorter, filter })}
         columns={columns}
-      // rowSelection={{}}
       />
     </PageHeaderWrapper>
   );

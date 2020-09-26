@@ -1,16 +1,10 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
+export interface UserKeyInfo {
+  userId: string;
   name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+  userType: number;
+  priKey: string;
+  pubKey: string;
+  createAt: string;
 }
 
 export interface TableListPagination {
@@ -25,7 +19,7 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  username?: string;
+  name?: string;
   userType?: number;
   pageSize?: number;
   currentPage?: number;
