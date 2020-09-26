@@ -85,16 +85,16 @@ request.interceptors.response.use(async (response: any) => {
   // 查询参数错误或写入参数异常
   if (data.status === 422) {
     if (data.data !== undefined && data.data !== null) {
-      message.error(data.data);
+      throw message.error(data.data);
     }
   } else if (data.status === 401) { // 未登录或登录超时，统一跳转到登录页面
     history.push('/user/login');
     message.error("登录超时，请重新登录");
   } else if (data.status === 402) {
-    message.error("用户权限不足");
+    throw message.error("用户权限不足");
   } else if (data.status === 500) {
     if (data.data !== undefined && data.data !== null) {
-      message.error(data.data);
+      throw message.error(data.data);
     }
   }
   return response;

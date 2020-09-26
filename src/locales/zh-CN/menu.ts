@@ -15,7 +15,7 @@ export default {
 
   'menu.dataLifeCycle': '全生命周期管理',
   'menu.dataLifeCycle.dataTraceability': '数据溯源',
-  'menu.dataLifeCycle.duringChain': '数据全链路',
+  'menu.dataLifeCycle.dataRightConfirmInfo': '数据全链路',
   'menu.dataLifeCycle.dataRouter': '数据流转全链路',
   'menu.dataLifeCycle.analysis': '统计分析',
 

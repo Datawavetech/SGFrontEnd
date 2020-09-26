@@ -118,9 +118,9 @@ export default defineConfig({
           component: './dataLifeCycle/dataTraceability',
         },
         {
-          path: '/dataLifeCycle/duringChain',
-          name: 'duringChain',
-          component: './dataLifeCycle/duringChain',
+          path: '/dataLifeCycle/dataRightConfirmInfo',
+          name: 'dataRightConfirmInfo',
+          component: './dataLifeCycle/dataRightConfirmInfo',
         },
         {
           path: '/dataLifeCycle/dataRouter',

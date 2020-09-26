@@ -1,6 +1,7 @@
-export interface DcmcChainData {
+export interface DataRightConfirmInfoData {
   dataHash: string;
   dataName: string;
+  sysName: string;
   proof: string;
   authorizedUsers: Set;
   authorizedAt: Date;
@@ -21,6 +22,7 @@ export interface TableListData {
 export interface TableListParams {
   dataHash?: string;
   dataName?: string;
+  sysName?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

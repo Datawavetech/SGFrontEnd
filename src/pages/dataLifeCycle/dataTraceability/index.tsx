@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import { DataTraceability } from './data.d';
 import { listTraceability } from './service';
+import { message } from 'antd';
 
 
 const TableList: React.FC<{}> = () => {
@@ -12,12 +13,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '资源名称',
       dataIndex: 'assetName',
-      rules: [
-        {
-          required: true,
-          message: '资源名称为必填项',
-        },
-      ],
     },
     {
       title: '源端系统',
@@ -36,6 +31,18 @@ const TableList: React.FC<{}> = () => {
       <ProTable<DataTraceability>
         headerTitle="溯源信息"
         actionRef={actionRef}
+        beforeSearchSubmit={(params: Partial<DataTraceability>) => {
+          const { assetName, sourceSys } = params;
+          if (assetName && assetName.length > 30) {
+            message.error("资产名称输入超出范围0-30");
+            return {};
+          }
+          if (sourceSys && sourceSys.length > 20) {
+            message.error("源端系统输入超出范围0-20");
+            return {};
+          }
+          return params;
+        }}
         rowKey="createAt"
         request={(params, sorter, filter) => listTraceability({ ...params, sorter, filter })}
         columns={columns}

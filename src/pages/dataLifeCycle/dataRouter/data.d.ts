@@ -1,14 +1,14 @@
 export interface DataRouter {
-  dataIdentifier:string;
-  levelOneSysName:string;
-  levelOneSysDataHash:string;
-  levelOneSysCreateAt:string;
-  levelTwoSysName:string;
-  levelTwoSysDataHash:string;
-  levelTwoSysCreateAt:string;
-  levelThreeSysName:string;
-  levelThreeSysDataHash:string;
-  levelThreeSysCreateAt:string;
+  dataIdentifier: string;
+  levelOneSys: SysInfo;
+  levelTwoSys: SysInfo;
+  levelThreeSys: SysInfo;
+}
+
+export interface SysInfo {
+  sysName: string;
+  dataHash: string;
+  createAt: string;
 }
 
 export interface TableListPagination {
@@ -23,9 +23,10 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  levelOneSysName?:string;
-  levelTwoSysName?:string;
-  levelThreeSysName?:string;
+  dataIdentifier?: string;
+  levelOneSysName?: string;
+  levelTwoSysName?: string;
+  levelThreeSysName?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };
