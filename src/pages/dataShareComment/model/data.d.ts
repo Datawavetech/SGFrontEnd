@@ -4,7 +4,7 @@ export interface TokenModel {
   modelDesc: string;
   upCount: number;
   createAt: Date;
-  isRunning: number;
+  isRunning: string;
 }
 
 export interface TableListPagination {

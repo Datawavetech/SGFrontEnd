@@ -1,7 +1,7 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message, InputNumber } from 'antd';
+import { Button, Dropdown, Menu, message, InputNumber } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { FooterToolbar, PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import CreateForm from './components/CreateForm';
@@ -9,7 +9,6 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TokenModel } from './data.d';
 import { listTokenModel, updateTokenModel, createTokenModel, deleteTokenModel } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
-import FormItem from 'antd/lib/form/FormItem';
 
 /**
  * 添加节点
@@ -79,7 +78,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
-  const [selectedRows, setSelectedRows] = useState<TokenModel[]>([]);
+  const [selectedRowsState, setSelectedRows] = useState<TokenModel[]>([]);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TokenModel>[] = [
     {
@@ -92,18 +91,19 @@ const TableList: React.FC<{}> = () => {
     {
       title: '模型名称',
       dataIndex: 'modelName',
-      fieldProps: { required: true },
+      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
     },
     {
       title: '模型描述',
       dataIndex: 'modelDesc',
-      fieldProps: { required: true },
+      formItemProps: { rules: [{ required: true, message: "模型描述为必填项" }, { max: 80, message: "输入长度超出范围0-80" }] },
       hideInSearch: true,
+      valueType: "textarea",
     },
     {
       title: '上升指数',
       dataIndex: 'upCount',
-      fieldProps: { required: true },
+      formItemProps: { rules: [{ required: true, message: "上升指数为必填项" }] },
       hideInSearch: true,
       renderFormItem: () => (
         <InputNumber min={1} max={10} />
@@ -120,8 +120,8 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'isRunning',
       hideInForm: true,
       valueEnum: {
-        1: { text: '正在运行', status: 'Success' },
-        2: { text: '待运行', status: 'Processing' },
+        '1': { text: '正在运行', status: 'Success' },
+        '2': { text: '待运行', status: 'Processing' },
       },
     },
     {
@@ -132,7 +132,8 @@ const TableList: React.FC<{}> = () => {
         <>
           <ButtonGroup>
             <Button type="primary" onClick={() => {
-              handleUpdateModalVisible(true)
+              handleUpdateModalVisible(true);
+              record.isRunning = record.isRunning.toString();
               setStepFormValues(record);
             }}>更改</Button>
           </ButtonGroup>
@@ -147,38 +148,54 @@ const TableList: React.FC<{}> = () => {
         headerTitle="模型信息"
         actionRef={actionRef}
         rowKey="modelId"
-        toolBarRender={(action, { selectedRows }) => [
+        toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建模型
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
+          </Button>
         ]}
+        beforeSearchSubmit={(params: Partial<TokenModel>) => {
+          const { modelName, modelDesc, upCount } = params;
+          if (modelName && modelName.length > 20) {
+            message.error("模型名称输入超出范围0-20");
+            return {};
+          }
+          if (modelDesc && modelDesc.length > 80) {
+            message.error("模型描述输入超出范围0-80");
+            return {};
+          }
+          if (upCount && (upCount > 10 || upCount < 1)) {
+            message.error("上升指数输入超出范围1-10");
+            return {};
+          }
+          return params;
+        }}
         request={(params, sorter, filter) => listTokenModel({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={{
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+          onChange: (_, selectedRows) => {
+            setSelectedRows(selectedRows.filter(row => row.isRunning.toString() === '2'))
+          },
         }}
       />
+      {selectedRowsState?.length > 0 && (
+        <FooterToolbar
+          extra={
+            <div>
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
+            </div>
+          }
+        >
+          <Button
+            danger
+            onClick={async () => {
+              await handleRemove(selectedRowsState);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          >
+            批量删除
+          </Button></FooterToolbar>)
+      }
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<TokenModel, TokenModel>
           onSubmit={async (value) => {
@@ -190,7 +207,7 @@ const TableList: React.FC<{}> = () => {
               }
             }
           }}
-          rowKey="key"
+          rowKey="modelId"
           type="form"
           columns={columns}
           rowSelection={{}}

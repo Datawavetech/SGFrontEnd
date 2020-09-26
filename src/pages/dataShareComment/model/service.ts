@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { TableListParams, TokenModel } from './data.d';
+import { TableListParams } from './data.d';
 import { stringify } from 'qs';
 
 export async function chooseTokenModel(params: TableListParams) {

@@ -1,13 +1,11 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
+
 import { TokenInfo } from './data.d';
 import { listTokenInfo } from './service';
+import { message } from 'antd';
 
 
 const TableList: React.FC<{}> = () => {
@@ -18,7 +16,7 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'userId',
       hideInForm: true,
       hideInTable: true,
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '用户名称',
@@ -29,26 +27,26 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'userType',
       valueEnum: {
         1: { text: '系统' },
-        2: { text: '部门'},
-        3: { text: '个人'},
+        2: { text: '部门' },
+        3: { text: '个人' },
       },
     },
     {
       title: '积分',
       dataIndex: 'token',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '积分评价',
       dataIndex: 'tokenComment',
       hideInForm: true,
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '更新时间',
       dataIndex: 'updateAt',
       hideInForm: true,
-      hideInSearch:true,
+      hideInSearch: true,
     },
   ];
 
@@ -58,6 +56,18 @@ const TableList: React.FC<{}> = () => {
         headerTitle="积分信息"
         actionRef={actionRef}
         rowKey="userId"
+        beforeSearchSubmit={(params: Partial<TokenInfo>) => {
+          const { username, userType } = params;
+          if (username && username.length > 20) {
+            message.error("权属标识输入超出范围0-20");
+            return {};
+          }
+          if (userType && (userType < 0 || userType > 3)) {
+            message.error("用户类型参数异常");
+            return {};
+          }
+          return params;
+        }}
         request={(params, sorter, filter) => listTokenInfo({ ...params, sorter, filter })}
         columns={columns}
       />

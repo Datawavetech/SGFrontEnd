@@ -1,4 +1,28 @@
 export default {
+  'menu.dataConfirm': '数据确权',
+  'menu.dataConfirm.assetProof': '资产属权证明',
+  'menu.dataConfirm.assetIdentifier': '资产权属标识',
+  'menu.dataConfirm.dataUsage': '使用约定',
+
+  'menu.dataOnChain': '数据上链',
+  'menu.dataOnChain.onChainRequests': '上链申请查看',
+  'menu.dataOnChain.onChainApproval': '上链审批',
+  'menu.dataOnChain.dataType': '数据类型',
+
+  'menu.dataShareComment': '共享评价管理',
+  'menu.dataShareComment.model': '模型管理',
+  'menu.dataShareComment.token': '积分管理',
+
+  'menu.dataLifeCycle': '全生命周期管理',
+  'menu.dataLifeCycle.dataTraceability': '数据溯源',
+  'menu.dataLifeCycle.duringChain': '数据全链路',
+  'menu.dataLifeCycle.dataRouter': '数据流转全链路',
+  'menu.dataLifeCycle.analysis': '统计分析',
+
+  'menu.chainMng': '区块链管理',
+  'menu.chainMng.keyMng': '密钥管理',
+  'menu.chainMng.explorer': '区块链运行信息',
+
   'menu.welcome': 'Welcome',
   'menu.more-blocks': 'More Blocks',
   'menu.home': 'Home',

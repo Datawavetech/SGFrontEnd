@@ -5,13 +5,11 @@ import { TokenModel } from '../data.d';
 import { Option } from 'antd/lib/mentions';
 
 export interface FormValueType extends Partial<TokenModel> {
-  target?: string;
-  template?: string;
   modelId?: string;
   modelName?: string;
   modelDesc?: string;
   upCount?: number;
-  isRunning?: number;
+  isRunning?: string;
 }
 
 export interface UpdateFormProps {
@@ -27,11 +25,6 @@ export interface UpdateFormState {
   formVals: FormValueType;
   currentStep: number;
 }
-
-// const formLayout = {
-//   labelCol: { span: 7 },
-//   wrapperCol: { span: 13 },
-// };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const [formVals, setFormVals] = useState<FormValueType>({
@@ -63,14 +56,14 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         <FormItem
           name="modelName"
           label="模型名称"
-          rules={[{ required: true, message: '请输入模型名称！' }]}
+          rules={[{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }]}
         >
           <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           name="modelDesc"
           label="模型描述"
-          rules={[{ required: true, message: '请输入模型描述！' }]}
+          rules={[{ required: true, message: '请输入模型描述！' }, { max: 80, message: "输入长度超出范围0-80" }]}
         >
           <TextArea rows={2} placeholder="请输入" />
         </FormItem>
@@ -81,14 +74,14 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         >
           <InputNumber min={1} max={10} />
         </FormItem>
-        {values.isRunning === 2 ? <FormItem
+        {values.isRunning === '2' ? <FormItem
           name="isRunning"
           label="是否运行"
           rules={[{ required: true, message: '请输入运行信息！' }]}
         >
-          <Select defaultValue={1}>
-            <Option value="1">正在运行</Option>
-            <Option value="2">未运行</Option>
+          <Select>
+            <Select.Option value='1'>正在运行</Select.Option>
+            <Select.Option value='2'>未运行</Select.Option>
           </Select>
         </FormItem> : null}
 
@@ -111,13 +104,11 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <Form
         form={form}
         initialValues={{
-          target: formVals.target,
-          template: formVals.template,
           modelId: formVals.modelId,
           modelName: formVals.modelName,
           modelDesc: formVals.modelDesc,
           upCount: formVals.upCount,
-          isRunning: formVals.isRunning === 2 ? "未运行" : "正在运行",
+          isRunning: formVals.isRunning,
         }}
       >
         {renderContent()}
