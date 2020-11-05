@@ -57,9 +57,10 @@ const Login: React.FC<{}> = () => {
     try {
       // 登录
       const msg = await login({ ...values });
+      console.log('msg:', msg)
       if (msg.status === 200) {
         message.success('登录成功！');
-        localStorage.setItem('tdsp', JSON.stringify(msg.data))
+        localStorage.setItem('tdsp', JSON.stringify(msg.data));
         replaceGoto();
         setTimeout(() => {
           refresh();

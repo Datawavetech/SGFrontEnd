@@ -5,7 +5,6 @@ import { notification } from 'antd';
 import { history, RequestConfig } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { queryCurrent } from './services/user';
 
 import defaultSettings from '../config/defaultSettings';
 

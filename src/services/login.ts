@@ -9,7 +9,7 @@ export interface LoginParamsType {
 }
 
 export async function login(params: LoginParamsType) {
-  return request<API.LoginStateType>('/api/user/login', {
+  return request<API.LoginStateType>('/api/sysManagement/login', {
     method: 'POST',
     data: { ...params },
   });
