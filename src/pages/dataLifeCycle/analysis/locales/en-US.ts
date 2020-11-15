@@ -1,4 +1,18 @@
 export default {
+  'dataLifeCycle.analysis.systemData': '系统认证数据统计占比',
+  'dataLifeCycle.analysis.systemDataAmount': '系统认证数据量',
+  'dataLifeCycle.analysis.systemDataToken': '系统认证数据积分',
+  'dataLifeCycle.analysis.dataAmount': '数据量',
+  'dataLifeCycle.analysis.dataToken': '数据积分',
+
+  'dataLifeCycle.analysis.userData': '用户申请认证数据统计',
+  'dataLifeCycle.analysis.userApplyAmount': '用户申请数量',
+  'dataLifeCycle.analysis.applyAmountPerUser': '人均申请次数',
+
+  'dataLifeCycle.table.users': '用户',
+  'dataLifeCycle.table.uid': '用户ID',
+  'dataLifeCycle.table.applyNumber': '申请数据次数',
+
   'dashboardandanalysis.analysis.test': 'Gongzhuan No.{no} shop',
   'dashboardandanalysis.analysis.introduce': 'Introduce',
   'dashboardandanalysis.analysis.total-sales': 'Total Sales',

@@ -1,9 +1,10 @@
 import request from '@/utils/request';
 import { OnChainRequestForm, TableListParams } from './data.d';
 import { stringify } from 'qs';
+import { message } from 'antd';
 
 
-export async function listUserRequests(token: string, params: TableListParams) {
+export async function listUserRequests(params: TableListParams) {
 	return request(`/api/onchain/listUserRequests?${stringify(params)}`);
 }
 
@@ -15,22 +16,20 @@ export async function listUsages() {
 	return request('/api/confirm/dataUsage');
 }
 
-export async function createOnChainRequest(token: string, params: OnChainRequestForm) {
-  const formData = new FormData();
-  const {usages, dataTypes, expireAt, file} = params
-  console.log(params)
-	formData.append('usages', JSON.stringify(usages));
-	formData.append('dataTypes', JSON.stringify(dataTypes));
-	formData.append('expireAt', expireAt);
+export async function createOnChainRequest(params: OnChainRequestForm) {
+	const formData = new FormData();
+	const { usages, dataTypes, expireAt, file } = params
+	if (!usages || !dataTypes || !expireAt || !file) {
+		message.error('创建上链请求参数异常');
+		return;
+	}
+	formData.append('usages', usages);
+	formData.append('dataTypes', dataTypes);
+	formData.append('expireAt', expireAt.valueOf());
 	formData.append('file', file.file.originFileObj);
 	return request('/api/onchain/upload', {
 		method: 'POST',
-		headers: {
-			'Authorization': token,
-		},
 		data: formData,
-	}).then((resp) => {
-		return resp.status === 200;
 	});
 }
 

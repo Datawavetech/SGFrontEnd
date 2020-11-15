@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Form, Input, Modal, InputNumber, Select } from 'antd';
 
 import { TokenModel } from '../data.d';
-import { Option } from 'antd/lib/mentions';
 
 export interface FormValueType extends Partial<TokenModel> {
   modelId?: string;

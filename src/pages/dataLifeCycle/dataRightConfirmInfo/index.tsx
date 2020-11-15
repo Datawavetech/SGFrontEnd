@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable, { ProColumns, ConfigProvider, ActionType, zhCNIntl } from '@ant-design/pro-table';
 
 import { DataRightConfirmInfoData } from './data';
 import { listDataRightConfirmInfo } from './service';
@@ -14,7 +14,6 @@ const TableList: React.FC<{}> = () => {
       title: '数据权属标识',
       dataIndex: 'dataHash',
       ellipsis: true,
-      width: 200,
       copyable: true,
     },
     {
@@ -25,7 +24,6 @@ const TableList: React.FC<{}> = () => {
       title: '数据权属证明',
       dataIndex: 'proof',
       ellipsis: true,
-      width: 200,
       copyable: true,
       hideInSearch: true,
     },
@@ -54,30 +52,31 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageContainer>
-      <ProTable<DataRightConfirmInfoData>
-        headerTitle="全链路信息展示"
-        actionRef={actionRef}
-        rowKey="dataHash"
-        beforeSearchSubmit={(params: Partial<DataRightConfirmInfoData>) => {
-          const { dataHash, dataName, sysName } = params;
-          if (dataHash && dataHash.length > 64) {
-            message.error("数据权属标识输入超出范围0-64");
-            return {};
-          }
-          if (dataName && dataName.length > 30) {
-            message.error("数据名称输入超出范围0-30");
-            return {};
-          }
-          if (sysName && sysName.length > 20) {
-            message.error("数据名称输入超出范围0-20");
-            return {};
-          }
-          return params;
-        }}
-        request={(params) => listDataRightConfirmInfo(params)}
-        columns={columns}
-      />
-
+      <ConfigProvider value={{ intl: zhCNIntl }}>
+        <ProTable<DataRightConfirmInfoData>
+          headerTitle="全链路信息展示"
+          actionRef={actionRef}
+          rowKey="dataHash"
+          beforeSearchSubmit={(params: Partial<DataRightConfirmInfoData>) => {
+            const { dataHash, dataName, sysName } = params;
+            if (dataHash && dataHash.length > 64) {
+              message.error("数据权属标识输入超出范围0-64");
+              return {};
+            }
+            if (dataName && dataName.length > 30) {
+              message.error("数据名称输入超出范围0-30");
+              return {};
+            }
+            if (sysName && sysName.length > 20) {
+              message.error("数据名称输入超出范围0-20");
+              return {};
+            }
+            return params;
+          }}
+          request={(params) => listDataRightConfirmInfo(params)}
+          columns={columns}
+        />
+      </ConfigProvider>
     </PageContainer>
   );
 };
