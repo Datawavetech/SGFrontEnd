@@ -86,8 +86,8 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
           message.error('你只能上传Word/Pdf/Excel相关类型的文档!');
           return reject(false)
         }
-        const isLt5M = file.size / 1024 / 1024 < 5;
-        if (!isLt5M) {
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
           message.error('文件大小必须小于5MB!');
           return reject(false)
         }
