@@ -1,3 +1,6 @@
+import { DownloadFileParams } from '@/pages/dataOnChain/onChainRequests/data';
+import { downloadFile } from '@/pages/dataOnChain/onChainRequests/service';
+import { message } from 'antd';
 import { parse } from 'querystring';
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
@@ -22,3 +25,53 @@ export const isAntDesignProOrDev = (): boolean => {
 };
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
+
+export const b64toBlob = (b64Data: string, contentType: string = '', sliceSize: number = 512) => {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: contentType });
+  return blob;
+}
+
+export const handleDownload = async (fields: DownloadFileParams) => {
+  const hide = message.loading('正在下载...');
+  try {
+    const ret = await downloadFile({ ...fields });
+    hide();
+    if (ret && ret.data) {
+      const fileBytesB64 = ret.data.fileBytesB64;
+      const filename = ret.data.filename;
+      const contentType = ret.data.contentType;
+      const blob = b64toBlob(fileBytesB64, contentType);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      message.success('下载启动成功');
+    } else {
+      message.warn('下载失败');
+    }
+    return true;
+  } catch (error) {
+    hide();
+    message.error('下载失败');
+    return false;
+  }
+}
+
+

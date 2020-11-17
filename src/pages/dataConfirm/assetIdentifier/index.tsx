@@ -23,7 +23,6 @@ const handleAdd = async (fields: AssetIdentifier) => {
     message.success('添加成功');
     return true;
   } catch (error) {
-    console.log('error:', error)
     hide();
     message.error('添加失败请重试！');
     return false;

@@ -7,10 +7,11 @@ import { OnChainRequest } from './data.d';
 import { listWaitingRequests, updateOnChainRequest } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
 import { useAccess } from 'umi';
+import { handleDownload } from '@/utils/utils';
 
-const updateRequest = async (token: string, record: OnChainRequest, status: number) => {
+const updateRequest = async (record: OnChainRequest, status: number) => {
   try {
-    const ret = await updateOnChainRequest(token, record.requestId, status);
+    const ret = await updateOnChainRequest(record.requestId, status);
     return ret;
   } catch (error) {
     console.log("udpateOnChainRequest failed:", error);
@@ -34,6 +35,7 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'dataHash',
       hideInForm: true,
       ellipsis: true,
+      copyable: true,
       width: 150,
     },
     {
@@ -52,17 +54,26 @@ const TableList: React.FC<{}> = () => {
       title: '资产名称',
       dataIndex: 'dataName',
       hideInForm: true,
+      render: (text, row) => {
+        return (<a onClick={() => handleDownload({ rid: row.requestId })} target="_blank" rel="noopener noreferrer" key="link">
+          {text}
+        </a>);
+      },
     },
     {
       title: '使用约定列表',
       dataIndex: 'usages',
       hideInForm: true,
+      ellipsis: true,
+      copyable: true,
       hideInSearch: true,
     },
     {
       title: '数据类型列表',
       dataIndex: 'dataTypes',
       hideInForm: true,
+      ellipsis: true,
+      copyable: true,
       hideInSearch: true,
     },
     {
@@ -78,19 +89,19 @@ const TableList: React.FC<{}> = () => {
       render: (_, record) => {
         if (record.status === 2) {
           return (
-            <Tag color="green">已通过</Tag>
+            <Tag color="green">审批通过</Tag>
           );
         }
         if (record.status === 3) {
           return (
-            <Tag color="red">已拒绝</Tag>
+            <Tag color="red">审批未通过</Tag>
           );
         }
         return (
           <>
             <ButtonGroup>
               <Button type="primary" onClick={async () => {
-                const success = await updateRequest(access.token || '', record, 2);
+                const success = await updateRequest(record, 2);
                 if (success) {
                   message.info("成功");
                   if (actionRef.current) {
@@ -102,7 +113,7 @@ const TableList: React.FC<{}> = () => {
               }}>通过</Button>
               <Divider type="vertical" />
               <Button danger onClick={async () => {
-                const success = await updateRequest(access.token || '', record, 3);
+                const success = await updateRequest(record, 3);
                 if (success) {
                   message.info("成功");
                   if (actionRef.current) {
@@ -125,7 +136,7 @@ const TableList: React.FC<{}> = () => {
         headerTitle="审批单列表"
         actionRef={actionRef}
         rowKey="requestId"
-        request={(params, sorter, filter) => listWaitingRequests(access.token || '', { ...params, filter })}
+        request={(params, sorter, filter) => listWaitingRequests({ ...params, filter })}
         columns={columns}
       />
     </PageHeaderWrapper>

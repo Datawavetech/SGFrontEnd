@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { OnChainRequestForm, TableListParams } from './data.d';
+import { DownloadFileParams, OnChainRequestForm, TableListParams } from './data.d';
 import { stringify } from 'qs';
 import { message } from 'antd';
 
@@ -31,6 +31,10 @@ export async function createOnChainRequest(params: OnChainRequestForm) {
 		method: 'POST',
 		data: formData,
 	});
+}
+
+export async function downloadFile(params: DownloadFileParams) {
+	return request(`/api/onchain/download?${stringify(params)}`);
 }
 
 export async function updateOnChainRequest(token: string, reqId: string, status: number) {

@@ -1,7 +1,7 @@
 import { RcFile } from "antd/lib/upload";
 
 export interface OnChainRequest {
-  requestId: string;
+  requestId: number;
   userId: string;
   dataHash: string;
   dataPath: string;
@@ -18,6 +18,10 @@ export interface OnChainRequestForm {
   dataTypes?: string[];
   expireAt?: Moment;
   file?: { file: { originFileObj: RcFile }, fileList: RcFile[] };
+}
+
+export interface DownloadFileParams {
+  rid?: number;
 }
 
 export interface TableListPagination {

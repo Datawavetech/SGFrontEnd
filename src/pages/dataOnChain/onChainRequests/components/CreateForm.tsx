@@ -84,16 +84,16 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         const isDocOrPdfOrExcel = file.type === 'application/doc' || file.type === 'application/docx' || file.type === 'application/xls' || file.type === 'application/xlsx' || file.type === 'application/pdf';
         if (!isDocOrPdfOrExcel) {
           message.error('你只能上传Word/Pdf/Excel相关类型的文档!');
-          return reject(false)
+          return reject(false);
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
           message.error('文件大小必须小于5MB!');
-          return reject(false)
+          return reject(false);
         }
         if (fileList.length === 1) {
           message.error('只能上传一个文件！');
-          return reject(false)
+          return reject(false);
         }
         return resolve(true);
       })
@@ -114,6 +114,9 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
     const fieldsValue = await form.validateFields();
     setFormVals({ ...formVals, ...fieldsValue });
     handleAdd({ ...formVals, ...fieldsValue });
+    // 清空表单
+    // form.resetFields();
+    // setFileList([]);
   }
 
   const disabledEndDate = (value: Moment) => {//打开结束时间面板调用的函数

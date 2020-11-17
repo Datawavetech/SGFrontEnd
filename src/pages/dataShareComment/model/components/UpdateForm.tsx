@@ -46,7 +46,10 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const handleSubmit = async () => {
     const fieldsValue = await form.validateFields();
     setFormVals({ ...formVals, ...fieldsValue });
-    handleUpdate({ ...formVals, ...fieldsValue });
+    const res = await handleUpdate({ ...formVals, ...fieldsValue });
+    if (res) {
+
+    }
   }
 
   const renderContent = () => {

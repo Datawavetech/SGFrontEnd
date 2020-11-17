@@ -7,6 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
 import { listUserRequests, createOnChainRequest } from './service';
+import { handleDownload } from '@/utils/utils';
 
 
 /**
@@ -79,6 +80,18 @@ const TableList: React.FC<{}> = () => {
       fieldProps: { required: true },
     },
     {
+      title: '资源',
+      dataIndex: 'dataName',
+      hideInSearch: true,
+      fieldProps: { required: true },
+      hideInForm: true,
+      render: (text, row) => {
+        return (<a onClick={() => handleDownload({ rid: row.requestId })} target="_blank" rel="noopener noreferrer" key="link">
+          {text}
+        </a>);
+      },
+    },
+    {
       title: '有效期截止',
       dataIndex: 'expireAt',
       hideInSearch: true,
@@ -92,7 +105,7 @@ const TableList: React.FC<{}> = () => {
       valueEnum: {
         1: { text: '待审批', status: "processing" },
         2: { text: '审批通过', status: "success" },
-        3: { text: '审批失败', status: "error" }
+        3: { text: '审批未通过', status: "error" }
       }
 
     },

@@ -1,5 +1,5 @@
 export interface OnChainRequest {
-  requestId: string;
+  requestId: number;
   userId: string;
   dataHash: string;
   dataPath: string;
