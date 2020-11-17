@@ -23,6 +23,14 @@ export default {
   'menu.chainMng.keyMng': '密钥管理',
   'menu.chainMng.explorer': '区块链运行信息',
 
+  'menu.auditLog': '审计日志',
+  'menu.auditLog.runningLog': '运行日志',
+  'menu.auditLog.debugLog': '调试日志',
+  'menu.auditLog.warningLog': '告警日志',
+  'menu.auditLog.errorLog': '错误日志',
+  'menu.auditLog.runningMonitor': '运行监控',
+  'menu.auditLog.logSwitch': '日志开关',
+
   'menu.welcome': '欢迎',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
