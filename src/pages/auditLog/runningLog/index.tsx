@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
-import { runningLogColoumn } from './data'
+import { runningLogColoumn, TableListParam } from './data'
 import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { listAuditLog } from './service'
@@ -61,7 +61,16 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '审计类型',
-      dataIndex: 'auditType'
+      dataIndex: 'auditType',
+      valueEnum: {
+        '1': { text: '用户登录'},
+        '2': { text: '用户登出'},
+        '3': { text: '菜单资源访问'},
+        '4': { text: '数据资源访问'},
+        '5': { text: '业务内容新增'},
+        '6': { text: '业务内容删除'},
+        '7': { text: '业务内容修改'}
+      }
     },
     {
       title: '操作内容',
@@ -71,7 +80,10 @@ const TableList: React.FC<{}> = () => {
     {
       title: '执行结果',
       dataIndex: 'optResult',
-
+      valueEnum: {
+        '1': { text: '成功', status: "Success"},
+        '2': { text: '失败', status: "Error"},
+      },
     },
     {
       title: '操作时间',
@@ -83,6 +95,7 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'queryTimeRange',
       valueType: 'dateTimeRange',
       hideInTable: true,
+      hideInSearch: true,
       search: {
         transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
       },
@@ -91,7 +104,7 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<runningLogColoumn, runningLogColoumn>
+      <ProTable<runningLogColoumn, TableListParam>
         headerTitle="审计查询"
         actionRef={actionRef}
         rowKey="id"

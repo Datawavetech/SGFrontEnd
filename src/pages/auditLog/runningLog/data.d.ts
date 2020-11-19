@@ -20,8 +20,8 @@ export interface TableListParam{
   auditType? : number,
   optContent? : String,
   optResult? : number,
-  startTime: String,
-  endTime: String,
+  startTime?: String,
+  endTime?: String,
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

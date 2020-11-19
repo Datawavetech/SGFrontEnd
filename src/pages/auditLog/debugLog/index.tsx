@@ -53,7 +53,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '操作员',
       dataIndex: 'username',
-      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
+      formItemProps: { rules: [{ type : "string"}, { max: 20, message: "输入长度超出范围0-20" }]},
     },
     {
       title: 'IP',
@@ -73,7 +73,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '执行结果',
       dataIndex: 'optResult',
-      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
+      //formItemProps: { rules: [{ max: 20, message: "输入长度超出范围0-20" }] },
     },
     {
       title: '操作时间',
@@ -87,7 +87,8 @@ const TableList: React.FC<{}> = () => {
       hideInTable: true,
       search: {
         transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
-      }
+      },
+      hideInSearch: true
     },
   ];
 

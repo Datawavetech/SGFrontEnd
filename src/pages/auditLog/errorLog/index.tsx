@@ -69,6 +69,7 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'queryTimeRange',
       valueType: 'dateTimeRange',
       hideInTable: true,
+      hideInSearch: true,
       search: {
         transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
       },
