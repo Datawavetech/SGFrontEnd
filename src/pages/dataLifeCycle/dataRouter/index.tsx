@@ -4,9 +4,9 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import { DataRouter, TableListParams } from './data';
 import { listDataRouter } from './service';
-import { message } from 'antd';
+import { message, Typography } from 'antd';
 
-
+const { Text } = Typography;
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
@@ -34,14 +34,11 @@ const TableList: React.FC<{}> = () => {
       valueType: 'textarea',
       renderText: (sys) => {
         if (sys !== undefined && sys !== null) {
-          return sys.dataHash;
+          return (<Text copyable={true} style={{ maxWidth: 100 }} ellipsis={true}>{sys.dataHash}</Text>);
         }
         return "";
       },
       hideInSearch: true,
-      ellipsis: true,
-      copyable: true,
-      width: 100,
     },
     {
       title: '一级系统数据创建时间',
@@ -71,12 +68,9 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'levelTwoSys',
       valueType: 'textarea',
       hideInSearch: true,
-      ellipsis: true,
-      width: 100,
-      copyable: true,
       renderText: (sys) => {
         if (sys !== undefined && sys !== null) {
-          return sys.dataHash;
+          return (<Text copyable={true} style={{ maxWidth: 100 }} ellipsis={true}>{sys.dataHash}</Text>);
         }
         return "";
       },
@@ -110,12 +104,9 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'levelThreeSys',
       valueType: 'textarea',
       hideInSearch: true,
-      ellipsis: true,
-      width: 100,
-      copyable: true,
       renderText: (sys) => {
         if (sys !== undefined && sys !== null) {
-          return sys.dataHash;
+          return (<Text copyable={true} style={{ maxWidth: 100 }} ellipsis={true}>{sys.dataHash}</Text>);
         }
         return "";
       },

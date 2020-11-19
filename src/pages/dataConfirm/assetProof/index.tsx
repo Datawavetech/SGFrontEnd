@@ -1,6 +1,7 @@
 import {
   message,
-  Tag
+  Tag,
+  Typography
 } from 'antd';
 import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -9,6 +10,8 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { AssetProof, TableListParams } from './data.d';
 import { listAssetProof } from './service';
 
+const { Text } = Typography;
+
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
@@ -16,9 +19,9 @@ const TableList: React.FC<{}> = () => {
     {
       title: '权属标识',
       dataIndex: 'dataHash',
-      copyable: true,
-      ellipsis: true,
-      width: 300,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 200 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '资产名称',
@@ -35,9 +38,9 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'proof',
       hideInForm: true,
       hideInSearch: true,
-      width: 300,
-      copyable: true,
-      ellipsis: true,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 200 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '创建时间',

@@ -43,7 +43,7 @@ const TableList: React.FC<{}> = () => {
           }
           return params;
         }}
-        rowKey="createAt"
+        rowKey="assetName"
         request={(params, sorter, filter) => listTraceability({ ...params, sorter, filter })}
         columns={columns}
       />

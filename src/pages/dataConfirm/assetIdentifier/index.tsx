@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button, message, Typography } from 'antd';
 import React, { useState, useRef } from 'react';
 import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -10,6 +10,8 @@ import { AssetIdentifier } from './data.d';
 import { listAssetIdentifier, updateAssetIdentifier, createAssetIdentifier, deleteAssetIdentifier } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
 import { useAccess } from 'umi';
+
+const { Text } = Typography;
 
 /**
  * 添加节点
@@ -86,8 +88,9 @@ const TableList: React.FC<{}> = () => {
       title: '权属标识',
       dataIndex: 'dataHash',
       hideInForm: true,
-      ellipsis: true,
-      copyable: true,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 300 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '资产名称',
