@@ -9,11 +9,11 @@ export async function listUserRequests(params: TableListParams) {
 }
 
 export async function listDataTypes() {
-	return request('/api/onchain/dataType');
+	return request('/api/onchain/listDataType');
 }
 
 export async function listUsages() {
-	return request('/api/confirm/dataUsage');
+	return request('/api/confirm/listDataUsage');
 }
 
 export async function createOnChainRequest(params: OnChainRequestForm) {

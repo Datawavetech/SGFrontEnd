@@ -4,8 +4,10 @@ import ProTable, { ProColumns, ConfigProvider, ActionType, zhCNIntl } from '@ant
 
 import { DataRightConfirmInfoData } from './data';
 import { listDataRightConfirmInfo } from './service';
-import { message } from 'antd';
+import { message, Typography } from 'antd';
 
+
+const { Text } = Typography;
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
@@ -13,8 +15,9 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据权属标识',
       dataIndex: 'dataHash',
-      ellipsis: true,
-      copyable: true,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 300 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '数据名称',
@@ -23,9 +26,10 @@ const TableList: React.FC<{}> = () => {
     {
       title: '数据权属证明',
       dataIndex: 'proof',
-      ellipsis: true,
-      copyable: true,
       hideInSearch: true,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 300 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '数据所属人',

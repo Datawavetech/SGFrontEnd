@@ -5,7 +5,9 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import { UserKeyInfo } from './data.d';
 import { listUserKeyInfo } from './service';
-import { message } from 'antd';
+import { message, Typography } from 'antd';
+
+const { Text } = Typography;
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
@@ -34,20 +36,20 @@ const TableList: React.FC<{}> = () => {
     {
       title: '私钥',
       dataIndex: 'priKey',
-      ellipsis: true,
-      width: 300,
       valueType: "textarea",
       hideInSearch: true,
-      copyable: true,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 300 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '公钥',
       dataIndex: 'pubKey',
-      ellipsis: true,
-      width: 300,
       valueType: "textarea",
       hideInSearch: true,
-      copyable: true,
+      renderText: (text) => {
+        return (<Text copyable={true} style={{ maxWidth: 300 }} ellipsis={true}>{text}</Text>)
+      },
     },
     {
       title: '创建时间',

@@ -3,11 +3,11 @@ import { TableListParams } from './data.d';
 import { stringify } from 'qs';
 
 export async function listAssetIdentifier(params: TableListParams) {
-  return request(`/api/confirm/assetIdentifier?${stringify(params)}`);
+  return request(`/api/confirm/listAssetIdentifier?${stringify(params)}`);
 }
 
 export async function createAssetIdentifier(params: TableListParams) {
-  return request('/api/confirm/assetIdentifier', {
+  return request('/api/confirm/addAssetIdentifier', {
     method: 'POST',
     data: {
       ...params
@@ -16,8 +16,8 @@ export async function createAssetIdentifier(params: TableListParams) {
 }
 
 export async function updateAssetIdentifier(params: TableListParams) {
-  return request('/api/confirm/assetIdentifier', {
-    method: 'PUT',
+  return request('/api/confirm/updateAssetIdentifier', {
+    method: 'POST',
     data: {
       ...params
     },
@@ -26,8 +26,8 @@ export async function updateAssetIdentifier(params: TableListParams) {
 
 
 export async function deleteAssetIdentifier(params: { deleteDataHashs: string[] }) {
-  return request('/api/confirm/assetIdentifier', {
-    method: 'DELETE',
+  return request('/api/confirm/deleteAssetIdentifier', {
+    method: 'POST',
     data: {
       ...params,
     },
