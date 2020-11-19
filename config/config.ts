@@ -153,6 +153,49 @@ export default defineConfig({
       ],
     },
     {
+      path: '/auditLog',
+      name: 'auditLog',
+      icon: 'book',
+      routes: [
+        {
+          path: '/auditLog/runningLog',
+          name: 'runningLog',
+          component: './auditLog/runningLog',
+          access: 'canAdmin',
+        },
+        {
+          path: '/auditLog/debugLog',
+          name: 'debugLog',
+          component: './auditLog/debugLog',
+          access: 'canAdmin',
+        },
+        {
+          path: '/auditLog/warningLog',
+          name: 'warningLog',
+          component: './auditLog/warningLog',
+          access: 'canAdmin',
+        },
+        {
+          path: '/auditLog/errorLog',
+          name: 'errorLog',
+          component: './auditLog/errorLog',
+          access: 'canAdmin',
+        },
+        {
+          path: '/auditLog/runningMonitor',
+          name: 'runningMonitor',
+          component: './auditLog/runningMonitor',
+          access: 'canAdmin',
+        },
+        {
+          path: '/auditLog/logSwitch',
+          name: 'logSwitch',
+          component: './auditLog/logSwitch',
+          access: 'canAdmin',
+        }
+      ],
+    },
+    {
       path: '/',
       redirect: '/dataConfirm/assetIdentifier',
     },
