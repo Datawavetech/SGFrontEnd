@@ -2,80 +2,107 @@ import React, { useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
+import { runningLogColoumn } from './data'
+import { message, Button } from 'antd';
+import { VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { listAuditLog } from './service'
 
-import { UserKeyInfo } from './data.d';
-import { listUserKeyInfo } from './service';
-import { message } from 'antd';
+/*
+export interface auditLogColoumn{
+  userId : String,
+  userName : String,
+  ip : String,
+  optAt : number,
+  auditLevel : number,
+  auditType : number,
+  optContent : String,
+  optResult : number
+}
+*/
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<UserKeyInfo>[] = [
+  /*
+
+  {
+    "id":1432,
+    "userId":7,
+    "username":"tdsp@Admin",
+    "ip":"127.0.0.1",
+    "auditType":3,
+    "optContent":"访问菜单：权属证明",
+    "optResult":1,
+    "exceptionDesc":null,
+    "optAt":"2020-11-19 12:59:28"
+  },
+
+  */
+  const columns: ProColumns<runningLogColoumn>[] = [
     {
-      title: '用户ID',
-      dataIndex: 'userId',
-      valueType: 'textarea',
+      title : "日志ID",
+      dataIndex: "id",
       hideInTable: true,
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
-      title: '用户名',
-      dataIndex: 'name',
+      title: '操作员ID',
+      dataIndex: 'userId',
+      hideInTable: true,
+      hideInSearch: true
     },
     {
-      title: '用户类型',
-      dataIndex: 'userType',
-      hideInForm: true,
-      valueEnum: {
-        1: { text: '系统' },
-        2: { text: '部门' },
-        3: { text: '用户' }
-      }
+      title: '操作员',
+      dataIndex: 'username',
     },
     {
-      title: '私钥',
-      dataIndex: 'priKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
+      title: 'IP',
+      dataIndex: 'ip',
+      hideInSearch: true
     },
     {
-      title: '公钥',
-      dataIndex: 'pubKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
+      title: '审计类型',
+      dataIndex: 'auditType'
     },
     {
-      title: '创建时间',
-      dataIndex: 'createAt',
-      hideInSearch: true,
+      title: '操作内容',
+      dataIndex: 'optContent',
+      hideInSearch: true
+    },
+    {
+      title: '执行结果',
+      dataIndex: 'optResult',
+
+    },
+    {
+      title: '操作时间',
+      dataIndex: 'optAt',
+      hideInSearch: true
+    },
+    {
+      title: '时间区间',
+      dataIndex: 'queryTimeRange',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      search: {
+        transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
+      },
     }
   ];
 
   return (
     <PageHeaderWrapper>
-      <ProTable<UserKeyInfo>
-        headerTitle="用户信息"
+      <ProTable<runningLogColoumn, runningLogColoumn>
+        headerTitle="审计查询"
         actionRef={actionRef}
-        rowKey="userId"
-        beforeSearchSubmit={(params: Partial<UserKeyInfo>) => {
-          const { name, userType } = params;
-          if (name && name.length > 20) {
-            message.error("用户名输入超出范围0-20");
-            return {};
-          }
-          if (userType && (userType < 0 || userType > 3)) {
-            message.error("用户类型输入异常");
-            return {};
-          }
-          return params;
-        }}
-        request={(params, sorter, filter) => listUserKeyInfo({ ...params, sorter, filter })}
+        rowKey="id"
         columns={columns}
+        request={(params, sorter, filter) => listAuditLog(params)}
+        toolBarRender={() => [
+          <Button key="3" type="primary">
+            <VerticalAlignBottomOutlined />
+            日志导出
+          </Button>,
+        ]}
       />
     </PageHeaderWrapper>
   );

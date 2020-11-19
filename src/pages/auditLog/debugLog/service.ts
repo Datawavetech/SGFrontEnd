@@ -1,7 +1,16 @@
+import { debugLogColoumn, TableListParam } from './data'
 import request from '@/utils/request';
-import { TableListParams } from './data.d';
 import { stringify } from 'qs';
 
-export async function listUserKeyInfo(params: TableListParams) {
-  return request(`/api/user/listUserKeyInfo?${stringify(params)}`);
+
+
+export async function listAuditLog(params: TableListParam) {
+  console.log(params)
+  return request(`/api/audit/listDebugLog?${stringify(params)}`);
+}
+
+//TODOGAVIN API
+
+export async function exportAuditLog(params: TableListParam){
+
 }

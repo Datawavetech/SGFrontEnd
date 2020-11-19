@@ -2,80 +2,118 @@ import React, { useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
+import { debugLogColoumn } from './data'
+import { message, Button } from 'antd';
+import { VerticalAlignBottomOutlined } from '@ant-design/icons';
+import {listAuditLog} from './service'
 
-import { UserKeyInfo } from './data.d';
-import { listUserKeyInfo } from './service';
-import { message } from 'antd';
+/*
+export interface auditLogColoumn{
+  userId : String,
+  userName : String,
+  ip : String,
+  optAt : number,
+  auditLevel : number,
+  auditType : number,
+  optContent : String,
+  optResult : number
+}
+*/
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<UserKeyInfo>[] = [
+  /*
+  export interface debugLogColoumn{
+    id : number,
+    userId : String,
+    username : String,
+    ip : String,
+    optAt : String,
+    callMethodName : String,
+    callDuration : number,
+    optResult : number,
+    queryStartAt : String,
+    queryEndAt : String
+  }
+  */
+
+  const columns: ProColumns<debugLogColoumn>[] = [
     {
-      title: '用户ID',
-      dataIndex: 'userId',
-      valueType: 'textarea',
+      title : "日志ID",
+      dataIndex: "id",
       hideInTable: true,
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
-      title: '用户名',
-      dataIndex: 'name',
+      title: '操作员ID',
+      dataIndex: 'userId',
+      hideInTable: true,
+      hideInSearch: true
     },
     {
-      title: '用户类型',
-      dataIndex: 'userType',
-      hideInForm: true,
-      valueEnum: {
-        1: { text: '系统' },
-        2: { text: '部门' },
-        3: { text: '用户' }
+      title: '操作员',
+      dataIndex: 'username',
+      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
+    },
+    {
+      title: 'IP',
+      dataIndex: 'ip',
+      hideInSearch: true
+    },
+    {
+      title: '调用方法名称',
+      dataIndex : 'callMethodName',
+      hideInSearch: true
+    },
+    {
+      title: '操作过程耗时(ms)',
+      dataIndex : 'callDuration',
+      hideInSearch: true
+    },
+    {
+      title: '执行结果',
+      dataIndex: 'optResult',
+      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
+    },
+    {
+      title: '操作时间',
+      dataIndex: 'optAt',
+      hideInSearch: true
+    },
+    {
+      title: '时间区间',
+      dataIndex: 'queryTimeRange',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      search: {
+        transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
       }
     },
-    {
-      title: '私钥',
-      dataIndex: 'priKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: '公钥',
-      dataIndex: 'pubKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createAt',
-      hideInSearch: true,
-    }
   ];
 
   return (
     <PageHeaderWrapper>
-      <ProTable<UserKeyInfo>
-        headerTitle="用户信息"
+      <ProTable<debugLogColoumn, debugLogColoumn>
+        headerTitle="审计查询"
         actionRef={actionRef}
-        rowKey="userId"
-        beforeSearchSubmit={(params: Partial<UserKeyInfo>) => {
-          const { name, userType } = params;
-          if (name && name.length > 20) {
-            message.error("用户名输入超出范围0-20");
-            return {};
-          }
-          if (userType && (userType < 0 || userType > 3)) {
-            message.error("用户类型输入异常");
-            return {};
-          }
-          return params;
-        }}
-        request={(params, sorter, filter) => listUserKeyInfo({ ...params, sorter, filter })}
+        rowKey="logId"
         columns={columns}
+        request={(params, sorter, filter) => listAuditLog(params)}
+        pagination={{
+          pageSize: 15,
+        }}
+        toolBarRender={() => [
+          <Button key="3" type="primary">
+            <VerticalAlignBottomOutlined />
+            日志导出
+          </Button>,
+        ]}
+
+        beforeSearchSubmit={(params) => {
+          console.log(params)
+            return params
+          }
+        }
       />
     </PageHeaderWrapper>
   );

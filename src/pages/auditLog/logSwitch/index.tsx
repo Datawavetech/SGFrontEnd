@@ -1,82 +1,58 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
+import { changeLogSwitch, getLogSwitchStatus } from './service'
+import { message, Card , Button, Divider } from 'antd';
 
-import { UserKeyInfo } from './data';
-import { listUserKeyInfo } from './service';
-import { message } from 'antd';
+
+/*
+export interface auditLogColoumn{
+  userId : String,
+  userName : String,
+  ip : String,
+  optAt : number,
+  auditLevel : number,
+  auditType : number,
+  optContent : String,
+  optResult : number
+}
+*/
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<UserKeyInfo>[] = [
-    {
-      title: '用户ID',
-      dataIndex: 'userId',
-      valueType: 'textarea',
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '用户名',
-      dataIndex: 'name',
-    },
-    {
-      title: '用户类型',
-      dataIndex: 'userType',
-      hideInForm: true,
-      valueEnum: {
-        1: { text: '系统' },
-        2: { text: '部门' },
-        3: { text: '用户' }
-      }
-    },
-    {
-      title: '私钥',
-      dataIndex: 'priKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: '公钥',
-      dataIndex: 'pubKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createAt',
-      hideInSearch: true,
+  let [switchStatus, setSwitchStatus] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function freshStatus(){
+        let a = await getLogSwitchStatus()
+        if (a.data.status != undefined){
+          setSwitchStatus(a.data.status===1? true: false)
+        }
     }
-  ];
+    freshStatus()
+  }, [switchStatus]);
+
+
+
+  //TODOGAVIN STATUS
+  const clickOpenLog = async () => {
+    await changeLogSwitch(1)
+    setSwitchStatus(true)
+  }
+
+  const clickCloseLog = async () => {
+    await changeLogSwitch(2)
+    setSwitchStatus(false)
+  }
 
   return (
     <PageHeaderWrapper>
-      <ProTable<UserKeyInfo>
-        headerTitle="用户信息"
-        actionRef={actionRef}
-        rowKey="userId"
-        beforeSearchSubmit={(params: Partial<UserKeyInfo>) => {
-          const { name, userType } = params;
-          if (name && name.length > 20) {
-            message.error("用户名输入超出范围0-20");
-            return {};
-          }
-          if (userType && (userType < 0 || userType > 3)) {
-            message.error("用户类型输入异常");
-            return {};
-          }
-          return params;
-        }}
-        request={(params, sorter, filter) => listUserKeyInfo({ ...params, sorter, filter })}
-        columns={columns}
-      />
+      <Card>
+        <p>当前状态：{switchStatus? "日志已开启": "日志已关闭"}</p>
+        <Button type="primary" disabled = {switchStatus} onClick={clickOpenLog}> 开启日志 </Button>
+        <Button type="primary" disabled = {!switchStatus} onClick={clickCloseLog}> 关闭日志 </Button>
+      </Card>
     </PageHeaderWrapper>
   );
 };

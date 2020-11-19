@@ -1,26 +1,27 @@
-export interface UserKeyInfo {
-  userId: string;
-  name: string;
-  userType: number;
-  priKey: string;
-  pubKey: string;
-  createAt: string;
+export interface runningLogColoumn{
+  id : number,
+  userId : number,
+  username : String,
+  ip : String,
+  optAt : String,
+  auditType : number,
+  optContent : String,
+  optResult : number,
+  queryTimeRange: number[]
 }
 
-export interface TableListPagination {
-  total: number;
-  pageSize: number;
-  current: number;
-}
 
-export interface TableListData {
-  list: TableListItem[];
-  pagination: Partial<TableListPagination>;
-}
-
-export interface TableListParams {
-  name?: string;
-  userType?: number;
+export interface TableListParam{
+  id? : number,
+  userId? : number,
+  username? : String,
+  ip? : String,
+  optAt? : number,
+  auditType? : number,
+  optContent? : String,
+  optResult? : number,
+  startTime: String,
+  endTime: String,
   pageSize?: number;
   currentPage?: number;
   filter?: { [key: string]: any[] };

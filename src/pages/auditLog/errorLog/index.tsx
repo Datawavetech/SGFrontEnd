@@ -2,80 +2,94 @@ import React, { useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
+import { errorLogColoumn } from './data'
+import {listAuditLog} from './service'
+import { message, Button } from 'antd';
+import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 
-import { UserKeyInfo } from './data.d';
-import { listUserKeyInfo } from './service';
-import { message } from 'antd';
+
+
+/*
+export interface errorLogColoumn{
+  id : number,
+  userId : number,
+  username : String,
+  ip : String,
+  callMethodName : String,
+  exceptionDesc : String,
+  optAt : String,
+  queryStartAt : String,
+  queryEndAt : String
+}
+*/
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<UserKeyInfo>[] = [
+
+  const columns: ProColumns<errorLogColoumn>[] = [
     {
-      title: '用户ID',
-      dataIndex: 'userId',
-      valueType: 'textarea',
+      title : "日志ID",
+      dataIndex: "id",
       hideInTable: true,
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
-      title: '用户名',
-      dataIndex: 'name',
+      title: '操作员ID',
+      dataIndex: 'userId',
+      hideInTable: true,
+      hideInSearch: true
     },
     {
-      title: '用户类型',
-      dataIndex: 'userType',
-      hideInForm: true,
-      valueEnum: {
-        1: { text: '系统' },
-        2: { text: '部门' },
-        3: { text: '用户' }
-      }
+      title: '操作员',
+      dataIndex: 'username',
+      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
     },
     {
-      title: '私钥',
-      dataIndex: 'priKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
+      title: 'IP',
+      dataIndex: 'ip',
+      hideInSearch: true
     },
     {
-      title: '公钥',
-      dataIndex: 'pubKey',
-      ellipsis: true,
-      width: 300,
-      valueType: "textarea",
-      hideInSearch: true,
-      copyable: true,
+      title: '调用方法名称',
+      dataIndex: 'callMethodName',
+      hideInSearch: true
     },
     {
-      title: '创建时间',
-      dataIndex: 'createAt',
-      hideInSearch: true,
+      title: '异常描述',
+      dataIndex: 'exceptionDesc',
+      hideInSearch: true
+    },
+    {
+      title: '操作时间',
+      dataIndex: 'optAt',
+      hideInSearch: true
+    },
+    {
+      title: '时间区间',
+      dataIndex: 'queryTimeRange',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      search: {
+        transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
+      },
     }
   ];
 
+
   return (
     <PageHeaderWrapper>
-      <ProTable<UserKeyInfo>
-        headerTitle="用户信息"
+      <ProTable<errorLogColoumn, errorLogColoumn>
+        headerTitle="审计查询"
         actionRef={actionRef}
-        rowKey="userId"
-        beforeSearchSubmit={(params: Partial<UserKeyInfo>) => {
-          const { name, userType } = params;
-          if (name && name.length > 20) {
-            message.error("用户名输入超出范围0-20");
-            return {};
-          }
-          if (userType && (userType < 0 || userType > 3)) {
-            message.error("用户类型输入异常");
-            return {};
-          }
-          return params;
-        }}
-        request={(params, sorter, filter) => listUserKeyInfo({ ...params, sorter, filter })}
+        rowKey="logId"
         columns={columns}
+        request={(params, sorter, filter) => listAuditLog(params)}
+        toolBarRender={() => [
+          <Button key="3" type="primary">
+            <VerticalAlignBottomOutlined />
+            日志导出
+          </Button>,
+        ]}
       />
     </PageHeaderWrapper>
   );
