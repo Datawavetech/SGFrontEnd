@@ -1,5 +1,6 @@
-import { DownloadFileParams } from '@/pages/dataOnChain/onChainRequests/data';
+import { DownloadFileParams, DownloadLogParams } from '@/pages/dataOnChain/onChainRequests/data';
 import { downloadFile } from '@/pages/dataOnChain/onChainRequests/service';
+import { downloadLog } from '@/services/logService';
 import { message } from 'antd';
 import { parse } from 'querystring';
 
@@ -74,4 +75,31 @@ export const handleDownload = async (fields: DownloadFileParams) => {
   }
 }
 
+export const handleLogDownload = async (fields: DownloadLogParams) => {
+  const hide = message.loading('正在下载...');
+  try {
+    const ret = await downloadLog({ ...fields });
+    hide();
+    if (ret && ret.data) {
+      const fileBytesB64 = ret.data.fileBytesB64;
+      const filename = ret.data.filename;
+      const contentType = ret.data.contentType;
+      const blob = b64toBlob(fileBytesB64, contentType);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      message.success('下载启动成功');
+    } else {
+      message.warn('下载失败');
+    }
+    return true;
+  } catch (error) {
+    hide();
+    message.error('下载失败');
+    return false;
+  }
+}
 

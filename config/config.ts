@@ -170,21 +170,9 @@ export default defineConfig({
           access: 'canAdmin',
         },
         {
-          path: '/auditLog/warningLog',
-          name: 'warningLog',
-          component: './auditLog/warningLog',
-          access: 'canAdmin',
-        },
-        {
           path: '/auditLog/errorLog',
           name: 'errorLog',
           component: './auditLog/errorLog',
-          access: 'canAdmin',
-        },
-        {
-          path: '/auditLog/runningMonitor',
-          name: 'runningMonitor',
-          component: './auditLog/runningMonitor',
           access: 'canAdmin',
         },
         {
