@@ -138,6 +138,18 @@ const TableList: React.FC<{}> = () => {
         rowKey="requestId"
         request={(params, sorter, filter) => listWaitingRequests({ ...params, filter })}
         columns={columns}
+        beforeSearchSubmit={(params: Partial<OnChainRequest>) => {
+          const { dataHash, dataName } = params;
+          if (dataHash && dataHash.length >= 65 ) {
+            message.error("权属标示输入超出64位");
+            throw console.error("权属标示输入超出64位")
+          }
+          if (dataName && dataName.length >= 30 ) {
+            message.error("资产名称输入超出范围0-30位");
+            throw console.error("资产名称输入超出范围0-30位")
+          }
+          return params;
+        }}
       />
     </PageHeaderWrapper>
   );

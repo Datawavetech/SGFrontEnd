@@ -150,15 +150,16 @@ const TableList: React.FC<{}> = () => {
           const { dataHash, assetName, assetSys } = params;
           if (dataHash && dataHash.length > 64) {
             message.error("权属标识输入超出范围0-64");
-            return {};
+            throw console.error("权属标识输入超出范围0-64");
+
           }
           if (assetName && assetName.length > 30) {
             message.error("资产名称输入超出范围0-30");
-            return {};
+            throw console.error("资产名称输入超出范围0-30");
           }
           if (assetSys && assetSys.length > 20) {
             message.error("所属者输入超出范围0-20");
-            return {};
+            throw console.error("所属者输入超出范围0-20");
           }
           return params;
         }}

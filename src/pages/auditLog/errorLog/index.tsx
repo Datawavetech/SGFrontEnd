@@ -43,7 +43,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '操作员',
       dataIndex: 'username',
-      formItemProps: { rules: [{ required: true, message: "模型名称为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
     },
     {
       title: 'IP',
@@ -92,6 +91,23 @@ const TableList: React.FC<{}> = () => {
             日志导出
           </Button>,
         ]}
+        beforeSearchSubmit={(params: Partial<errorLogColoumn>) => {
+          /*
+            username : String,
+            ip : String,
+            optAt : String,
+            callMethodName : String,
+            callDuration : number,
+            optResult : number,
+          */
+          const { username } = params;
+
+          if (username && username.length > 30) {
+            message.error("操作人名称输入超出范围0-30");
+            throw console.error("操作人名称输入超出范围0-30");
+          }
+          return params;
+        }}
       />
     </PageHeaderWrapper>
   );

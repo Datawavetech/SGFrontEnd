@@ -6,6 +6,3 @@ export async function listAuditLog(params: TableListParam) {
   return request(`/api/audit/listErrorLog?${stringify(params)}`);
 }
 
-export async function exportAuditLog(params: TableListParam){
-
-}

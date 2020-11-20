@@ -65,15 +65,15 @@ const TableList: React.FC<{}> = () => {
             const { dataHash, dataName, sysName } = params;
             if (dataHash && dataHash.length > 64) {
               message.error("数据权属标识输入超出范围0-64");
-              return {};
+              throw console.error("数据权属标识输入超出范围0-64");
             }
             if (dataName && dataName.length > 30) {
               message.error("数据名称输入超出范围0-30");
-              return {};
+              throw console.error("数据名称输入超出范围0-30");
             }
             if (sysName && sysName.length > 20) {
               message.error("数据名称输入超出范围0-20");
-              return {};
+              throw console.error("数据名称输入超出范围0-20");
             }
             return params;
           }}

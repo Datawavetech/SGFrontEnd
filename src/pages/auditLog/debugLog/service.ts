@@ -8,9 +8,3 @@ export async function listAuditLog(params: TableListParam) {
   console.log(params)
   return request(`/api/audit/listDebugLog?${stringify(params)}`);
 }
-
-//TODOGAVIN API
-
-export async function exportAuditLog(params: TableListParam){
-
-}

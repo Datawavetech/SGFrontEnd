@@ -131,7 +131,7 @@ const TableList: React.FC<{}> = () => {
           const { usage } = params;
           if (usage && usage.length > 20) {
             message.error("使用约定输入超出范围0-20");
-            return {};
+            throw console.error("使用约定输入超出范围0-20");
           }
           return params;
         }}

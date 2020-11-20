@@ -35,11 +35,11 @@ const TableList: React.FC<{}> = () => {
           const { assetName, sourceSys } = params;
           if (assetName && assetName.length > 30) {
             message.error("资产名称输入超出范围0-30");
-            return {};
+            throw console.error("资产名称输入超出范围0-30");
           }
           if (sourceSys && sourceSys.length > 20) {
             message.error("源端系统输入超出范围0-20");
-            return {};
+            throw console.error("源端系统输入超出范围0-20");
           }
           return params;
         }}

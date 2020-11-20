@@ -64,13 +64,11 @@ const TableList: React.FC<{}> = () => {
       title: '审计类型',
       dataIndex: 'auditType',
       valueEnum: {
-        '1': { text: '用户登录' },
-        '2': { text: '用户登出' },
-        '3': { text: '菜单资源访问' },
-        '4': { text: '数据资源访问' },
-        '5': { text: '业务内容新增' },
-        '6': { text: '业务内容删除' },
-        '7': { text: '业务内容修改' }
+        '1': { text: '菜单资源访问' },
+        '2': { text: '数据资源访问' },
+        '3': { text: '业务内容新增' },
+        '4': { text: '业务内容删除' },
+        '5': { text: '业务内容修改' }
       }
     },
     {
@@ -117,6 +115,31 @@ const TableList: React.FC<{}> = () => {
             日志导出
           </Button>,
         ]}
+        beforeSearchSubmit={(params: Partial<runningLogColoumn>) => {
+          /*
+            username : String,
+            ip : String,
+            optAt : String,
+            callMethodName : String,
+            callDuration : number,
+            optResult : number,
+          */
+          const { username, optResult, auditType } = params;
+
+          if (username && username.length > 30) {
+            message.error("操作人名称输入超出范围0-30");
+            throw console.error("操作人名称输入超出范围0-30");
+          }
+          if (optResult && (optResult < 0 || optResult >= 3)) {
+            message.error("操作结果输入超出范围0-2");
+            throw console.error("操作结果输入超出范围0-2");
+          }
+          if (auditType && (auditType < 1 || auditType > 5)){
+            message.error("审计类型输入超出范围1-5");
+            throw console.error("审计类型输入超出范围1-5");
+          }
+          return params;
+        }}
       />
     </PageHeaderWrapper>
   );

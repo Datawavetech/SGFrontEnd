@@ -22,16 +22,24 @@ export interface auditLogColoumn{
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   let [switchStatus, setSwitchStatus] = useState<boolean>(false);
+  let [logSize, setLogSize] = useState("1MB");
+  let [maxSize, setMaxSize] = useState<String>("1024MB")
 
   useEffect(() => {
     async function freshStatus(){
-        let a = await getLogSwitchStatus()
-        if (a.data.status != undefined){
+
+        try {
+          let a = await getLogSwitchStatus()
           setSwitchStatus(a.data.status===1? true: false)
+          setLogSize(a.data.logSize)
+          setMaxSize(a.data.maxSize)
+        } catch(error) {
+          message.error("获取日志状态失败");
         }
     }
     freshStatus()
   }, [switchStatus]);
+
 
 
 
@@ -55,7 +63,7 @@ const TableList: React.FC<{}> = () => {
       </Card>
 
       <Card>
-        <p>日志容量状态：123456</p>
+        <p>日志容量状态(已用容量/总容量)：{logSize}/{maxSize}</p>
       </Card>
     </PageHeaderWrapper>
   );

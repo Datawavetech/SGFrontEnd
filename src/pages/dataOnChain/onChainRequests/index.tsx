@@ -124,6 +124,14 @@ const TableList: React.FC<{}> = () => {
         ]}
         request={(params, sorter, filter) => listUserRequests({ ...params, filter })}
         columns={columns}
+        beforeSearchSubmit={(params: Partial<OnChainRequest>) => {
+          const { dataHash} = params;
+          if (dataHash && dataHash.length >= 65 ) {
+            message.error("权属标示输入超出64位");
+            throw console.error("权属标示输入超出64位")
+          }
+          return params;
+        }}
       />
       <CreateForm
         onSubmit={async (value: OnChainRequestForm) => {

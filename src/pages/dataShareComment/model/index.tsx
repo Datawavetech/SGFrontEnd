@@ -157,15 +157,15 @@ const TableList: React.FC<{}> = () => {
           const { modelName, modelDesc, upCount } = params;
           if (modelName && modelName.length > 20) {
             message.error("模型名称输入超出范围0-20");
-            return {};
+            throw console.error("模型名称输入超出范围0-20");
           }
           if (modelDesc && modelDesc.length > 80) {
             message.error("模型描述输入超出范围0-80");
-            return {};
+            throw console.error("模型描述输入超出范围0-80");
           }
           if (upCount && (upCount > 10 || upCount < 1)) {
             message.error("上升指数输入超出范围1-10");
-            return {};
+            throw console.error("上升指数输入超出范围1-10");
           }
           return params;
         }}

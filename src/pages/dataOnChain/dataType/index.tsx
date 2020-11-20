@@ -131,7 +131,7 @@ const TableList: React.FC<{}> = () => {
           const { typeName } = params;
           if (typeName && typeName.length > 20) {
             message.error("使用类型输入超出范围0-20");
-            return {};
+            throw console.error("使用类型输入超出范围0-20")
           }
           return params;
         }}

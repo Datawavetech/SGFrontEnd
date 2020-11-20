@@ -60,11 +60,11 @@ const TableList: React.FC<{}> = () => {
           const { username, userType } = params;
           if (username && username.length > 20) {
             message.error("权属标识输入超出范围0-20");
-            return {};
+            throw console.error("权属标识输入超出范围0-20");
           }
           if (userType && (userType < 0 || userType > 3)) {
             message.error("用户类型参数异常");
-            return {};
+            throw console.error("用户类型参数异常");
           }
           return params;
         }}

@@ -135,19 +135,19 @@ const TableList: React.FC<{}> = () => {
           const { dataIdentifier, levelOneSys, levelTwoSys, levelThreeSys } = params;
           if (dataIdentifier && dataIdentifier.length > 20) {
             message.error("一级系统名称输入超出范围0-20");
-            return {};
+            throw console.error("一级系统名称输入超出范围0-20");
           }
           if (levelOneSys && levelOneSys.toString().length > 20) {
             message.error("一级系统名称输入超出范围0-20");
-            return {};
+            throw console.error("一级系统名称输入超出范围0-20");
           }
           if (levelTwoSys && levelTwoSys.toString().length > 20) {
             message.error("二级系统名称输入超出范围0-20");
-            return {};
+            throw console.error("二级系统名称输入超出范围0-20");
           }
           if (levelThreeSys && levelThreeSys.toString().length > 20) {
             message.error("三级系统名称输入超出范围0-20");
-            return {};
+            throw console.error("三级系统名称输入超出范围0-20");
           }
           var modifiedParams: TableListParams = {};
           modifiedParams.dataIdentifier = dataIdentifier;

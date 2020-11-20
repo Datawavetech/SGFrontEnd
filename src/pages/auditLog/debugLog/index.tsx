@@ -68,11 +68,15 @@ const TableList: React.FC<{}> = () => {
     {
       title: '操作过程耗时(ms)',
       dataIndex: 'callDuration',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '执行结果',
-      dataIndex: 'optResult'
+      dataIndex: 'optResult',
+      valueEnum: {
+        '1': { text: '成功', status: "Success" },
+        '2': { text: '失败', status: "Error" },
+      },
     },
     {
       title: '操作时间',
@@ -109,11 +113,28 @@ const TableList: React.FC<{}> = () => {
           </Button>,
         ]}
 
-        beforeSearchSubmit={(params) => {
-          console.log(params)
-          return params
-        }
-        }
+        beforeSearchSubmit={(params: Partial<debugLogColoumn>) => {
+          /*
+            username : String,
+            ip : String,
+            optAt : String,
+            callMethodName : String,
+            callDuration : number,
+            optResult : number,
+          */
+          const { username, optResult } = params;
+
+          if (username && username.length > 30) {
+            message.error("操作人名称输入超出范围0-30");
+            throw console.error("操作人名称输入超出范围0-30");
+          }
+          if (optResult && (optResult < 0 || optResult >= 3)) {
+            message.error("操作结果输入超出范围0-2");
+            throw console.error("资产名称输入超出范围0-30");
+          }
+
+          return params;
+        }}
       />
     </PageHeaderWrapper>
   );
