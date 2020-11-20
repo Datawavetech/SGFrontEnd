@@ -167,6 +167,8 @@ const TableList: React.FC<{}> = () => {
             message.error("上升指数输入超出范围1-10");
             throw console.error("上升指数输入超出范围1-10");
           }
+          if (modelName) params = {...params, modelName: modelName.trim()}
+          if (modelDesc) params = {...params, modelDesc: modelDesc.trim()}
           return params;
         }}
         request={(params, sorter, filter) => listTokenModel({ ...params, sorter, filter })}

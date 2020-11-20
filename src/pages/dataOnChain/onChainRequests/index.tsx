@@ -130,6 +130,7 @@ const TableList: React.FC<{}> = () => {
             message.error("权属标示输入超出64位");
             throw console.error("权属标示输入超出64位")
           }
+          if (dataHash) params = {...params, dataHash: dataHash.trim()}
           return params;
         }}
       />

@@ -150,10 +150,10 @@ const TableList: React.FC<{}> = () => {
             throw console.error("三级系统名称输入超出范围0-20");
           }
           var modifiedParams: TableListParams = {};
-          modifiedParams.dataIdentifier = dataIdentifier;
-          modifiedParams.levelOneSysName = levelOneSys?.toString();
-          modifiedParams.levelTwoSysName = levelTwoSys?.toString();
-          modifiedParams.levelThreeSysName = levelThreeSys?.toString();
+          modifiedParams.dataIdentifier = dataIdentifier?.trim();
+          modifiedParams.levelOneSysName = levelOneSys?.toString().trim();
+          modifiedParams.levelTwoSysName = levelTwoSys?.toString().trim();
+          modifiedParams.levelThreeSysName = levelThreeSys?.toString().trim();
           return modifiedParams;
         }}
         request={(params, sorter, filter) => listDataRouter({ ...params, sorter, filter })}

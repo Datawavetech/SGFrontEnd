@@ -133,6 +133,7 @@ const TableList: React.FC<{}> = () => {
             message.error("使用约定输入超出范围0-20");
             throw console.error("使用约定输入超出范围0-20");
           }
+          if (usage) params = {...params, usage: usage.trim()}
           return params;
         }}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}

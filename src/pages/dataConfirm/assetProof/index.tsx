@@ -84,6 +84,10 @@ const TableList: React.FC<{}> = () => {
             message.error("所属者输入超出范围0-20");
             throw console.error("所属者输入超出范围0-20");
           }
+          if (dataHash) params = {...params, dataHash: dataHash.trim()}
+          if (assetName) params = {...params, assetName: assetName.trim()}
+          if (assetSys) params = {...params, assetSys: assetSys.trim()}
+
           return params;
         }}
         request={(params: TableListParams | undefined, sorter: any, filter: any) => listAssetProof({ ...params, sorter, filter })}

@@ -122,8 +122,9 @@ const TableList: React.FC<{}> = () => {
             callDuration : number,
             optResult : number,
           */
+          //console.log(params)
           const { username, optResult } = params;
-
+          //console.log(username, optResult)
           if (username && username.length > 30) {
             message.error("操作人名称输入超出范围0-30");
             throw console.error("操作人名称输入超出范围0-30");
@@ -132,8 +133,10 @@ const TableList: React.FC<{}> = () => {
             message.error("操作结果输入超出范围0-2");
             throw console.error("资产名称输入超出范围0-30");
           }
+          if (username)
+            params = {...params, username: username.trim()}
 
-          return params;
+          return params
         }}
       />
     </PageHeaderWrapper>

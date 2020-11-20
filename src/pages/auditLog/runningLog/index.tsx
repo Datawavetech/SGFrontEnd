@@ -138,6 +138,7 @@ const TableList: React.FC<{}> = () => {
             message.error("审计类型输入超出范围1-5");
             throw console.error("审计类型输入超出范围1-5");
           }
+          if (username) params = {...params, username: username.trim()}
           return params;
         }}
       />

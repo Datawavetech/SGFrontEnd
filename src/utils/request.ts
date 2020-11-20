@@ -55,6 +55,34 @@ const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
 });
 
+
+/*
+var params = GetRequest();
+var ticket = params.ticket;
+var nocestrs = [];
+if (ticket) {
+    login(ticket);
+} else {
+    loadPermission();
+}
+*/
+
+/*
+var GetRequest = function() {
+    var url = window.location.search;
+    var strs = [];
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for(var i = 0; i < strs.length; i ++) {
+            theRequest[strs[i].split("=")[0]]=decodeURIComponent(strs[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+};
+*/
+
 request.interceptors.request.use((url, options) => {
   const currentUserStr = localStorage.getItem('tdsp');
   let currentUser: API.CurrentUser = {};

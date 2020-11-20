@@ -1,11 +1,11 @@
 import request from '@/utils/request';
 import { stringify } from 'qs';
+import {logStatus} from "./data"
 
-
-export async function changeLogSwitch(param: number) {
+export async function changeLogSwitch(param: logStatus) {
   return request(`/api/audit/updateLogSwitch`,{
     method: "POST",
-    data: {status: param}
+    data: { ...param }
   })
 }
 

@@ -106,6 +106,7 @@ const TableList: React.FC<{}> = () => {
             message.error("操作人名称输入超出范围0-30");
             throw console.error("操作人名称输入超出范围0-30");
           }
+          if (username) params = {...params, username: username.trim()}
           return params;
         }}
       />

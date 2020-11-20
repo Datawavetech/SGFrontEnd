@@ -133,6 +133,7 @@ const TableList: React.FC<{}> = () => {
             message.error("使用类型输入超出范围0-20");
             throw console.error("使用类型输入超出范围0-20")
           }
+          if (typeName) params = {...params, typeName: typeName.trim()}
           return params;
         }}
         request={(params, sorter, filter) => listDataType({ ...params, sorter, filter })}

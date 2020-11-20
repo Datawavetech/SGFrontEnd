@@ -66,6 +66,7 @@ const TableList: React.FC<{}> = () => {
             message.error("用户类型参数异常");
             throw console.error("用户类型参数异常");
           }
+          if (username) params = {...params, username: username.trim()}
           return params;
         }}
         request={(params, sorter, filter) => listTokenInfo({ ...params, sorter, filter })}

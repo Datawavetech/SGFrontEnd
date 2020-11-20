@@ -75,6 +75,10 @@ const TableList: React.FC<{}> = () => {
               message.error("数据名称输入超出范围0-20");
               throw console.error("数据名称输入超出范围0-20");
             }
+            if (dataHash) params = {...params, dataHash: dataHash.trim()}
+            if (dataName) params = {...params, dataName: dataName.trim()}
+            if (sysName) params = {...params, sysName: sysName.trim()}
+
             return params;
           }}
           request={(params) => listDataRightConfirmInfo(params)}

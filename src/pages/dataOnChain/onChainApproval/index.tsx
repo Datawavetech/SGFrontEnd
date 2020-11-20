@@ -148,6 +148,8 @@ const TableList: React.FC<{}> = () => {
             message.error("资产名称输入超出范围0-30位");
             throw console.error("资产名称输入超出范围0-30位")
           }
+          if (dataHash) params = {...params, dataHash: dataHash.trim()}
+          if (dataName) params = {...params, dataName: dataName.trim()}
           return params;
         }}
       />

@@ -41,6 +41,8 @@ const TableList: React.FC<{}> = () => {
             message.error("源端系统输入超出范围0-20");
             throw console.error("源端系统输入超出范围0-20");
           }
+          if (assetName) params = {...params, assetName: assetName.trim()}
+          if (sourceSys) params = {...params, sourceSys: sourceSys.trim()}
           return params;
         }}
         rowKey="assetName"
