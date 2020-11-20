@@ -5,7 +5,8 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { debugLogColoumn } from './data'
 import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
-import {listAuditLog} from './service'
+import { listAuditLog } from './service'
+import { handleLogDownload } from '@/utils/utils';
 
 /*
 export interface auditLogColoumn{
@@ -39,7 +40,7 @@ const TableList: React.FC<{}> = () => {
 
   const columns: ProColumns<debugLogColoumn>[] = [
     {
-      title : "日志ID",
+      title: "日志ID",
       dataIndex: "id",
       hideInTable: true,
       hideInSearch: true
@@ -61,12 +62,12 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '调用方法名称',
-      dataIndex : 'callMethodName',
+      dataIndex: 'callMethodName',
       hideInSearch: true
     },
     {
       title: '操作过程耗时(ms)',
-      dataIndex : 'callDuration',
+      dataIndex: 'callDuration',
       hideInSearch: true
     },
     {
@@ -102,7 +103,7 @@ const TableList: React.FC<{}> = () => {
           pageSize: 15,
         }}
         toolBarRender={() => [
-          <Button key="3" type="primary">
+          <Button key="3" type="primary" onClick={() => handleLogDownload({ type: 2 })}>
             <VerticalAlignBottomOutlined />
             日志导出
           </Button>,
@@ -110,8 +111,8 @@ const TableList: React.FC<{}> = () => {
 
         beforeSearchSubmit={(params) => {
           console.log(params)
-            return params
-          }
+          return params
+        }
         }
       />
     </PageHeaderWrapper>

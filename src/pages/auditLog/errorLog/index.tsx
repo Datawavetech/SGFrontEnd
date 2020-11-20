@@ -3,9 +3,10 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import { errorLogColoumn } from './data'
-import {listAuditLog} from './service'
+import { listAuditLog } from './service'
 import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { handleLogDownload } from '@/utils/utils';
 
 
 
@@ -28,7 +29,7 @@ const TableList: React.FC<{}> = () => {
 
   const columns: ProColumns<errorLogColoumn>[] = [
     {
-      title : "日志ID",
+      title: "日志ID",
       dataIndex: "id",
       hideInTable: true,
       hideInSearch: true
@@ -86,7 +87,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         request={(params, sorter, filter) => listAuditLog(params)}
         toolBarRender={() => [
-          <Button key="3" type="primary">
+          <Button key="3" type="primary" onClick={() => handleLogDownload({ type: 3 })}>
             <VerticalAlignBottomOutlined />
             日志导出
           </Button>,

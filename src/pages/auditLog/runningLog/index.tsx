@@ -6,6 +6,7 @@ import { runningLogColoumn, TableListParam } from './data'
 import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { listAuditLog } from './service'
+import { handleDownload, handleLogDownload } from '@/utils/utils';
 
 /*
 export interface auditLogColoumn{
@@ -39,7 +40,7 @@ const TableList: React.FC<{}> = () => {
   */
   const columns: ProColumns<runningLogColoumn>[] = [
     {
-      title : "日志ID",
+      title: "日志ID",
       dataIndex: "id",
       hideInTable: true,
       hideInSearch: true
@@ -63,13 +64,13 @@ const TableList: React.FC<{}> = () => {
       title: '审计类型',
       dataIndex: 'auditType',
       valueEnum: {
-        '1': { text: '用户登录'},
-        '2': { text: '用户登出'},
-        '3': { text: '菜单资源访问'},
-        '4': { text: '数据资源访问'},
-        '5': { text: '业务内容新增'},
-        '6': { text: '业务内容删除'},
-        '7': { text: '业务内容修改'}
+        '1': { text: '用户登录' },
+        '2': { text: '用户登出' },
+        '3': { text: '菜单资源访问' },
+        '4': { text: '数据资源访问' },
+        '5': { text: '业务内容新增' },
+        '6': { text: '业务内容删除' },
+        '7': { text: '业务内容修改' }
       }
     },
     {
@@ -81,8 +82,8 @@ const TableList: React.FC<{}> = () => {
       title: '执行结果',
       dataIndex: 'optResult',
       valueEnum: {
-        '1': { text: '成功', status: "Success"},
-        '2': { text: '失败', status: "Error"},
+        '1': { text: '成功', status: "Success" },
+        '2': { text: '失败', status: "Error" },
       },
     },
     {
@@ -111,7 +112,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         request={(params, sorter, filter) => listAuditLog(params)}
         toolBarRender={() => [
-          <Button key="3" type="primary">
+          <Button key="3" type="primary" onClick={() => handleLogDownload({ type: 1 })}>
             <VerticalAlignBottomOutlined />
             日志导出
           </Button>,
