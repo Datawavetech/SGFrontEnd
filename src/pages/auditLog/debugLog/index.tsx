@@ -53,7 +53,6 @@ const TableList: React.FC<{}> = () => {
     {
       title: '操作员',
       dataIndex: 'username',
-      formItemProps: { rules: [{ type : "string"}, { max: 20, message: "输入长度超出范围0-20" }]},
     },
     {
       title: 'IP',
@@ -72,8 +71,7 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '执行结果',
-      dataIndex: 'optResult',
-      //formItemProps: { rules: [{ max: 20, message: "输入长度超出范围0-20" }] },
+      dataIndex: 'optResult'
     },
     {
       title: '操作时间',

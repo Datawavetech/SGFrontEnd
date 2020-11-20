@@ -3,7 +3,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 
 import { changeLogSwitch, getLogSwitchStatus } from './service'
-import { message, Card , Button, Divider } from 'antd';
+import { message, Card , Button, Divider, Descriptions } from 'antd';
 
 
 /*
@@ -52,6 +52,10 @@ const TableList: React.FC<{}> = () => {
         <p>当前状态：{switchStatus? "日志已开启": "日志已关闭"}</p>
         <Button type="primary" disabled = {switchStatus} onClick={clickOpenLog}> 开启日志 </Button>
         <Button type="primary" disabled = {!switchStatus} onClick={clickCloseLog}> 关闭日志 </Button>
+      </Card>
+
+      <Card>
+        <p>日志容量状态：123456</p>
       </Card>
     </PageHeaderWrapper>
   );
