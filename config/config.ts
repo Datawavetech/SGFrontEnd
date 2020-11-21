@@ -205,13 +205,10 @@ export default defineConfig({
         }
       ],
     },
-
-    /*
     {
       path: '/',
-      redirect: '/dataConfirm/assetIdentifier',
+      redirect: '/isc',
     },
-    */
     {
       component: './404',
     },
