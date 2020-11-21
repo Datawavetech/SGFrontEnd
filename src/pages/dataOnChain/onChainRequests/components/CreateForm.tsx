@@ -82,7 +82,8 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
     beforeUpload: (file: RcFile) => {
       return new Promise((resolve, reject) => {
         console.log(file)
-        const isDocOrPdfOrExcel = file.type === 'application/doc' || file.type === 'application/docx' || file.type === 'application/xls' || file.type === 'application/xlsx' || file.type === 'application/pdf';
+        const isDocOrPdfOrExcel = file.type === 'application/doc' || file.type === 'application/docx' || file.type === 'application/xls' || file.type === 'application/xlsx' || file.type === 'application/pdf' ||
+                  file.name.search(".doc")!=-1 || file.name.search(".docx")!=-1 || file.name.search(".xls")!=-1 || file.name.search(".xlsx")!=-1 || file.name.search(".pdf")!=-1;
         if (!isDocOrPdfOrExcel) {
           message.error('你只能上传Word/Pdf/Excel相关类型的文档!');
           return reject(false);
