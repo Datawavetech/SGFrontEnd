@@ -4,7 +4,7 @@ import { Avatar, Menu, Spin } from 'antd';
 import { ClickParam } from 'antd/es/menu';
 import { history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
-import { outLogin, logout } from '@/services/login';
+import { outLogin, logout, logoutISC } from '@/services/login';
 
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
@@ -39,7 +39,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     const { key } = event;
     if (key === 'logout') {
       setInitialState({ ...initialState, currentUser: undefined });
-      loginOut();
+      logoutISC();
       return;
     }
     history.push(`/account/${key}`);
@@ -63,7 +63,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.username) {
+  if (!currentUser) {
     return loading;
   }
 
@@ -92,8 +92,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.username}</span>
+        <span style={{color: "white"}}>{currentUser.username}</span>
       </span>
     </HeaderDropdown>
   );

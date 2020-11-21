@@ -3,6 +3,7 @@ import { TableListParams } from './data.d';
 import { stringify } from 'qs';
 
 export async function listAssetIdentifier(params: TableListParams) {
+  console.log("in request")
   return request(`/api/confirm/listAssetIdentifier?${stringify(params)}`);
 }
 

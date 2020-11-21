@@ -1,7 +1,7 @@
 import React from 'react';
 import { BasicLayoutProps, Settings as LayoutSettings } from '@ant-design/pro-layout';
 
-import { notification } from 'antd';
+import { message, notification } from 'antd';
 import { history, RequestConfig } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
@@ -13,6 +13,7 @@ export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
 }> {
   // 如果是登录页面，不执行
+  /*
   if (history.location.pathname !== '/user/login') {
     try {
       // const currentUser = await queryCurrent();
@@ -31,6 +32,25 @@ export async function getInitialState(): Promise<{
       history.push('/user/login');
     }
   }
+  */
+ try {
+    const currentUserStr = localStorage.getItem('tdsp');
+    let currentUser = {};
+    if (currentUserStr != null) {
+      currentUser = JSON.parse(currentUserStr);
+    }else{
+      message.info("无用户token，等待获取")
+      //history.push('/');
+    }
+    return {
+      currentUser,
+      settings: defaultSettings,
+    };
+  } catch (error) {
+    message.error("状态异常，重新登陆")
+    //history.push('/');
+  }
+
   return {
     settings: defaultSettings,
   };

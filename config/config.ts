@@ -41,7 +41,19 @@ export default defineConfig({
         },
       ],
     },
+    {
+      path: '/isc',
+      layout: false,
+      routes: [
+        {
+          name: 'isc',
+          path: '/isc',
+          component: './isc',
+        },
+      ],
 
+
+    },
     {
       path: '/dataConfirm',
       name: 'dataConfirm',
@@ -51,16 +63,19 @@ export default defineConfig({
           path: '/dataConfirm/assetIdentifier',
           name: 'assetIdentifier',
           component: './dataConfirm/assetIdentifier',
+          access: 'canUserOrAdmin'
         },
         {
           path: '/dataConfirm/assetProof',
           name: 'assetProof',
           component: './dataConfirm/assetProof',
+          access: 'canUserOrAdmin'
         },
         {
           path: '/dataConfirm/dataUsage',
           name: 'dataUsage',
           component: './dataConfirm/dataUsage',
+          access: 'canUserOrAdmin'
         },
       ],
     },
@@ -73,6 +88,7 @@ export default defineConfig({
           path: '/dataOnChain/onChainRequests',
           name: 'onChainRequests',
           component: './dataOnChain/onChainRequests',
+          access: 'canUserOrAdmin'
         },
         {
           path: '/dataOnChain/onChainApproval',
@@ -84,6 +100,7 @@ export default defineConfig({
           path: '/dataOnChain/dataType',
           name: 'dataType',
           component: './dataOnChain/dataType',
+          access: 'canUserOrAdmin'
         },
       ],
     },
@@ -116,21 +133,25 @@ export default defineConfig({
           path: '/dataLifeCycle/dataTraceability',
           name: 'dataTraceability',
           component: './dataLifeCycle/dataTraceability',
+          access: 'canUserOrAdmin'
         },
         {
           path: '/dataLifeCycle/dataRightConfirmInfo',
           name: 'dataRightConfirmInfo',
           component: './dataLifeCycle/dataRightConfirmInfo',
+          access: 'canUserOrAdmin'
         },
         {
           path: '/dataLifeCycle/dataRouter',
           name: 'dataRouter',
           component: './dataLifeCycle/dataRouter',
+          access: 'canUserOrAdmin'
         },
         {
           path: '/dataLifeCycle/analysis',
           name: 'analysis',
           component: './dataLifeCycle/analysis',
+          access: 'canUserOrAdmin'
         },
       ],
     },
@@ -149,6 +170,7 @@ export default defineConfig({
           path: '/chainMng/explorer',
           name: 'explorer',
           component: './chainMng/explorer',
+          access: 'canUserOrAdmin'
         },
       ],
     },
@@ -161,31 +183,31 @@ export default defineConfig({
           path: '/auditLog/runningLog',
           name: 'runningLog',
           component: './auditLog/runningLog',
-          access: 'canAdmin',
+          access: 'canAudit',
         },
         {
           path: '/auditLog/debugLog',
           name: 'debugLog',
           component: './auditLog/debugLog',
-          access: 'canAdmin',
+          access: 'canAudit',
         },
         {
           path: '/auditLog/errorLog',
           name: 'errorLog',
           component: './auditLog/errorLog',
-          access: 'canAdmin',
+          access: 'canAudit',
         },
         {
           path: '/auditLog/logSwitch',
           name: 'logSwitch',
           component: './auditLog/logSwitch',
-          access: 'canAdmin',
+          access: 'canAudit',
         }
       ],
     },
     {
       path: '/',
-      redirect: '/dataConfirm/assetIdentifier',
+      redirect: '/isc',
     },
     {
       component: './404',

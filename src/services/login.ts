@@ -1,4 +1,4 @@
-import { request } from 'umi';
+import { request, history } from 'umi';
 
 export interface LoginParamsType {
   username: string;
@@ -37,3 +37,23 @@ export async function getFakeCaptcha(mobile: string) {
 export async function outLogin() {
   return request('/api/login/outLogin');
 }
+
+
+export async function loadPermission () {
+  return request("/api/user/isc-permission")
+}
+
+export async function loginISC (ticket: any){
+  return request(`/api/user/isc-login?ticket=${ticket}`)
+}
+
+
+export async function logoutISC() {
+  return request('/api/user/isc-logout').then(resp => {
+    localStorage.removeItem('tdsp')
+    history.push("/isc")
+    return { 'success': true, 'data': {} }
+  });
+}
+
+

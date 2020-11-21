@@ -2,8 +2,7 @@ declare namespace API {
   export interface CurrentUser {
     userId?:string;
     username?:string;
-    department?:string;
-    level?:number;
+    role?:string;
     token?:string;
     // avatar?: string;
     // name?: string;
