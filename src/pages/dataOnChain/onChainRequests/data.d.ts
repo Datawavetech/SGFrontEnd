@@ -20,6 +20,10 @@ export interface OnChainRequestForm {
   file?: { file: { originFileObj: RcFile }, fileList: RcFile[] };
 }
 
+export interface DownloadFileParams {
+  rid?: number;
+}
+
 export interface DownloadLogParams {
   type?: number;
 }
