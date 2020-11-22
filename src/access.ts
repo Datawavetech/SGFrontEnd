@@ -7,6 +7,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser | u
     canUserOrAdmin: (currentUser?.role === "chain_user" || currentUser?.role === "chain_admin"),
     token: currentUser?.token
   }
-  alert(`AccessStatus: ${JSON.stringify(accessStatus)}`)
+  //alert(`AccessStatus: ${JSON.stringify(accessStatus)}`)
+  console.log(`AccessStatus: ${JSON.stringify(accessStatus)}`)
   return accessStatus;
 }

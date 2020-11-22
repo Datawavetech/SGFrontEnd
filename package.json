@@ -71,7 +71,8 @@
     "react-fittext": "^1.0.0",
     "umi": "^3.2.14",
     "umi-request": "^1.0.8",
-    "use-merge-value": "^1.0.1"
+    "use-merge-value": "^1.0.1",
+    "node-rsa": "1.1.1"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.0.2",

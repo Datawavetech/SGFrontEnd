@@ -1,4 +1,7 @@
 export default {
+
+  'menu.isc': 'ISC登陆',
+
   'menu.dataConfirm': '数据确权',
   'menu.dataConfirm.assetProof': '资产属权证明',
   'menu.dataConfirm.assetIdentifier': '资产权属标识',

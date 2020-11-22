@@ -83,10 +83,13 @@ request.interceptors.request.use((url, options) => {
   const currentUserStr = localStorage.getItem('tdsp');
   let currentUser: API.CurrentUser = JSON.parse(currentUserStr);
   let token = currentUser ? currentUser.token : null
-  console.log(currentUser)
-  alert(`请求拦截器ticket & token：${ticket} / ${token}`)
+  //console.log(currentUser)
+  //alert(`请求拦截器ticket & token：${ticket} / ${token}`)
+  console.log(`请求拦截器ticket & token：${ticket} / ${token}`)
   const encryptedTimestamp = encrypt(new Date().getTime().toString());
-  alert(`time:${encryptedTimestamp}`)
+  //alert(`time:${encryptedTimestamp}`)
+  console.log(`time:${encryptedTimestamp}`)
+
   if (ticket && !token) {
     console.log("ticket exists:", ticket)
     const headers = {
@@ -114,8 +117,10 @@ request.interceptors.request.use((url, options) => {
 // 对于请求返回的统一处理
 request.interceptors.response.use(async (response: any) => {
   const data = await response.clone().json();
-  console.log(data)
-  alert(`返回拦截器：${JSON.stringify(data)}`)
+  //console.log(data)
+  //alert(`返回拦截器：${JSON.stringify(data)}`)
+  console.log(`返回拦截器：${JSON.stringify(data)}`)
+
   if (data === undefined || data === null) {
     return response;
   }
@@ -143,7 +148,8 @@ request.interceptors.response.use(async (response: any) => {
     }
   } else if (data.status === 208) { // 登陆ISC返回的状态
     message.success('登录成功!');
-    alert(`Token 写入: ${JSON.stringify(data.data)}`)
+    //alert(`Token 写入: ${JSON.stringify(data.data)}`)
+    console.log(`Token 写入: ${JSON.stringify(data.data)}`)
     localStorage.setItem('tdsp', JSON.stringify(data.data));
 
   }

@@ -7,7 +7,7 @@ import { listDataTypes, listUsages } from '../service';
 import { OnChainRequestForm } from '../data';
 import { Moment } from 'moment';
 import { RcFile } from 'antd/lib/upload';
-
+import path from "path"
 
 const { Option } = Select;
 
@@ -82,8 +82,9 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
     beforeUpload: (file: RcFile) => {
       return new Promise((resolve, reject) => {
         console.log(file)
+        let extName = path.extname(file.name)
         const isDocOrPdfOrExcel = file.type === 'application/doc' || file.type === 'application/docx' || file.type === 'application/xls' || file.type === 'application/xlsx' || file.type === 'application/pdf' ||
-                  file.name.search(".doc")!=-1 || file.name.search(".docx")!=-1 || file.name.search(".xls")!=-1 || file.name.search(".xlsx")!=-1 || file.name.search(".pdf")!=-1;
+        extName.search(".doc")!=-1 || extName.search(".docx")!=-1 || extName.search(".xls")!=-1 || extName.search(".xlsx")!=-1 || extName.search(".pdf")!=-1;
         if (!isDocOrPdfOrExcel) {
           message.error('你只能上传Word/Pdf/Excel相关类型的文档!');
           return reject(false);
