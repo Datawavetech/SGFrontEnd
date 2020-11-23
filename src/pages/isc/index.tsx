@@ -17,7 +17,8 @@ const TableList: React.FC<{}> = () => {
       let currentUser : API.CurrentUser = JSON.parse(currentUserStr);
       let token = currentUser? currentUser.token : null
       let role = currentUser? currentUser.role: null
-      alert(`ISC BEFORE Update:${token}/${role}`)
+      //alert(`ISC BEFORE Update:${token}/${role}`)
+      console.log(`ISC BEFORE Update:${token}/${role}`)
       let t = await updateTokenStatus(role)
 
       currentUserStr = localStorage.getItem('tdsp');
@@ -25,7 +26,8 @@ const TableList: React.FC<{}> = () => {
       token = currentUser? currentUser.token : null
       role = currentUser? currentUser.role: null
 
-      alert(`ISC AFTER Update:${token}/${role}`)
+      //alert(`ISC AFTER Update:${token}/${role}`)
+      console.log(`ISC AFTER Update:${token}/${role}`)
       await refresh()
       if (role === "chain_audit")
         history.push("/auditLog/runningLog")
@@ -38,6 +40,7 @@ const TableList: React.FC<{}> = () => {
   return (
     <PageHeaderWrapper>
       <div>
+        等待登陆中......
       </div>
     </PageHeaderWrapper>
   );

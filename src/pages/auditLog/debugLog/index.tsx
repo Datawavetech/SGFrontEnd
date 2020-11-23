@@ -99,7 +99,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<debugLogColoumn, debugLogColoumn>
         headerTitle="审计查询"
         actionRef={actionRef}
-        rowKey="logId"
+        rowKey="id"
         columns={columns}
         request={(params, sorter, filter) => listAuditLog(params)}
         pagination={{

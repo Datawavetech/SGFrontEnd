@@ -6,6 +6,7 @@ import { extend } from 'umi-request';
 import { message, notification } from 'antd';
 import { history } from 'umi';
 import { login, loginISC, loadPermission } from '@/services/login';
+import { encrypt } from '@/utils/utils';
 
 //
 
@@ -60,76 +61,66 @@ const request = extend({
 
 
 const GetRequest = () => {
-    let url = window.location.search;
-    let strs = [];
-    let theRequest = {};
-    if (url.indexOf("?") != -1) {
-        let str = url.substr(1);
-        strs = str.split("&");
-        for(let i = 0; i < strs.length; i ++) {
-            theRequest[strs[i].split("=")[0]]=decodeURIComponent(strs[i].split("=")[1]);
-        }
+  let url = window.location.search;
+  let strs = [];
+  let theRequest = {};
+  if (url.indexOf("?") != -1) {
+    let str = url.substr(1);
+    strs = str.split("&");
+    for (let i = 0; i < strs.length; i++) {
+      theRequest[strs[i].split("=")[0]] = decodeURIComponent(strs[i].split("=")[1]);
     }
-    return theRequest;
+  }
+  return theRequest;
 }
 
 
 request.interceptors.request.use((url, options) => {
-/*
-    const t = new Date().getTime()
-    console.log("Time:",t)
-    console.log(crypto)
+  const params = GetRequest();
+  console.log(params)
+  let ticket = params.ticket // "ST-41-0NuSQsXWOZg1OTopyI9F-isc.sgcc.com.cn"; //
 
-    const t2 = crypto.publicEncrypt(pubKey, Buffer.from(t.toString()))
-    console.log("EncryptTime:",t2)
-    console.log("DecryptTime:", crypto.privateDecrypt(priKey, t2))
-*/
-    //console.log(url)
-    const params = GetRequest();
-    console.log(params)
-    let ticket = params.ticket // "ST-41-0NuSQsXWOZg1OTopyI9F-isc.sgcc.com.cn"; //
+  const currentUserStr = localStorage.getItem('tdsp');
+  let currentUser: API.CurrentUser = JSON.parse(currentUserStr);
+  let token = currentUser ? currentUser.token : null
+  //console.log(currentUser)
+  //alert(`请求拦截器ticket & token：${ticket} / ${token}`)
+  console.log(`请求拦截器ticket & token：${ticket} / ${token}`)
+  const encryptedTimestamp = encrypt(new Date().getTime().toString());
+  //alert(`time:${encryptedTimestamp}`)
+  console.log(`time:${encryptedTimestamp}`)
 
-/*
-    // 垃圾测试代码，等敖工回来
-    if (url.search("/api/confirm/listAssetIdentifier")>=0 && ticket){
-      history.push(`/isc?ticket=${ticket}`)
-    }
-*/
-
-    const currentUserStr = localStorage.getItem('tdsp');
-    let currentUser : API.CurrentUser = JSON.parse(currentUserStr);
-    let token = currentUser? currentUser.token : null
-    console.log(currentUser)
-    alert(`请求拦截器ticket & token：${ticket} / ${token}`)
-    if (ticket && !token){
-      console.log("ticket exists:",ticket)
-      const headers = {
-        Authorization: `${token}`, //`F774CA755A4EB4B14BD3DE087286C5B269FF411B9989BFDBE8A7049CE46016FB`,//
-        Timestamp: new Date().getTime().toString()
-      };
-      return ({
-        url: `/api/user/isc-login?ticket=${ticket}`,
-        options: { ...options, headers},
-      });
-    }
-    else{
-      console.log("ticket missing or token exists:",ticket)
-      const headers = {
-        Authorization: token, //`F774CA755A4EB4B14BD3DE087286C5B269FF411B9989BFDBE8A7049CE46016FB`,//
-        Timestamp: new Date().getTime().toString()
-      };
-      return ({
-        url,
-        options: { ...options, headers },
-      });
-    }
+  if (ticket && !token) {
+    console.log("ticket exists:", ticket)
+    const headers = {
+      Authorization: `${token}`, //`F774CA755A4EB4B14BD3DE087286C5B269FF411B9989BFDBE8A7049CE46016FB`,//
+      Timestamp: encryptedTimestamp,
+    };
+    return ({
+      url: `/api/user/isc-login?ticket=${ticket}`,
+      options: { ...options, headers },
+    });
+  }
+  else {
+    console.log("ticket missing or token exists:", ticket)
+    const headers = {
+      Authorization: token, //`F774CA755A4EB4B14BD3DE087286C5B269FF411B9989BFDBE8A7049CE46016FB`,//
+      Timestamp: encryptedTimestamp
+    };
+    return ({
+      url,
+      options: { ...options, headers },
+    });
+  }
 })
 
 // 对于请求返回的统一处理
 request.interceptors.response.use(async (response: any) => {
   const data = await response.clone().json();
-  console.log(data)
-  alert(`返回拦截器：${JSON.stringify(data)}`)
+  //console.log(data)
+  //alert(`返回拦截器：${JSON.stringify(data)}`)
+  console.log(`返回拦截器：${JSON.stringify(data)}`)
+
   if (data === undefined || data === null) {
     return response;
   }
@@ -139,14 +130,14 @@ request.interceptors.response.use(async (response: any) => {
       throw message.error(data.message);
     }
   } else if (data.status === 401) { // 未登录或登录超时，统一跳转到登录页面
-    if (data.redirect){
+    if (data.redirect) {
       //history.push(data.redirect);
       localStorage.removeItem('tdsp')
       window.location.href = data.redirect
       throw message.error("状态异常，请重新登录");
       //GAVIN TODO 清理缓存
     }
-    else{
+    else {
       message.error("跳转页面异常或访问越权")
     }
   } else if (data.status === 402) {
@@ -157,7 +148,8 @@ request.interceptors.response.use(async (response: any) => {
     }
   } else if (data.status === 208) { // 登陆ISC返回的状态
     message.success('登录成功!');
-    alert(`Token 写入: ${JSON.stringify(data.data)}`)
+    //alert(`Token 写入: ${JSON.stringify(data.data)}`)
+    console.log(`Token 写入: ${JSON.stringify(data.data)}`)
     localStorage.setItem('tdsp', JSON.stringify(data.data));
 
   }

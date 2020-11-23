@@ -33,12 +33,12 @@ export async function getInitialState(): Promise<{
     }
   }
   */
- try {
+  try {
     const currentUserStr = localStorage.getItem('tdsp');
     let currentUser = {};
     if (currentUserStr != null) {
       currentUser = JSON.parse(currentUserStr);
-    }else{
+    } else {
       message.info("无用户token，等待获取")
       //history.push('/');
     }
