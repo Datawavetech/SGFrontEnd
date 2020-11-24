@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { request, history } from 'umi';
 
 export interface LoginParamsType {
@@ -16,9 +17,23 @@ export async function login(params: LoginParamsType) {
 }
 
 export async function logout() {
-  return request('/api/user/logout').then(resp => {
-    localStorage.removeItem('tdsp')
-    localStorage.removeItem('tdsp_token')
+  const currentUserStr = localStorage.getItem('tdsp');
+  if (!currentUserStr) {
+    history.push('/user/login');
+    throw message.error('登录异常请重新登录！');
+  }
+  let currentUser: API.CurrentUser = JSON.parse(currentUserStr);
+  let token = currentUser ? currentUser.token : null
+  return request('/api/sysManagement/logout', {
+    method: 'GET',
+    headers: {
+      Authorization: `${token}`,
+    }
+  }).then(resp => {
+    if (resp && resp.status === 200) {
+      localStorage.removeItem('tdsp');
+      history.push('/user/login');
+    }
     return { 'success': true, 'data': {} }
   });
 }
@@ -39,11 +54,11 @@ export async function outLogin() {
 }
 
 
-export async function loadPermission () {
+export async function loadPermission() {
   return request("/api/user/isc-permission")
 }
 
-export async function loginISC (ticket: any){
+export async function loginISC(ticket: any) {
   return request(`/api/user/isc-login?ticket=${ticket}`)
 }
 

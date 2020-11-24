@@ -29,7 +29,7 @@ const TableList: React.FC<{}> = () => {
       //alert(`ISC AFTER Update:${token}/${role}`)
       console.log(`ISC AFTER Update:${token}/${role}`)
       await refresh()
-      if (role === "chain_audit")
+      if (role === 3)
         history.push("/auditLog/runningLog")
       else
         history.push("/dataConfirm/assetIdentifier")

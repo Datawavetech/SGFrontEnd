@@ -2,9 +2,9 @@
 export default function access(initialState: { currentUser?: API.CurrentUser | undefined }) {
   const { currentUser } = initialState || {};
   const accessStatus = {
-    canAdmin: currentUser?.role === "chain_admin",
-    canAudit: currentUser?.role === "chain_audit",
-    canUserOrAdmin: (currentUser?.role === "chain_user" || currentUser?.role === "chain_admin"),
+    canAdmin: currentUser?.role === 2,
+    canAudit: currentUser?.role === 3,
+    canUserOrAdmin: (currentUser?.role === 1 || currentUser?.role === 2),
     token: currentUser?.token
   }
   //alert(`AccessStatus: ${JSON.stringify(accessStatus)}`)

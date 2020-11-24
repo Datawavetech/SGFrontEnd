@@ -51,8 +51,6 @@ export default defineConfig({
           component: './isc',
         },
       ],
-
-
     },
     {
       path: '/dataConfirm',

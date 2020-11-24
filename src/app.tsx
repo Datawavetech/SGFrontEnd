@@ -13,7 +13,6 @@ export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
 }> {
   // 如果是登录页面，不执行
-  /*
   if (history.location.pathname !== '/user/login') {
     try {
       // const currentUser = await queryCurrent();
@@ -21,7 +20,7 @@ export async function getInitialState(): Promise<{
       let currentUser = {};
       if (currentUserStr != null) {
         currentUser = JSON.parse(currentUserStr);
-      }else{
+      } else {
         history.push('/user/login');
       }
       return {
@@ -32,24 +31,23 @@ export async function getInitialState(): Promise<{
       history.push('/user/login');
     }
   }
-  */
-  try {
-    const currentUserStr = localStorage.getItem('tdsp');
-    let currentUser = {};
-    if (currentUserStr != null) {
-      currentUser = JSON.parse(currentUserStr);
-    } else {
-      message.info("无用户token，等待获取")
-      //history.push('/');
-    }
-    return {
-      currentUser,
-      settings: defaultSettings,
-    };
-  } catch (error) {
-    message.error("状态异常，重新登陆")
-    //history.push('/');
-  }
+  // try {
+  //   const currentUserStr = localStorage.getItem('tdsp');
+  //   let currentUser = {};
+  //   if (currentUserStr != null) {
+  //     currentUser = JSON.parse(currentUserStr);
+  //   } else {
+  //     message.info("无用户token，等待获取")
+  //     //history.push('/');
+  //   }
+  //   return {
+  //     currentUser,
+  //     settings: defaultSettings,
+  //   };
+  // } catch (error) {
+  //   message.error("状态异常，重新登陆")
+  //   //history.push('/');
+  // }
 
   return {
     settings: defaultSettings,
