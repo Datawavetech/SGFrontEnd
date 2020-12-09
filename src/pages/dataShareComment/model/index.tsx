@@ -178,6 +178,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         rowSelection={access.checkUri('/dataShareComment/model/delete') ? {
           onChange: (_, selectedRows) => {
+            console.log(`selectedRows:${JSON.stringify(selectedRows)}`)
             setSelectedRows(selectedRows.filter(row => row.isRunning.toString() === '2'))
           },
         } : undefined}
@@ -193,9 +194,22 @@ const TableList: React.FC<{}> = () => {
           <Button
             danger
             onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
+              try{
+                selectedRowsState.map((item)=>{
+                  console.log(item)
+                  if (item.modelId === "defaultModel"){
+                    throw message.error("禁止删除默认模型")
+                  }
+                })
+                await handleRemove(selectedRowsState);
+                setSelectedRows([]);
+                actionRef.current?.reloadAndRest?.();
+              }
+              catch(error)
+              {
+
+              }
+
             }}
           >
             批量删除
