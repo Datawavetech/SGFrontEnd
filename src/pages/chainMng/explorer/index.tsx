@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import IntroduceRow from './components/IntroduceRow';
-import { getBlockHeightData, getBlockInfo} from './service';
-import { getBlockTimeList,getRealTimeBlockTimeList, getTxTimeList,getRealTimeTxTimeList } from './service';
+import { getChainInfo, getBlockTimeList, getRealTimeBlockTimeList, getTxTimeList, getRealTimeTxTimeList } from './service';
 import { VisitDataType } from './data'
 import moment from 'moment';
 
@@ -48,28 +47,28 @@ const TableList: React.FC<{}> = () => {
   const [txAmount, setTxAmount] = useState(fd2);
   const [realTimeTxAmount, setRealTimeTxAmount] = useState(fd3);
   const [realTimeBlockHeight, setRealTimeBlockHeight] = useState(fd4);
-  useEffect(()=>{
-    (async ()=>{
-      const blockHeightT =  await getBlockTimeList()
-      const realTimeBlockHeightT = await getRealTimeBlockTimeList()
-      const txAmountT = await getTxTimeList()
-      const realTimeTxAmountT = await getRealTimeTxTimeList()
-
-      setBlockHeight(blockHeightT)
-      setTxAmount(txAmountT)
-      setRealTimeTxAmount(realTimeBlockHeightT)
-      setRealTimeBlockHeight(realTimeTxAmountT)
+  useEffect(() => {
+    (async () => {
+      // const blockHeightT = await getBlockTimeList()
+      // const realTimeBlockHeightT = await getRealTimeBlockTimeList()
+      // const txAmountT = await getTxTimeList()
+      // const realTimeTxAmountT = await getRealTimeTxTimeList()
+      const { blockHeightT, realTimeBlockHeightT, txAmountT, realTimeTxAmountT } = await getChainInfo();
+      setBlockHeight(blockHeightT);
+      setTxAmount(txAmountT);
+      setRealTimeTxAmount(realTimeBlockHeightT);
+      setRealTimeBlockHeight(realTimeTxAmountT);
       //console.log(blockHeightT,realTimeBlockHeightT,txAmountT,realTimeTxAmountT)
     })();
 
     //console.log(blockHeight)
-  },[])
+  }, [])
 
   return (
     <PageHeaderWrapper>
-      
-      <IntroduceRow blockHeightData={blockHeight} txAmountData={txAmount} realTimeTxAmountData={realTimeTxAmount} realTimeBlockHeightData={realTimeBlockHeight}/>
-     
+
+      <IntroduceRow blockHeightData={blockHeight} txAmountData={txAmount} realTimeTxAmountData={realTimeTxAmount} realTimeBlockHeightData={realTimeBlockHeight} />
+
     </PageHeaderWrapper>
   );
 };
