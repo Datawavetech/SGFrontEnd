@@ -119,7 +119,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="requestId"
         toolBarRender={() => [
-          <Button hidden={access.checkUri('/dataOnChain/onChainRequests/add')} type="primary" onClick={() => handleModalVisible(true)}>
+          <Button hidden={!access.checkUri('/dataOnChain/onChainRequests/add')} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 上链申请
           </Button>,
         ]}

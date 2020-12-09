@@ -44,12 +44,12 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
       hideInSearch: true,
     },
-    {
-      title: '所属部门',
-      dataIndex: 'department',
-      hideInForm: true,
-      hideInSearch: true,
-    },
+    // {
+    //   title: '所属部门',
+    //   dataIndex: 'department',
+    //   hideInForm: true,
+    //   hideInSearch: true,
+    // },
     {
       title: '资产名称',
       dataIndex: 'dataName',

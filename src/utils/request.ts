@@ -132,16 +132,27 @@ request.interceptors.response.use(async (response: any) => {
   } else if (data.status === 401) { // 未登录或登录超时，统一跳转到登录页面
     if (data.redirect) {
       //history.push(data.redirect);
-      localStorage.removeItem('tdsp')
+      localStorage.removeItem('tdsp');
       message.error("状态异常，请重新登录");
-      window.location.href = data.redirect
-      //GAVIN TODO 清理缓存
+      window.location.href = data.redirect;
+      throw null;
+    }
+    else {
+      message.error("跳转页面异常或访问越权");
+    }
+  } else if (data.status === 402) {
+    throw message.error("用户权限不足");
+  } else if (data.status === 403) {
+    if (data.redirect) {
+      //history.push(data.redirect);
+      localStorage.removeItem('tdsp');
+      message.success("退出登录成功");
+      window.location.href = data.redirect;
+      throw null;
     }
     else {
       message.error("跳转页面异常或访问越权")
     }
-  } else if (data.status === 402) {
-    throw message.error("用户权限不足");
   } else if (data.status === 500) {
     if (data.data !== undefined && data.message !== null) {
       throw message.error(data.message);

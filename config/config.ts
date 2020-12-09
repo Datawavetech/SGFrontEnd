@@ -63,19 +63,19 @@ export default defineConfig({
           path: '/dataConfirm/assetIdentifier',
           name: 'assetIdentifier',
           component: './dataConfirm/assetIdentifier',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission',
         },
         {
           path: '/dataConfirm/assetProof',
           name: 'assetProof',
           component: './dataConfirm/assetProof',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
         {
           path: '/dataConfirm/dataUsage',
           name: 'dataUsage',
           component: './dataConfirm/dataUsage',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
       ],
     },
@@ -88,19 +88,19 @@ export default defineConfig({
           path: '/dataOnChain/onChainRequests',
           name: 'onChainRequests',
           component: './dataOnChain/onChainRequests',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
         {
           path: '/dataOnChain/onChainApproval',
           name: 'onChainApproval',
           component: './dataOnChain/onChainApproval',
-          access: 'canAdmin',
+          access: 'checkPermission',
         },
         {
           path: '/dataOnChain/dataType',
           name: 'dataType',
           component: './dataOnChain/dataType',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
       ],
     },
@@ -108,19 +108,18 @@ export default defineConfig({
       path: '/dataShareComment',
       name: 'dataShareComment',
       icon: 'cloud',
-      access: 'canAdmin',
       routes: [
         {
           path: '/dataShareComment/model',
           name: 'model',
           component: './dataShareComment/model',
-          access: 'canAdmin',
+          access: 'checkPermission',
         },
         {
           path: '/dataShareComment/token',
           name: 'token',
           component: './dataShareComment/token',
-          access: 'canAdmin',
+          access: 'checkPermission',
         },
       ],
     },
@@ -133,25 +132,25 @@ export default defineConfig({
           path: '/dataLifeCycle/dataTraceability',
           name: 'dataTraceability',
           component: './dataLifeCycle/dataTraceability',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
         {
           path: '/dataLifeCycle/dataRightConfirmInfo',
           name: 'dataRightConfirmInfo',
           component: './dataLifeCycle/dataRightConfirmInfo',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
         {
           path: '/dataLifeCycle/dataRouter',
           name: 'dataRouter',
           component: './dataLifeCycle/dataRouter',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
         {
           path: '/dataLifeCycle/analysis',
           name: 'analysis',
           component: './dataLifeCycle/analysis',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
       ],
     },
@@ -164,13 +163,13 @@ export default defineConfig({
           path: '/chainMng/keyMng',
           name: 'keyMng',
           component: './chainMng/keyMng',
-          access: 'canAdmin',
+          access: 'checkPermission',
         },
         {
           path: '/chainMng/explorer',
           name: 'explorer',
           component: './chainMng/explorer',
-          access: 'canUserOrAdmin'
+          access: 'checkPermission'
         },
       ],
     },
@@ -183,25 +182,25 @@ export default defineConfig({
           path: '/auditLog/runningLog',
           name: 'runningLog',
           component: './auditLog/runningLog',
-          access: 'canAudit',
+          access: 'checkPermission',
         },
         {
           path: '/auditLog/debugLog',
           name: 'debugLog',
           component: './auditLog/debugLog',
-          access: 'canAudit',
+          access: 'checkPermission',
         },
         {
           path: '/auditLog/errorLog',
           name: 'errorLog',
           component: './auditLog/errorLog',
-          access: 'canAudit',
+          access: 'checkPermission',
         },
         {
           path: '/auditLog/logSwitch',
           name: 'logSwitch',
           component: './auditLog/logSwitch',
-          access: 'canAudit',
+          access: 'checkPermission',
         }
       ],
     },
