@@ -7,6 +7,7 @@ import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { listAuditLog } from './service'
 import { handleLogDownload } from '@/utils/utils';
+import { useAccess } from 'umi';
 
 /*
 export interface auditLogColoumn{
@@ -23,6 +24,7 @@ export interface auditLogColoumn{
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
+  const access = useAccess();
   /*
   export interface debugLogColoumn{
     id : number,
@@ -106,7 +108,7 @@ const TableList: React.FC<{}> = () => {
           pageSize: 15,
         }}
         toolBarRender={() => [
-          <Button key="3" type="primary" onClick={() => handleLogDownload({ type: 2 })}>
+          <Button hidden={!access.checkUri('/auditLog/logExport')} key="3" type="primary" onClick={() => handleLogDownload({ type: 2 })}>
             <VerticalAlignBottomOutlined />
             日志导出
           </Button>,

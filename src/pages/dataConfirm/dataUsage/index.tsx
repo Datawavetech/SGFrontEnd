@@ -78,7 +78,7 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRowsState, setSelectedRows] = useState<DataUsage[]>([]);
   const actionRef = useRef<ActionType>();
-  const access = useAccess()
+  const access = useAccess();
   const columns: ProColumns<DataUsage>[] = [
     {
       title: 'id',
@@ -102,7 +102,7 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      hideInTable: !access.canAdmin,
+      hideInTable: !access.checkUri('/dataConfirm/dataUsage/update'),
       render: (_, record) => (
         <>
           <ButtonGroup>
@@ -123,7 +123,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="usageId"
         toolBarRender={() => [
-          <Button type="primary" hidden={!access.canAdmin} onClick={() => handleModalVisible(true)}>
+          <Button type="primary" hidden={!access.checkUri('/dataConfirm/dataUsage/add')} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建使用约定
           </Button>
         ]}
@@ -138,7 +138,7 @@ const TableList: React.FC<{}> = () => {
         }}
         request={(params, sorter, filter) => listDataUsage({ ...params, sorter, filter })}
         columns={columns}
-        rowSelection={access.canAdmin ? {
+        rowSelection={access.checkUri('/dataConfirm/dataUsage/delete') ? {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } : undefined}
       />

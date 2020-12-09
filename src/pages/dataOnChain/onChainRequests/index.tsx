@@ -8,6 +8,7 @@ import CreateForm from './components/CreateForm';
 import { OnChainRequest, OnChainRequestForm } from './data.d';
 import { listUserRequests, createOnChainRequest } from './service';
 import { handleDownload } from '@/utils/utils';
+import { useAccess } from 'umi';
 
 
 /**
@@ -37,7 +38,7 @@ const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [stepFormValues, setStepFormValues] = useState({});
-
+  const access = useAccess();
   const columns: ProColumns<OnChainRequest>[] = [
     {
       title: '请求id',
@@ -118,19 +119,19 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="requestId"
         toolBarRender={() => [
-          <Button hidden={false} type="primary" onClick={() => handleModalVisible(true)}>
+          <Button hidden={access.checkUri('/dataOnChain/onChainRequests/add')} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 上链申请
           </Button>,
         ]}
         request={(params, sorter, filter) => listUserRequests({ ...params, filter })}
         columns={columns}
         beforeSearchSubmit={(params: Partial<OnChainRequest>) => {
-          const { dataHash} = params;
-          if (dataHash && dataHash.length >= 65 ) {
+          const { dataHash } = params;
+          if (dataHash && dataHash.length >= 65) {
             message.error("权属标示输入超出64位");
             throw console.error("权属标示输入超出64位")
           }
-          if (dataHash) params = {...params, dataHash: dataHash.trim()}
+          if (dataHash) params = { ...params, dataHash: dataHash.trim() }
           return params;
         }}
       />

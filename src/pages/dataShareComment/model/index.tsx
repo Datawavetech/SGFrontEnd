@@ -9,6 +9,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TokenModel } from './data.d';
 import { listTokenModel, updateTokenModel, createTokenModel, deleteTokenModel } from './service';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { useAccess } from 'umi';
 
 /**
  * 添加节点
@@ -80,6 +81,7 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRowsState, setSelectedRows] = useState<TokenModel[]>([]);
   const actionRef = useRef<ActionType>();
+  const access = useAccess();
   const columns: ProColumns<TokenModel>[] = [
     {
       title: '模型id',
@@ -128,6 +130,7 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      hideInTable: !access.checkUri('/dataShareComment/model/update'),
       render: (_, record) => (
         <>
           <ButtonGroup>
@@ -149,7 +152,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="modelId"
         toolBarRender={() => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <Button hidden={!access.checkUri('/dataShareComment/model/add')} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建模型
           </Button>
         ]}
@@ -167,17 +170,17 @@ const TableList: React.FC<{}> = () => {
             message.error("上升指数输入超出范围1-10");
             throw console.error("上升指数输入超出范围1-10");
           }
-          if (modelName) params = {...params, modelName: modelName.trim()}
-          if (modelDesc) params = {...params, modelDesc: modelDesc.trim()}
+          if (modelName) params = { ...params, modelName: modelName.trim() }
+          if (modelDesc) params = { ...params, modelDesc: modelDesc.trim() }
           return params;
         }}
         request={(params, sorter, filter) => listTokenModel({ ...params, sorter, filter })}
         columns={columns}
-        rowSelection={{
+        rowSelection={access.checkUri('/dataShareComment/model/delete') ? {
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows.filter(row => row.isRunning.toString() === '2'))
           },
-        }}
+        } : undefined}
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar

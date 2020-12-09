@@ -7,6 +7,7 @@ import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { listAuditLog } from './service'
 import { handleDownload, handleLogDownload } from '@/utils/utils';
+import { useAccess } from 'umi';
 
 /*
 export interface auditLogColoumn{
@@ -23,6 +24,7 @@ export interface auditLogColoumn{
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
+  const access = useAccess();
   /*
 
   {
@@ -95,7 +97,7 @@ const TableList: React.FC<{}> = () => {
       valueType: 'dateTimeRange',
       hideInTable: true,
       search: {
-        transform: (value: any) => ({ startTime: new Date(value[0]).getTime(), endTime: new Date(value[1]).getTime()}),
+        transform: (value: any) => ({ startTime: new Date(value[0]).getTime(), endTime: new Date(value[1]).getTime() }),
       },
     }
   ];
@@ -109,7 +111,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         request={(params, sorter, filter) => listAuditLog(params)}
         toolBarRender={() => [
-          <Button key="3" type="primary" onClick={() => handleLogDownload({ type: 1 })}>
+          <Button hidden={!access.checkUri('/auditLog/logExport')} key="3" type="primary" onClick={() => handleLogDownload({ type: 1 })}>
             <VerticalAlignBottomOutlined />
             日志导出
           </Button>,
@@ -133,11 +135,11 @@ const TableList: React.FC<{}> = () => {
             message.error("操作结果输入超出范围0-2");
             throw console.error("操作结果输入超出范围0-2");
           }
-          if (auditType && (auditType < 1 || auditType > 5)){
+          if (auditType && (auditType < 1 || auditType > 5)) {
             message.error("审计类型输入超出范围1-5");
             throw console.error("审计类型输入超出范围1-5");
           }
-          if (username) params = {...params, username: username.trim()}
+          if (username) params = { ...params, username: username.trim() }
           return params;
         }}
       />

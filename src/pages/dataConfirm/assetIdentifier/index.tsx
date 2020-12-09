@@ -95,13 +95,13 @@ const TableList: React.FC<{}> = () => {
     {
       title: '资产名称',
       dataIndex: 'assetName',
-      formItemProps: { rules: [{ required: true, message: "资产名称为必填项" }, { max: 30, message: "输入长度超出范围0-30" }] },
+      // formItemProps: { rules: [{ required: true, message: "资产名称为必填项" }, { max: 30, message: "输入长度超出范围0-30" }] },
       valueType: 'text',
     },
     {
       title: '所有者',
       dataIndex: 'assetSys',
-      formItemProps: { rules: [{ required: true, message: "资产所属者为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
+      // formItemProps: { rules: [{ required: true, message: "资产所属者为必填项" }, { max: 20, message: "输入长度超出范围0-20" }] },
       valueType: 'text',
     },
     {
@@ -126,7 +126,7 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      hideInTable: !access.canAdmin,
+      hideInTable: !access.checkUri('/dataConfirm/assetIdentifier/update'),
       render: (_: any, record: React.SetStateAction<{}>) => (
         <>
           <ButtonGroup>
@@ -161,19 +161,19 @@ const TableList: React.FC<{}> = () => {
             message.error("所属者输入超出范围0-20");
             throw console.error("所属者输入超出范围0-20");
           }
-          if (dataHash) params = {...params, dataHash: dataHash.trim()}
-          if (assetName) params = {...params, assetName: assetName.trim()}
-          if (assetSys) params = {...params, assetSys: assetSys.trim()}
+          if (dataHash) params = { ...params, dataHash: dataHash.trim() }
+          if (assetName) params = { ...params, assetName: assetName.trim() }
+          if (assetSys) params = { ...params, assetSys: assetSys.trim() }
           return params;
         }}
         toolBarRender={() => [
-          <Button hidden={!access.canAdmin} type="primary" onClick={() => handleModalVisible(true)}>
+          <Button hidden={!access.checkUri('/dataConfirm/assetIdentifier/add')} type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 创建权属标识
           </Button>,
         ]}
         request={(params, sorter, filter) => listAssetIdentifier({ ...params, sorter, filter })}
         columns={columns}
-        rowSelection={access.canAdmin ? {
+        rowSelection={access.checkUri('/dataConfirm/assetIdentifier/delete') ? {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } : undefined}
       />
@@ -196,7 +196,11 @@ const TableList: React.FC<{}> = () => {
             批量删除
           </Button></FooterToolbar>)
       }
-      <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
+      <CreateForm
+        key="dataHash"
+        onCancel={() => handleModalVisible(false)}
+        modalVisible={createModalVisible}
+      >
         <ProTable<AssetIdentifier, AssetIdentifier>
           onSubmit={async (value) => {
             const success = await handleAdd(value);

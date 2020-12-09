@@ -77,7 +77,7 @@ const GetRequest = () => {
 
 request.interceptors.request.use((url, options) => {
   const params = GetRequest();
-  console.log(params)
+  // console.log(params)
   let ticket = params.ticket // "ST-41-0NuSQsXWOZg1OTopyI9F-isc.sgcc.com.cn"; //
 
   const currentUserStr = localStorage.getItem('tdsp');
@@ -85,13 +85,13 @@ request.interceptors.request.use((url, options) => {
   let token = currentUser ? currentUser.token : null
   //console.log(currentUser)
   //alert(`请求拦截器ticket & token：${ticket} / ${token}`)
-  console.log(`请求拦截器ticket & token：${ticket} / ${token}`)
+  // console.log(`请求拦截器ticket & token：${ticket} / ${token}`)
   const encryptedTimestamp = encrypt(new Date().getTime().toString());
   //alert(`time:${encryptedTimestamp}`)
-  console.log(`time:${encryptedTimestamp}`)
+  // console.log(`time:${encryptedTimestamp}`)
 
   if (ticket && !token) {
-    console.log("ticket exists:", ticket)
+    // console.log("ticket exists:", ticket)
     const headers = {
       Authorization: `${token}`, //`F774CA755A4EB4B14BD3DE087286C5B269FF411B9989BFDBE8A7049CE46016FB`,//
       Timestamp: encryptedTimestamp,
@@ -102,7 +102,7 @@ request.interceptors.request.use((url, options) => {
     });
   }
   else {
-    console.log("ticket missing or token exists:", ticket)
+    // console.log("ticket missing or token exists:", ticket)
     const headers = {
       Authorization: token, //`F774CA755A4EB4B14BD3DE087286C5B269FF411B9989BFDBE8A7049CE46016FB`,//
       Timestamp: encryptedTimestamp
@@ -119,7 +119,7 @@ request.interceptors.response.use(async (response: any) => {
   const data = await response.clone().json();
   //console.log(data)
   //alert(`返回拦截器：${JSON.stringify(data)}`)
-  console.log(`返回拦截器：${JSON.stringify(data)}`)
+  // console.log(`返回拦截器：${JSON.stringify(data)}`)
 
   if (data === undefined || data === null) {
     return response;
@@ -133,8 +133,8 @@ request.interceptors.response.use(async (response: any) => {
     if (data.redirect) {
       //history.push(data.redirect);
       localStorage.removeItem('tdsp')
+      message.error("状态异常，请重新登录");
       window.location.href = data.redirect
-      throw message.error("状态异常，请重新登录");
       //GAVIN TODO 清理缓存
     }
     else {
@@ -149,7 +149,7 @@ request.interceptors.response.use(async (response: any) => {
   } else if (data.status === 208) { // 登陆ISC返回的状态
     message.success('登录成功!');
     //alert(`Token 写入: ${JSON.stringify(data.data)}`)
-    console.log(`Token 写入: ${JSON.stringify(data.data)}`)
+    // console.log(`Token 写入: ${JSON.stringify(data.data)}`)
     localStorage.setItem('tdsp', JSON.stringify(data.data));
 
   }

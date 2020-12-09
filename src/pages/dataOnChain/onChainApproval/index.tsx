@@ -21,7 +21,7 @@ const updateRequest = async (record: OnChainRequest, status: number) => {
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-  const access = useAccess()
+  const access = useAccess();
   const columns: ProColumns<OnChainRequest>[] = [
     {
       title: '申请ID',
@@ -86,6 +86,7 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      hideInTable: !access.checkUri('/dataOnChain/onChainApproval/update'),
       render: (_, record) => {
         if (record.status === 2) {
           return (
@@ -140,16 +141,16 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         beforeSearchSubmit={(params: Partial<OnChainRequest>) => {
           const { dataHash, dataName } = params;
-          if (dataHash && dataHash.length >= 65 ) {
+          if (dataHash && dataHash.length >= 65) {
             message.error("权属标示输入超出64位");
             throw console.error("权属标示输入超出64位")
           }
-          if (dataName && dataName.length >= 30 ) {
+          if (dataName && dataName.length >= 30) {
             message.error("资产名称输入超出范围0-30位");
             throw console.error("资产名称输入超出范围0-30位")
           }
-          if (dataHash) params = {...params, dataHash: dataHash.trim()}
-          if (dataName) params = {...params, dataName: dataName.trim()}
+          if (dataHash) params = { ...params, dataHash: dataHash.trim() }
+          if (dataName) params = { ...params, dataName: dataName.trim() }
           return params;
         }}
       />

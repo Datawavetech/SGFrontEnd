@@ -7,7 +7,7 @@ import { listAuditLog } from './service'
 import { message, Button } from 'antd';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { handleLogDownload } from '@/utils/utils';
-
+import { useAccess } from 'umi';
 
 
 /*
@@ -26,7 +26,7 @@ export interface errorLogColoumn{
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
-
+  const access = useAccess();
   const columns: ProColumns<errorLogColoumn>[] = [
     {
       title: "日志ID",
@@ -70,7 +70,7 @@ const TableList: React.FC<{}> = () => {
       valueType: 'dateTimeRange',
       hideInTable: true,
       search: {
-        transform: (value: any) => ({ startTime: new Date(value[0]).getTime(), endTime: new Date(value[1]).getTime()}),
+        transform: (value: any) => ({ startTime: new Date(value[0]).getTime(), endTime: new Date(value[1]).getTime() }),
       },
     }
   ];
@@ -85,7 +85,7 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         request={(params, sorter, filter) => listAuditLog(params)}
         toolBarRender={() => [
-          <Button key="3" type="primary" onClick={() => handleLogDownload({ type: 3 })}>
+          <Button hidden={!access.checkUri('/auditLog/logExport')} key="3" type="primary" onClick={() => handleLogDownload({ type: 3 })}>
             <VerticalAlignBottomOutlined />
             日志导出
           </Button>,
@@ -105,7 +105,7 @@ const TableList: React.FC<{}> = () => {
             message.error("操作人名称输入超出范围0-30");
             throw console.error("操作人名称输入超出范围0-30");
           }
-          if (username) params = {...params, username: username.trim()}
+          if (username) params = { ...params, username: username.trim() }
           return params;
         }}
       />
