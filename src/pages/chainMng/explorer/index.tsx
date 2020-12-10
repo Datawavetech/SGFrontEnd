@@ -53,11 +53,14 @@ const TableList: React.FC<{}> = () => {
       // const realTimeBlockHeightT = await getRealTimeBlockTimeList()
       // const txAmountT = await getTxTimeList()
       // const realTimeTxAmountT = await getRealTimeTxTimeList()
-      const { blockHeightT, realTimeBlockHeightT, txAmountT, realTimeTxAmountT } = await getChainInfo();
-      setBlockHeight(blockHeightT);
-      setTxAmount(txAmountT);
-      setRealTimeTxAmount(realTimeBlockHeightT);
-      setRealTimeBlockHeight(realTimeTxAmountT);
+      // const data = await getChainInfo();
+      // const { blockHeightT, realTimeBlockHeightT, txAmountT, realTimeTxAmountT } = data;
+      // const info = await getChainInfo();
+      // console.log('info:',info);
+      // setBlockHeight(blockHeightT);
+      // setTxAmount(txAmountT);
+      // setRealTimeTxAmount(realTimeBlockHeightT);
+      // setRealTimeBlockHeight(realTimeTxAmountT);
       //console.log(blockHeightT,realTimeBlockHeightT,txAmountT,realTimeTxAmountT)
     })();
 
