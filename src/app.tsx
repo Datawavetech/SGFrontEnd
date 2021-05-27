@@ -39,7 +39,7 @@ export async function getInitialState(): Promise<{
     if (currentUserStr != null) {
       currentUser = JSON.parse(currentUserStr);
     } else {
-      message.info("无用户token，等待获取")
+      // message.info("无用户token，等待获取")
       //history.push('/');
     }
     return {
@@ -47,7 +47,7 @@ export async function getInitialState(): Promise<{
       settings: defaultSettings,
     };
   } catch (error) {
-    message.error("状态异常，重新登陆")
+    message.error("状态异常，重新登录")
     //history.push('/');
   }
 

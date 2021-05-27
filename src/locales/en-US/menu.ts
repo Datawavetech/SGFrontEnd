@@ -1,6 +1,6 @@
 export default {
 
-  'menu.isc':"跳转登陆",
+  'menu.isc':"跳转登录",
 
   'menu.dataConfirm': '数据确权',
   'menu.dataConfirm.assetProof': '资产属权证明',

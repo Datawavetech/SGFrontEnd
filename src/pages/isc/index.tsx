@@ -40,7 +40,7 @@ const TableList: React.FC<{}> = () => {
   return (
     <PageHeaderWrapper>
       <div>
-        等待登陆中......
+        等待登录中......
       </div>
     </PageHeaderWrapper>
   );
